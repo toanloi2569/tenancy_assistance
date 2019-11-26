@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Post = new Schema({
-    user_id: {type: Schema.Types.ObjectId, required: true},
+    landlord_id: {type: Schema.Types.ObjectId, required: true},
+    comment_id: [{type: Schema.Types.ObjectId}],
+
     square: {type: Number, required: true},
     price: {type: Number, require: true},
     district: {type: String, required: true},
@@ -13,7 +15,6 @@ var Post = new Schema({
     
     image: {type: String},
     content: {type: String, require: true},
-
     availability: {type: Boolean, require: true},
     date: {type: Date, require: true}
 })

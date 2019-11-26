@@ -23,10 +23,13 @@ exports.searchPost = function(req, res, next) {
 }
 
 exports.createPost = function(req, res) {
-    console.log((req.body));
-    
+
+    comment_id = req.body.comment_id
+    comment_id = (comment_id == undefined) ? null : comment_id.split(',')
+
     var post = new Post ({
-        user_id : req.body.user_id,
+        landlord_id : req.body.landlord_id,
+        comment_id : comment_id,
         square : Number(req.body.square),
         price : Number(req.body.price),
         district : req.body.district,
