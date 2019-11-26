@@ -1,24 +1,26 @@
-// var New = require('../schema/new')
-// var User = require('../schema/user')
+
 var Post = require('../schema/post')
+
 exports.searchPost = function(req, res, next) {
-    minPrice = (req.params.minPrice == undefined) ? 0 : req.params.minPrice;
-    maxPrice = (req.params.maxPrice == undefined) ? 1000000000 : req.params.maxPrice;
-    minSquare = (req.params.minSquare == undefined) ? 0 : req.params.minSquare;
-    district = (req.params.district == undefined) ? '/*/' : `/${req.params.district}/`;
-    ward = (req.params.ward == undefined) ? '/*/' : `/${req.params.ward}/`;
-    
-    New.find({
-        "price": {$in: [minPrice, maxPrice]},
-        "square": {$gt: minSquare},
-        "district": {$regex : district},
-        "ward" : {$regex: ward},
+    minPrice = (req.body.minPrice == undefined) ? 0 : req.params.minPrice;
+    maxPrice = (req.body.maxPrice == undefined) ? 1000000000 : req.params.maxPrice;
+    minSquare = (req.body.minSquare == undefined) ? 0 : req.params.minSquare;
+    district = (req.body.district == undefined) ? /(.*)?/ : `/${req.params.district}/`;
+    ward = (req.body.ward == undefined) ? /(.*)?/ : `/${req.params.ward}/`;
+
+    Post.find({
+        price: {$gte: minPrice},
+        price: {$lte: maxPrice},
+        square: {$gte: minSquare},
+        district: {$regex : district},
+        ward : {$regex : ward},
     })
         .sort([["price"]])
         .exec(function (err, houses) {
-            if (err) {return nexr(err);}
+            if (err) {return next(err);}
             // render
             console.log(houses);
+            res.send(houses)
         })
 }
 
@@ -43,7 +45,7 @@ exports.createPost = function(req, res) {
     })
 
     post.save(function (err) {
-        if (err) return console.error(err);
+        if (err) {return next(err);}
         console.log("Luu thanh cong");
         res.send("Luu thanh cong")
     })

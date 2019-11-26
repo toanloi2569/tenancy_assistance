@@ -14,7 +14,7 @@ exports.createUser = function(req,res) {
     })
 
     user.save(function (err) {
-        if (err) return console.error(err);
+        if (err) {return next(err);}
         console.log("Luu thanh cong");
         res.send("Luu thanh cong")
     })
