@@ -5,12 +5,10 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var mongoose = require('mongoose');
-var setting = require("./config/setting")
+var settings = require("./config/setting")
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var testAPIRouter = require("./routes/testAPI");
-
 var app = express();
 
 // view engine setup
@@ -31,7 +29,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/testAPI", testAPIRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

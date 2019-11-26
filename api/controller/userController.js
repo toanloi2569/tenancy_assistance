@@ -6,9 +6,9 @@ exports.houseSearch = function(req, res, next) {
     minSquare = (req.params.minSquare == undefined) ? 0 : req.params.minSquare;
     district = (req.params.district == undefined) ? '/*/' : `/${req.params.district}/`;
     ward = (req.params.ward == undefined) ? '/*/' : `/${req.params.ward}/`;
-    // console.log(minPrice);
     
-
+    console.log(minPrice, maxPrice, minSquare, district, ward);
+    
     New.find({
         "price": {$in: [minPrice, maxPrice]},
         "square": {$gt: minSquare},
