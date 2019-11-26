@@ -1,25 +1,21 @@
-var New = require('../schema/new')
+// var New = require('../schema/new')
+// var User = require('../schema/user')
+var User = require('../schema/user')
 
-exports.houseSearch = function(req, res, next) {
-    minPrice = (req.params.minPrice == undefined) ? 0 : req.params.minPrice;
-    maxPrice = (req.params.maxPrice == undefined) ? 1000000000 : req.params.maxPrice;
-    minSquare = (req.params.minSquare == undefined) ? 0 : req.params.minSquare;
-    district = (req.params.district == undefined) ? '/*/' : `/${req.params.district}/`;
-    ward = (req.params.ward == undefined) ? '/*/' : `/${req.params.ward}/`;
-    
-    console.log(minPrice, maxPrice, minSquare, district, ward);
-    
-    New.find({
-        "price": {$in: [minPrice, maxPrice]},
-        "square": {$gt: minSquare},
-        "district": {$regex : district},
-        "ward" : {$regex: ward},
+exports.createUser = function(req,res) {
+
+    id_comment = (req.body.id_comment == undefined) ? null : req.body.id_comment.split(',')
+    var user = new User ({
+        role : Number(req.body.role),
+        star : Number(req.body.star),
+        number_rated : Number(req.body.number_rated),
+        id_comment : id_comment,
+        name : req.body.name,
     })
-        .sort([["price"]])
-        .exec(function (err, houses) {
-            if (err) {return nexr(err);}
-            // render
-            console.log(houses);
-            
-        })
+
+    user.save(function (err) {
+        if (err) return console.error(err);
+        console.log("Luu thanh cong");
+        res.send("Luu thanh cong")
+    })
 }

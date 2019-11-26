@@ -5,6 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+
 var settings = require("./config/setting")
 
 var indexRouter = require("./routes/index");
@@ -23,8 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 mongoose.connect(settings.hostDB, { useNewUrlParser: true });
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
+var db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use("/", indexRouter);
