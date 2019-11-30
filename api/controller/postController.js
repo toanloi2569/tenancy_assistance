@@ -50,3 +50,4 @@ exports.createPost = function(req, res) {
         res.send("Luu thanh cong")
     })
 }
+
