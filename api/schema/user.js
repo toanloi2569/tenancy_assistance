@@ -1,17 +1,53 @@
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt   = require('bcrypt');
 
 var Schema = mongoose.Schema;
 
 var User = new Schema({
-    role: {type: Number, enum: [1, 2]},
-    star: {type: Number},
-    number_rated: {type: Number},
-    id_comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-    name: {type: String, required: true},
-    anh: {type: String, required: true},
-    cmt: {type: String, required: true},
-    password: {type: String, required: true, trim: true, minlength: 6},
+    user_name: {
+        type: String,
+    },
+
+    password: {
+        type: String, 
+        required: true, 
+        trim: true, 
+        minlength: 6
+    },
+
+    role: {
+        type: Number, 
+        enum: [1, 2]
+    },
+
+    star: {
+        type: Number
+    },
+
+    number_rated: {
+        type: Number
+    },
+
+    id_comment: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Comment'
+    }],
+
+    name: {
+        type: String,
+        required: true
+    },    
+
+    messages: [{
+        type: Object,
+        sender: Schema.Types.ObjectId,
+        is_contract: Boolean,
+        contract: {
+            content: String,
+            sign1: String,
+            sign2: String,
+        }
+    }]
 })
 
 User.virtual('star_avg')
