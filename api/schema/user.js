@@ -5,15 +5,51 @@ const jwt = require('jsonwebtoken')
 var Schema = mongoose.Schema;
 
 var User = new Schema({
-    role: {type: Number, enum: [0,1,2], required: true},
-    star: {type: Number},
-    number_rated: {type: Number},
-    id_comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-    name: {type: String, required: true},
-    anh: {type: String},
-    cmt: {type: String, required: true},
-    user_name: {type: String, unique: true, required: true, trim: true},
-    password: {type: String, required: true, trim: true, minlength: 6},
+    user_name: {
+        type: String,
+    },
+
+    password: {
+        type: String, 
+        required: true, 
+        trim: true, 
+        minlength: 6
+    },
+
+    role: {
+        type: Number, 
+        enum: [1, 2]
+    },
+
+    star: {
+        type: Number
+    },
+
+    number_rated: {
+        type: Number
+    },
+
+    id_comment: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Comment'
+    }],
+
+    name: {
+        type: String,
+        required: true
+    },    
+
+    messages: [{
+        type: Object,
+        sender: Schema.Types.ObjectId,
+        is_contract: Boolean,
+        contract: {
+            content: String,
+            sign1: String,
+            sign2: String,
+        }
+    }],
+
     tokens: [{
         token: {
             type: String,

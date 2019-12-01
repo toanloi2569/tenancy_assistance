@@ -1,5 +1,6 @@
 
 var Post = require('../schema/post')
+var CommentController = require('./commentController')
 
 exports.searchPost = function(req, res, next) {
     minPrice = (req.body.minPrice == undefined) ? 0 : req.params.minPrice;
@@ -16,11 +17,10 @@ exports.searchPost = function(req, res, next) {
         ward : {$regex : ward},
     })
         .sort([["price"]])
-        .exec(function (err, houses) {
+        .exec(function (err, posts) {
             if (err) {return next(err);}
-            // render
-            console.log(houses);
-            res.send(houses)
+            console.log(posts);
+            res.send(posts)
         })
 }
 
@@ -51,3 +51,39 @@ exports.createPost = function(req, res) {
     })
 }
 
+exports.seeDetailPost = function(req, res) {
+    Post.findById(req.params.postID, function(err, post) {
+        if (err) {return next(err);}
+        
+        comments = []
+        for (var i=0; i > length(post.comment_id); i++) {
+            comment = CommentController.searchComment(post.comment_id[i])
+            comments.push(comment)
+        }
+
+        res.send({"post": post, "comments": comments})
+    })
+}
+
+exports.deletePost = function(req, res) {
+    Post.findById(req.params.postID, function(err, post) {
+        if (err) {return next(err);}
+        
+        for (var i=0; i > length(post.comment_id); i++) {
+            comment = CommentController.deleteComment(post.comment_id[i])
+        }
+
+        post.remove(function(err){
+            if (err) {return next(err);}
+            res.send(post)
+        })
+    })
+}
+
+exports.updatePost = function(req, res) {
+    Post.findByIdAndUpdate(req.params.postID, req.body, function(err, post) {
+        if (err) {return next(err);}
+        console.log(post);
+        res.send(post);
+    })
+}
