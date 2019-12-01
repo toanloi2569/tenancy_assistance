@@ -1,4 +1,5 @@
 var express = require('express');
+const auth=require('../middleware/auth');
 var router = express.Router();
 
 var New = require('../controller/postController')
@@ -13,5 +14,11 @@ router.post('/searchPost', New.searchPost)
 router.post('/createPost', New.createPost)
 
 router.post('/createUser', User.createUser)
+
+router.post('/registerUser', User.registerUser)
+router.post('/loginUser', User.loginUser)
+router.post('/logoutUser', auth, User.logoutUser)
+router.post('/logoutallUser', auth, User.logoutallUser)
+router.get('/profileUser', auth, User.profileUser)
 
 module.exports = router;
