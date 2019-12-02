@@ -24,10 +24,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect(settings.hostDB, { useNewUrlParser: true });
+mongoose.connect(settings.hostDB, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+app.use(express.json())
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 

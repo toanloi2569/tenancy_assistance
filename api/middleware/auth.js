@@ -1,17 +1,24 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/User')
+const User = require('../schema/User')
+const Role = require('./role')
 
-const auth = async(req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '')
-    const data = jwt.verify(token, process.env.JWT_KEY)
+const auth = async function(req, res, next) {
+    const token = req.header('Authorization');
+    if (!token) return res.status(401).send('Access Denied: No Token Provided!');
+    const data = jwt.verify(token, process.env.JWT_KEY);
     try {
-        const user = await User.findOne({ _id: data._id, 'tokens.token': token })
+        const user = User.findOne({ _id: data._id, role: data.role, 'tokens.token': token });
         if (!user) {
-            throw new Error()
+            throw new Error();
         }
-        req.user = user
-        req.token = token
-        next()
+
+        if(Role[data.role].find(function(url){ return url==req.baseUrl})){
+            req.user = user;
+            req.token = token;
+            next();
+        }
+        else
+        return res.status(401).send('Access Denied: You dont have correct privilege to perform this operation');
     } catch (error) {
         res.status(401).send({ error: 'Not authorized to access this resource' })
     }

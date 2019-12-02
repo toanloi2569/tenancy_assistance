@@ -1,4 +1,5 @@
 var express = require('express');
+const auth=require('../middleware/auth');
 var router = express.Router();
 
 var Post = require('../controller/postController')
@@ -50,5 +51,12 @@ router.get('searchComment/comments/:commentID', Comment.searchComment)
 router.post('updateComment/comments/:commentID', Comment.updateComment)
 
 // router.post('/comment', User.comment)
+
+// test dang nhap dang xuat
+// router.post('/registerUser', User.registerUser)
+router.post('/loginUser', User.loginUser)
+router.post('/logoutUser', auth, User.logoutUser)
+router.post('/logoutallUser', auth, User.logoutallUser)
+router.get('/profileUser', auth, User.profileUser)
 
 module.exports = router;
