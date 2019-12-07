@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.26.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-images-upload": "^1.2.7",
+    "react-phone-input-2": "^2.11.0",
     "react-scripts": "1.1.5"
   },
   "scripts": {
