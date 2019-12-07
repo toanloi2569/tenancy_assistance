@@ -93,7 +93,7 @@ class CreateForm extends React.Component{
         super(props);
         this.state = {
         //   textAddress: "",
-        //   textDistrict: "",
+          textDistrict: "",
           textSquare: 0,
           textPrice: 0,
           textDesc:"",
