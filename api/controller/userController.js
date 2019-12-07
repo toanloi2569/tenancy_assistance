@@ -1,33 +1,47 @@
 var User = require('../schema/user')
+var FormData = require('form-data');
 var axios = require('axios');
 var fs = require('fs');
+var settings = require('../config/setting')
 
-exports.registerUser = function(req, res, next){    
-    User.findOne({cmt: req.body.cmt, role: Number(req.body.role)}, function(err, user){
-        if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
 
+exports.registerUser = async function(req, res, next){    
+
+    await User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
+        if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
+            
             var form_data = new FormData()
-            form_data.append({
-                "so_cmt": req.body.id_number,
-                "id": req.body.id_number,
-                "public_key": req.body.public_key,
-                "anh_mat_truoc": fs.createReadStream(req.body.img1),
-                "anh_mat_sau": fs.createReadStream(req.body.img2),
-            })
+            form_data.append("so_cmt", req.body.id_number)
+            form_data.append("public_key", req.body.public_key)
+            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(req.files.img1[0].path))
+            form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
+
+            let authorization;
+            // await createUser(req.body.username, req.body.password)
+            // await new Promise(resolve => setTimeout(resolve, 3000));
+            await getAuth(req.body.username, req.body.password)
+                .then(res=>{
+                    authorization = res.data.authorization;
+                })
+            
             var req_to_Vchain = {
-                methods: "post",
-                url: "178.128.217.110:8089/userInfo_DC2019_9/create",
+                method: "post",
+                url: settings.vChainPort + "/userInfor/create",
                 headers: {
-                    "Authorization": "Basic REMyMDE5Xzk6U1RJUEdUUEZWTw==",
-                    "Content-Type": "multipart/form-data"
+                    // 'Content-type': 'multipart/form-data',
+                    // Accept : 'multipart/form-data',
+                    Authorization : authorization,
                 },
                 data: form_data
             }
 
+            console.log(req_to_Vchain);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
             axios(req_to_Vchain)
                 .then(function(response){
                     var user = new User ({
-                        user_name: req.body.user_name,
+                        user_name: req.body.username,
                         password: req.body.password,
                         role: Number(req.body.role),
                         star: Number(req.body.star),
@@ -40,17 +54,40 @@ exports.registerUser = function(req, res, next){
                         if(err) {return res.json({err})}
                         res.json({user: result})
                     })
-                    console.log(response);
+                    console.log('Luu nguoi dung thanh cong');
+                    
                 })
                 .catch(function (err) {
                     console.log(err);
                 });
-            
+
         }else{
             res.json({err: 'Chung minh thu da duoc dung'})
         }
     })
 }
+
+function createUser(username, password) {
+    return axios.post(settings.vChainPort + '/user', {
+        "password" : password,
+        "role" : "USER",
+        "username" : username
+    })
+    .catch(function (error) {
+        return error
+    });
+}
+
+function getAuth(username, password) {
+    return axios.post(settings.vChainPort + '/authentication', {
+        "password" : password,
+        "username" : username,
+    })
+    .catch(function(error) {
+        return error
+    })
+}
+
 
 exports.requireContract = function (req, res, next) {
     postID = req.params.postID;
@@ -76,10 +113,11 @@ exports.responseContract = function(req, res, next) {
 }
 
 exports.loginUser = async function(req, res) {
+
     //Login a registered user
     try {
-        const { user_name, password } = req.body
-        const user = await User.findByCredentials(user_name, password)
+        const { username, password } = req.body
+        const user = await User.findByCredentials(username, password)
         if (!user) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }

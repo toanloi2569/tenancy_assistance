@@ -6,6 +6,7 @@ var logger = require("morgan");
 var cors = require("cors");
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var settings = require("./config/setting")
 
@@ -17,10 +18,22 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '.jpg') //Appending .jpg
+    }
+  })
+  
+var upload = multer({ storage: storage });
+
 app.use(cors());
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(upload.fields([{name:'img1'}, {name:'img2'}]))
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 

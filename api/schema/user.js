@@ -134,8 +134,8 @@ User.methods.comparePassword = function(passwordAttempt, cb){
 }
 
 // cái đm mongodb #$%@#$%@#$^
-// module.exports = mongoose.model('User', User);
+module.exports = mongoose.model('User', User);
 
-try {
-    exports.getModel = ()=> mongoose.model('User', userSchema)
- } catch (err){ exports.getModel = ()=> mongoose.model('User')}
+// try {
+//     exports.getModel = ()=> mongoose.model('User', User)
+//  } catch (err){ exports.getModel = ()=> mongoose.model('User')}
