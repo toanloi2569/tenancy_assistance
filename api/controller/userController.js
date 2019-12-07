@@ -1,5 +1,6 @@
 var User = require('../schema/user')
 var FormData = require('form-data');
+var bcrypt = require('bcrypt');
 var axios = require('axios');
 var fs = require('fs');
 var settings = require('../config/setting')
@@ -7,8 +8,10 @@ var settings = require('../config/setting')
 
 exports.registerUser = async function(req, res, next){    
 
-    await User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
-        if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
+    await User.findOne({user_name: req.body.username}, async function(err, user){
+        
+        
+        if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
             
             // var form_data = new FormData()
             // form_data.append("so_cmt", req.body.id_number)
@@ -48,7 +51,7 @@ exports.registerUser = async function(req, res, next){
                 // });
 
         }else{
-            res.json({err: 'Chung minh thu da duoc dung'})
+            return res.json({err: 'Chung minh thu da duoc dung'})
         }
     })
 }
@@ -58,20 +61,19 @@ function createUserMongo(req, res) {
         user_name: req.body.username,
         password: req.body.password,
         role: Number(req.body.role),
-        star: Number(req.body.star),
-        number_rated: Number(req.body.number_rated),
         name: req.body.name,
-        id : req.body.id_number,
+        id : req.body.id_number 
     })
     
-
-    user.save(function(err, result) {
-        if(err) {return res.json({err})}
-        res.json({user: result})
+    user.save(function(err) {
+        if (err) console.log(err);
+        
         console.log('Luu nguoi dung thanh cong');
-    })
-    const token = user.generateAuthToken()
-    
+        // const token = await user.generateAuthToken();
+        res.status(201).send({ user });
+    });
+       
+  
     
 }
 
@@ -124,15 +126,20 @@ exports.loginUser = async function(req, res) {
 
     //Login a registered user
     try {
-        const { username, password } = req.body
-        const user = await User.findByCredentials(username, password)
+        var { username, password } = req.body
+        console.log(req.body)
+        console.log(username)
+        var user = await User.findByCredentials(username, password)
+        // console.log(user)
         if (!user) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
-        const token = await user.generateAuthToken()
+        var token = await user.generateAuthToken()
         res.send({ user, token })
     } catch (error) {
-        res.status(400).send(error)
+        // res.status(400).send(error)
+        console.log("err");
+        
     }
 }
 
