@@ -87,3 +87,13 @@ exports.updatePost = function(req, res) {
         res.send(post);
     })
 }
+
+exports.getMainPage = function(req, res) {
+    Post.find({}).limit(6)
+        .sort([["Date"]])
+        .exec(function (err, posts) {
+            if (err) {return next(err);}
+            console.log(posts);
+            res.send(posts)
+        })
+}

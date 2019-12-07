@@ -1,21 +1,24 @@
-var generateKeyPair = require('crypto');
+var { generateKeyPair } = require('crypto');
 
-exports.generateKeyPair = generateKeyPair('rsa', {
-  modulusLength: 4096,
-
-  publicKeyEncoding: {
-    type: 'spki',
-    format: 'pem'
-  },
-
-  privateKeyEncoding: {
-    type: 'pkcs8',
-    format: 'pem',
-    cipher: 'aes-256-cbc',
-    passphrase: 'top secret'
-  }
-}, function (err, publicKey, privateKey) {
-  if (err) return (err);
-  
-  return (publicKey, privateKey)
-});
+exports.generateKey = function generateKey(id) {
+  rand = Math.random().toString()
+  passphrase = id+rand
+  return new Promise (resolve => {
+    generateKeyPair('rsa', {
+        modulusLength: 4096,
+        publicKeyEncoding: {
+          type: 'spki',
+          format: 'pem'
+        },
+        privateKeyEncoding: {
+          type: 'pkcs8',
+          format: 'pem',
+          cipher: 'aes-256-cbc',
+          passphrase: passphrase
+        }
+      }, (err, publicKey, privateKey) => {
+        console.log("hihi");
+        resolve([publicKey, privateKey]);
+      })
+  })   
+}

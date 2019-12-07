@@ -7,9 +7,7 @@ var User = require('../controller/userController')
 var Comment = require('../controller/commentController')
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', Post.getMainPage)
 
 /* Đăng ký */
 router.post('/register', User.registerUser)

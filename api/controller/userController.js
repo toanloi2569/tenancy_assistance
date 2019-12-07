@@ -1,13 +1,15 @@
 var User = require('../schema/user')
+var Key = require('../controller/keyController')
 var FormData = require('form-data');
 var axios = require('axios');
 var fs = require('fs');
 var settings = require('../config/setting')
+const { generateKeyPair } = require('crypto');
 
 
-exports.registerUser = async function(req, res, next){    
+exports.registerUser = function(req, res, next){    
 
-    await User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
+    User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
         if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
             
             // var form_data = new FormData()
@@ -17,12 +19,17 @@ exports.registerUser = async function(req, res, next){
             // form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
 
             // let authorization;
-            // // await createUser(req.body.username, req.body.password)
+            // // await createUserForAPI1(req.body.username, req.body.password)
+            // // await createUserForAPI2(req.body.username, req.body.password)
             // // await new Promise(resolve => setTimeout(resolve, 3000));
             // await getAuth(req.body.username, req.body.password)
             //     .then(res=>{
             //         authorization = res.data.authorization;
             //     })
+            let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
+            console.log(publicKey, privateKey);
+            
+            
             
             // var req_to_Vchain = {
             //     method: "post",
@@ -47,7 +54,8 @@ exports.registerUser = async function(req, res, next){
                 //     console.log(err);
                 // });
 
-        }else{
+        }
+        else {
             res.json({err: 'Chung minh thu da duoc dung'})
         }
     })
@@ -75,7 +83,7 @@ function createUserMongo(req, res) {
     
 }
 
-function createUser(username, password) {
+function createUserForAPI1(username, password) {
     return axios.post(settings.vChainPort + '/user', {
         "password" : password,
         "role" : "USER",
@@ -84,6 +92,17 @@ function createUser(username, password) {
     .catch(function (error) {
         return error
     });
+}
+
+function createUserForAPI2(username, password) {
+    return axios.post(setting.vChainPortContract + '/user', {
+        "password" : password,
+        "role" : "USER",
+        "username" : username,
+    })
+    .catch(function(error){
+        return error
+    })
 }
 
 function getAuth(username, password) {
