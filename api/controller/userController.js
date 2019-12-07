@@ -10,61 +10,69 @@ exports.registerUser = async function(req, res, next){
     await User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
         if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
             
-            var form_data = new FormData()
-            form_data.append("so_cmt", req.body.id_number)
-            form_data.append("public_key", req.body.public_key)
-            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(req.files.img1[0].path))
-            form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
+            // var form_data = new FormData()
+            // form_data.append("so_cmt", req.body.id_number)
+            // form_data.append("public_key", req.body.public_key)
+            // form_data.append("anh_cmt_mat_truoc", fs.createReadStream(req.files.img1[0].path))
+            // form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
 
-            let authorization;
-            // await createUser(req.body.username, req.body.password)
-            // await new Promise(resolve => setTimeout(resolve, 3000));
-            await getAuth(req.body.username, req.body.password)
-                .then(res=>{
-                    authorization = res.data.authorization;
-                })
+            // let authorization;
+            // // await createUser(req.body.username, req.body.password)
+            // // await new Promise(resolve => setTimeout(resolve, 3000));
+            // await getAuth(req.body.username, req.body.password)
+            //     .then(res=>{
+            //         authorization = res.data.authorization;
+            //     })
             
-            var req_to_Vchain = {
-                method: "post",
-                url: settings.vChainPort + "/userInfor/create",
-                headers: {
-                    // 'Content-type': 'multipart/form-data',
-                    // Accept : 'multipart/form-data',
-                    Authorization : authorization,
-                },
-                data: form_data
-            }
+            // var req_to_Vchain = {
+            //     method: "post",
+            //     url: settings.vChainPort + "/userInfor/create",
+            //     headers: {
+            //         // 'Content-type': 'multipart/form-data',
+            //         // Accept : 'multipart/form-data',
+            //         Authorization : authorization,
+            //     },
+            //     data: form_data
+            // }
 
-            console.log(req_to_Vchain);
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            // console.log(req_to_Vchain);
+            // await new Promise(resolve => setTimeout(resolve, 3000));
 
-            axios(req_to_Vchain)
-                .then(function(response){
-                    var user = new User ({
-                        user_name: req.body.username,
-                        password: req.body.password,
-                        role: Number(req.body.role),
-                        star: Number(req.body.star),
-                        number_rated: Number(req.body.number_rated),
-                        name: req.body.name,
-                        id : req.body.id_number,
-                    })
-
-                    user.save(function(err, result) {
-                        if(err) {return res.json({err})}
-                        res.json({user: result})
-                    })
-                    console.log('Luu nguoi dung thanh cong');
+            // axios(req_to_Vchain)
+            //     .then(function(response){
+                        createUserMongo(req, res)
                     
-                })
-                .catch(function (err) {
-                    console.log(err);
-                });
+                // })
+                // .catch(function (err) {
+                //     console.log(err);
+                // });
 
         }else{
             res.json({err: 'Chung minh thu da duoc dung'})
         }
     })
+}
+
+function createUserMongo(req, res) {
+    var user = new User ({
+        user_name: req.body.username,
+        password: req.body.password,
+        role: Number(req.body.role),
+        star: Number(req.body.star),
+        number_rated: Number(req.body.number_rated),
+        name: req.body.name,
+        id : req.body.id_number,
+    })
+    
+
+    user.save(function(err, result) {
+        if(err) {return res.json({err})}
+        res.json({user: result})
+        console.log('Luu nguoi dung thanh cong');
+    })
+    const token = user.generateAuthToken()
+    
+    
 }
 
 function createUser(username, password) {
