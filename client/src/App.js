@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-const INPUT_TIMEOUT = 250; //ms - It's our input delay
+// const INPUT_TIMEOUT = 250; //ms - It's our input delay
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { apiResponse: "" };
+        this.state = { 
+            apiResponse: "" 
+        };
     }
 
     callAPI() {
