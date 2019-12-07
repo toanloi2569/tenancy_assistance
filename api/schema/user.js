@@ -5,7 +5,7 @@ var settings = require('../config/setting')
 
 var Schema = mongoose.Schema;
 
-var User = new Schema({
+var User_schema = new Schema({
     user_name: {
         type: String,
     },
@@ -19,7 +19,8 @@ var User = new Schema({
 
     role: {
         type: Number,
-        enum: [1, 2]
+        enum: [1, 2],
+        required: true
     },
 
     star: {
@@ -58,7 +59,7 @@ var User = new Schema({
     }],
 })
 
-User.virtual('star_avg')
+User_schema.virtual('star_avg')
     .get(function () {
         if (this.number_rated != 0) {
             return Math.round(this.star / this.number_rated)
@@ -68,10 +69,9 @@ User.virtual('star_avg')
         }
     })
 
-User.pre('save', function (next) {
+User_schema.pre('save', function (next) {
     var user = this;
     var SALT_FACTOR = 5;
-
     if (!user.isModified('password')) {
         return next();
     }
@@ -79,7 +79,7 @@ User.pre('save', function (next) {
         if (err) {
             return next(err);
         }
-        bcrypt.hash(user.password, salt, null, function (err, hash) {
+        bcrypt.hash(user.password, salt, function (err, hash) {
             if (err) {
                 return next(err);
             }
@@ -89,7 +89,7 @@ User.pre('save', function (next) {
     });
 });
 
-User.methods.generateAuthToken = async function () {
+User_schema.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
     const user = this
     const token = jwt.sign({ _id: user._id, role: user.role }, settings.JWT_KEY)
@@ -98,20 +98,26 @@ User.methods.generateAuthToken = async function () {
     return token
 }
 
-User.statics.findByCredentials = async function (user_name, password) {
+User_schema.statics.findByCredentials = function (user_name, password) {
     // Search for a user by user_name and password.
-    const user = await User.findOne({ user_name })
-    if (!user) {
-        throw new Error({ error: 'Invalid login credentials' })
-    }
-    const isPasswordMatch = await bcrypt.compare(password, user.password)
-    if (!isPasswordMatch) {
-        throw new Error({ error: 'Invalid login credentials' })
-    }
-    return user
+    console.log("inside")
+    const f_user = User.findOne({ user_name : user_name }, async function (err, user) {
+        if (err) console.log(err);
+        if (!user) {
+            throw new Error({ error: 'Invalid login credentials' })
+        }
+        var isPasswordMatch = await bcrypt.compare(password, user.password)
+        
+        if (!isPasswordMatch) {
+            throw new Error({ error: 'Invalid login credentials' })
+        }
+        console.log(isPasswordMatch)
+        return user
+    })
+    return f_user
 }
 
-User.methods.comparePassword = function (passwordAttempt, cb) {
+User_schema.methods.comparePassword = function (passwordAttempt, cb) {
 
     bcrypt.compare(passwordAttempt, this.password, function (err, isMatch) {
 
@@ -125,8 +131,8 @@ User.methods.comparePassword = function (passwordAttempt, cb) {
 }
 
 // cái đm mongodb #$%@#$%@#$^
-module.exports = mongoose.model('User', User);
-
+User = mongoose.model('User', User_schema);
+module.exports = User
 // try {
 //     exports.getModel = ()=> mongoose.model('User', User)
 //  } catch (err){ exports.getModel = ()=> mongoose.model('User')}
