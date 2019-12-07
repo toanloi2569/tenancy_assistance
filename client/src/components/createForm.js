@@ -93,7 +93,7 @@ class CreateForm extends React.Component{
         super(props);
         this.state = {
         //   textAddress: "",
-        //   textDistrict: "",
+          textDistrict: "",
           textSquare: 0,
           textPrice: 0,
           textDesc:"",
@@ -153,19 +153,13 @@ class CreateForm extends React.Component{
                                 placeholder="Select Address"
                                 onChange={this.handleAddress}
                                 />
-                        
-                            {/* <div className="form-group">
-                            <label >Address: </label>
-                            <input type="text" className="form-control" name = "textAddress" 
-                            onChange={this.onHandleChange}
-                            value = {this.state.textAddress}/> 
-                            </div>
+                    
                             <div className="form-group">
                             <label >District: </label>
                             <input type="text" className="form-control" name = "textDistrict" 
                             onChange={this.onHandleChange}
                             value = {this.state.textDistrict}/> 
-                            </div> */}
+                            </div>
                             <div className="form-group">
                             <label >Square (m2):</label>
                             <input type="number" className="form-control" name = "textSquare" 
@@ -182,7 +176,7 @@ class CreateForm extends React.Component{
                             <div className="form-group">
                             <label >Content:</label>
                             
-                            <textarea className="form-control" rows="3" name = "textDesc" 
+                            <textarea className="form-control" rows="5" name = "textDesc" 
                             onChange = {this.onHandleChange}
                             value = {this.state.textDesc}
                             ></textarea>
@@ -200,9 +194,6 @@ class CreateForm extends React.Component{
                             
                             <div className="form-group">
                             <label >Phone number:</label>
-                            {/* <input type="text" className="form-control" name = "textPhone" 
-                            onChange={this.onHandleChange}
-                            value = {this.state.textPhone}/>  */}
                             <PhoneInput
                                 style={{ width: "100%" }}
                                 country={'vn'}
@@ -212,7 +203,7 @@ class CreateForm extends React.Component{
                             </div>
 
                             <button type="submit" className="btn btn-primary "  >Submit</button>
-                            {/* <button type="reset" className="btn btn-default">Reset</button> */}
+                            
                         </form>
                         </div>
                     </div>
