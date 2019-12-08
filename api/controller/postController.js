@@ -35,7 +35,6 @@ exports.createPost = function(req, res) {
         square : Number(req.body.square),
         price : Number(req.body.price),
         district : req.body.district,
-        ward : req.body.ward,
         address : req.body.address,
         phone : req.body.phone,
         image : (req.body.image == undefined) ? null : req.body.image,
