@@ -1,33 +1,24 @@
 import React from 'react';
 import CreateForm from './components/createForm';
+import TopBar from './components/TopBar'
+import Banner from './components/Banner'
 
 
 
-class App extends React.Component{
+class App extends React.Component {
 
-  render(){
-
+  render() {
     return (
-      <div >
-        
-        <nav className="navbar navbar-inverse">
-          <a className="navbar-brand" >Post House</a>
-          <ul className="nav navbar-nav">
-          </ul>
-        </nav>  
-        <CreateForm />
-  
-
-        
-     
+      <div>
+        <header class="header-area" id="top-bar">
+          <TopBar />
+        </header>
+        <section class="banner_area">
+          <Banner/>
+        </section>
       </div>
-
-
-    
-
-      );
-    }
+    );
   }
-
+}
 
 export default App;
