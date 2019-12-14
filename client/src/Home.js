@@ -1,19 +1,18 @@
 import React from 'react';
-import CreateForm from './components/createForm';
 import TopBar from './components/TopBar'
 import Banner from './components/Banner'
 
 
 
-class App extends React.Component {
+class Home extends React.Component {
 
   render() {
     return (
       <div>
-        <header class="header-area" id="top-bar">
+        <header className="header-area" id="top-bar">
           <TopBar />
         </header>
-        <section class="banner_area">
+        <section className="banner_area">
           <Banner/>
         </section>
       </div>
@@ -21,4 +20,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Home;

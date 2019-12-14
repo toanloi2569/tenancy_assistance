@@ -4,7 +4,12 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import 'antd/dist/antd.css';
 import { Cascader } from 'antd';
-// import Address from './address';
+// import UserHeader from './UserHeader';
+import HostHeader from './Header/HostHeader';
+import axios from 'axios';
+import HostScreen from '../HostScreen';
+// import './index.css';
+
 
 const vn = {
     "HANOI": {
@@ -133,19 +138,30 @@ class CreateForm extends React.Component{
         }
         onHandleSubmit(event){
         event.preventDefault();
-        console.log(this.state)
+        console.log(this.state);
+        alert("Dang Tin Thanh Cong");
+        axios.post()
     
-      }
+        }
+
+
     render(){
         return(
             <div>
-                <div className="container">
-              
-                    <div className="row">
-                        <div className="col-md-4 col-md-offset-4">
+              {/* <UserHeader/> */}
+              <HostHeader/>
+                <div className="container ">       
+                    <div className="row" style ={{marginTop: 7 + 'em'}} >
+                    <div className="col align-self-start">
+                      <h1>Đăng Tin Thuê Nhà</h1>
+                    </div>
+                      
+                        <div className="col align-self-center" >
                         
                         <form onSubmit={this.onHandleSubmit} >
-                            {/* <Address /> */}
+                        {/* <div className="col align-self-start">
+                        </div> */}
+
                             <label> Address:</label>
                             <Cascader 
                                 style={{ width: "100%" }}
@@ -191,7 +207,6 @@ class CreateForm extends React.Component{
                                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                 maxFileSize={5242880}
                             />
-                            
                             <div className="form-group">
                             <label >Phone number:</label>
                             <PhoneInput
@@ -202,7 +217,7 @@ class CreateForm extends React.Component{
                                 />
                             </div>
 
-                            <button type="submit" className="btn btn-primary "  >Submit</button>
+                            <button type="submit" className="btn btn-primary "  >Đăng Tin</button>
                             
                         </form>
                         </div>

@@ -1,5 +1,13 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
 }
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.code-box-demo p {
+  margin: 0;
+}
+.ant-card { margin-bottom: 30px; }
