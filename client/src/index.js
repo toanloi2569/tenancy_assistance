@@ -1,16 +1,17 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import ReactDOM  from 'react-dom';
+import {HashRouter as Router, Route } from "react-router-dom";
 import './index.css';
-import App from './App';
+import Home from './Home';
 import CreateForm from './components/createForm'
+import SearchHome from './SearchHome'
 import registerServiceWorker from './registerServiceWorker';
 
-render(
-    <Router >
-        <Route path={"/home"} component={App} />
-        <Route path={"/test"} component={CreateForm} />
-     </Router>,
+ReactDOM.render(
+    (<Router >
+        <Route exact path={"/home"} component={Home} />
+        <Route path={"/search"} component={SearchHome} />
+    </Router>),
   document.getElementById('root')
 );
 registerServiceWorker();
