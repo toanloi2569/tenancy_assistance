@@ -106,7 +106,12 @@ class Login extends Component {
   handleClick(event) {
     var apiBaseUrl = "http://localhost:9000/users/";
     var self = this;
-    // console.log(self.props);
+    // if (this.state.loginRole === "Tenant") {
+    //   self.props.history.push("/tenant")
+    // }
+    // else {
+    //   self.props.history.push("/host")
+    // }
       var payload={
         "username":this.state.username,
         "password":this.state.password,
@@ -114,27 +119,17 @@ class Login extends Component {
       }
       axios.post(apiBaseUrl+'loginUser', payload)
      .then(function (response) {
-      //  console.log(response);
-      //  console.log(response.status);
+       console.log(response);
        if(response.status === 200){
          console.log("Login successfull");
-         self.setState({
-           data : response.data
-         })
-         console.log(self.state)
-        //  const data = response.data
-        //  self.props.data = response.data
+         localStorage.setItem("token", response.data.token)
          if (response.data.user.role === 1){
           self.props.history.push("/tenant")
-          // self.props.data = response.data.s
-          // console.log(self.props.data)
-          // console.log(self.props)
-
          }
          else {
           self.props.history.push("/host")
-         } 
-        
+         }
+
         //  var uploadScreen=[];
         //  uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
         //  self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
