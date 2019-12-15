@@ -94,47 +94,48 @@ class Login extends Component {
     }
   }
   handleClick(event) {
-    var apiBaseUrl = "http://localhost:4000/api/";
+    var apiBaseUrl = "http://localhost:9000/users/";
     var self = this;
-    if (this.state.loginRole === "Tenant") {
-      self.props.history.push("/tenant")
-    }
-    else {
-      self.props.history.push("/host")
-    }
-    //   var payload={
-    //     "userid":this.state.username,
-    //     "password":this.state.password,
-    //     "role":this.state.loginRole
-    //   }
-    //   axios.post(apiBaseUrl+'login', payload)
-    //  .then(function (response) {
-    //    console.log(response);
-    //    if(response.data.code === 200){
-    //      console.log("Login successfull");
-    //      if (this.state.loginRole === "Tenant"){
-    //       self.props.history.push("/tenant")
-    //      }
-    //      else {
-    //       self.props.history.push("/host")
-    //      }
+    // if (this.state.loginRole === "Tenant") {
+    //   self.props.history.push("/tenant")
+    // }
+    // else {
+    //   self.props.history.push("/host")
+    // }
+      var payload={
+        "username":this.state.username,
+        "password":this.state.password,
+        // "role":this.state.loginRole
+      }
+      axios.post(apiBaseUrl+'loginUser', payload)
+     .then(function (response) {
+       console.log(response);
+       if(response.status === 200){
+         console.log("Login successfull");
+         localStorage.setItem("token", response.data.token)
+         if (response.data.user.role === 1){
+          self.props.history.push("/tenant")
+         }
+         else {
+          self.props.history.push("/host")
+         }
 
-    //     //  var uploadScreen=[];
-    //     //  uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
-    //     //  self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
-    //    }
-    //    else if(response.data.code === 204){
-    //      console.log("Username password do not match");
-    //      alert(response.data.success)
-    //    }
-    //    else{
-    //      console.log("Username does not exists");
-    //      alert("Username does not exist");
-    //    }
-    //  })
-    //  .catch(function (error) {
-    //    console.log(error);
-    //  });
+        //  var uploadScreen=[];
+        //  uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
+        //  self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
+       }
+       else if(response.status === 204){
+         console.log("Username password do not match");
+         alert(response.data.success)
+       }
+       else{
+         console.log("Username does not exists");
+         alert("Username does not exist");
+       }
+     })
+     .catch(function (error) {
+       console.log(error);
+     });
   }
   handleMenuChange(value) {
     // console.log("menuvalue",value);
