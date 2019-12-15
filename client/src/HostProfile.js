@@ -2,7 +2,7 @@ import React from 'react';
 import HostHeader from './components/Header/HostHeader';
 import Profile from './components/Profile';
 
-class TenantProfile extends React.Component{
+class HostProfile extends React.Component{
     constructor(props){
         super(props);
     }
@@ -20,4 +20,4 @@ class TenantProfile extends React.Component{
         )
     }
 }
-export default TenantProfile;
+export default HostProfile;

@@ -7,6 +7,15 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
 import TopBar from './components/TopBar';
+import { ContentSort } from 'material-ui/svg-icons';
+import TenantScreen from './TenantScreen';
+import { colors } from 'material-ui/styles';
+import functions from 'material-ui/svg-icons/editor/functions';
+
+
+
+
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +45,8 @@ class Login extends Component {
       password: '',
       menuValue: 1,
       loginComponent: localloginComponent,
-      loginRole: 'Tenant'
+      loginRole: 'Tenant',
+      
     }
   }
   componentWillMount() {
@@ -94,47 +104,53 @@ class Login extends Component {
     }
   }
   handleClick(event) {
-    var apiBaseUrl = "http://localhost:4000/api/";
+    var apiBaseUrl = "http://localhost:9000/users/";
     var self = this;
-    if (this.state.loginRole === "Tenant") {
-      self.props.history.push("/tenant")
-    }
-    else {
-      self.props.history.push("/host")
-    }
-    //   var payload={
-    //     "userid":this.state.username,
-    //     "password":this.state.password,
-    //     "role":this.state.loginRole
-    //   }
-    //   axios.post(apiBaseUrl+'login', payload)
-    //  .then(function (response) {
-    //    console.log(response);
-    //    if(response.data.code === 200){
-    //      console.log("Login successfull");
-    //      if (this.state.loginRole === "Tenant"){
-    //       self.props.history.push("/tenant")
-    //      }
-    //      else {
-    //       self.props.history.push("/host")
-    //      }
+    // console.log(self.props);
+      var payload={
+        "username":this.state.username,
+        "password":this.state.password,
+        // "role":this.state.loginRole
+      }
+      axios.post(apiBaseUrl+'loginUser', payload)
+     .then(function (response) {
+      //  console.log(response);
+      //  console.log(response.status);
+       if(response.status === 200){
+         console.log("Login successfull");
+         self.setState({
+           data : response.data
+         })
+         console.log(self.state)
+        //  const data = response.data
+        //  self.props.data = response.data
+         if (response.data.user.role === 1){
+          self.props.history.push("/tenant")
+          // self.props.data = response.data.s
+          // console.log(self.props.data)
+          // console.log(self.props)
 
-    //     //  var uploadScreen=[];
-    //     //  uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
-    //     //  self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
-    //    }
-    //    else if(response.data.code === 204){
-    //      console.log("Username password do not match");
-    //      alert(response.data.success)
-    //    }
-    //    else{
-    //      console.log("Username does not exists");
-    //      alert("Username does not exist");
-    //    }
-    //  })
-    //  .catch(function (error) {
-    //    console.log(error);
-    //  });
+         }
+         else {
+          self.props.history.push("/host")
+         } 
+        
+        //  var uploadScreen=[];
+        //  uploadScreen.push(<UploadPage appContext={self.props.appContext} role={self.state.loginRole}/>)
+        //  self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
+       }
+       else if(response.status === 204){
+         console.log("Username password do not match");
+         alert(response.data.success)
+       }
+       else{
+         console.log("Username does not exists");
+         alert("Username does not exist");
+       }
+     })
+     .catch(function (error) {
+       console.log(error);
+     });
   }
   handleMenuChange(value) {
     // console.log("menuvalue",value);

@@ -88,7 +88,8 @@ class Search extends React.Component{
         return(
             <div >
                 <Cascader 
-                    style={{ width: "100%" }}
+                    style={{ width: "100%"
+                         }}
                     options={convertAddress(vn)}
                     placeholder="Select Address"
                     onChange={this.handleAddress}
