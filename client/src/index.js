@@ -5,7 +5,7 @@ import {  Route } from "react-router-dom";
 import './index.css';
 import Home from './Home';
 import CreateForm from './components/CreateForm';
-import Profile from './components/Profile';
+// import Profile from './components/Profile';
 import Login from './Login';
 import registerServiceWorker from './registerServiceWorker';
 import { HashRouter} from 'react-router-dom';
@@ -29,7 +29,7 @@ ReactDOM.render(
        <Route exact path="/register" component={Register} />
        <Route exact path ="/host" component = {HostScreen}/>
        <Route exact path = "/tenant" component = {TenantScreen}/>
-       <Route exact path = "/tenant/profile" component = {TenantProfile}/>
+       <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        {/* <Route exact path = "/tenant/thongtinthuenha" component = {TenantScreen}/> */}
 
      </div>

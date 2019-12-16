@@ -7,10 +7,10 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
 import TopBar from './components/TopBar';
-import { ContentSort } from 'material-ui/svg-icons';
-import TenantScreen from './TenantScreen';
-import { colors } from 'material-ui/styles';
-import functions from 'material-ui/svg-icons/editor/functions';
+// import { ContentSort } from 'material-ui/svg-icons';
+// import TenantScreen from './TenantScreen';
+// import { colors } from 'material-ui/styles';
+// import functions from 'material-ui/svg-icons/editor/functions';
 
 
 

@@ -22,7 +22,7 @@ class ListHome extends React.Component {
                             <p>
                                 {/* <button type="button" className="btn btn-default">Thue ngay</button> */}
                                 
-                                <button type="button" class="btn btn-danger">Thue ngay</button>
+                                <button type="button" className="btn btn-danger">Thue ngay</button>
                                 
                             </p>
                         </div>

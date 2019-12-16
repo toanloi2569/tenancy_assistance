@@ -2,9 +2,9 @@ import React from 'react';
 import ListHome from './ListHome';
 
 class UploadScreen extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
     render() {
         var list = [
             {
