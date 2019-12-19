@@ -11,6 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 import 'antd/dist/antd.css';
 import './index.css';
 import { Upload, Icon, Modal } from 'antd';
+import settings from './config'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -193,7 +194,7 @@ class Register extends Component {
   handleClick(event) {
     console.log("values in register handler", this.state.registerRole)
     console.log("values in register handler", this.state)
-    var apiBaseUrl = "http://localhost:4000/api/";
+    var apiBaseUrl = settings.apiBaseUrl;
     // console.log("values in register handler",role);
     var self = this;
     //To be done:check for empty values before hitting submit
@@ -207,7 +208,7 @@ class Register extends Component {
         "img": this.state.fileList
       }
       console.log(payload)
-      axios.post(apiBaseUrl + '/register', payload)
+      axios.post(apiBaseUrl + '/user/register', payload)
         .then(function (response) {
           console.log(response);
           if (response.data.code === 200) {
