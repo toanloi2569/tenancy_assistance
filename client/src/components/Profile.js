@@ -3,7 +3,11 @@ import 'antd/dist/antd.css';
 // import { Row, Col } from 'antd';
 import axios from 'axios';
 import { Card, Col, Row } from 'antd';
-import { Input } from 'antd';
+// import { Input} from 'antd';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import TextField from 'material-ui/TextField';
+
 
 
 
@@ -14,7 +18,11 @@ class Profile extends React.Component {
         super(props);
         this.state =  ({
             viewProfile: [''],
-            username : ''
+            username : '',
+            address: '',
+            phone: '',
+            img : [],
+            email: '',
         });
         this.handleLoad = this.handleLoad.bind(this)
     }
@@ -38,52 +46,16 @@ class Profile extends React.Component {
         .then((response)=> {
         console.log(response);
         
-        var viewProfileComponent = [];
-        viewProfileComponent.push(
-            // <div>
-            // <label>{response.data.user_name}</label>
-            // <label> {response.data.name}</label>
-            // </div>
-            
-            <div style={{ background: '#ECECEC', padding: '30px' }}>
-            <Row gutter={32}>
-              <Col span={16}>
-                <Card title="Card title" bordered={false}>
-                  Card content
-                  
-                  <form action="" method="POST" role="form">
-                      <legend>Form title</legend>
-                  
-                      <div class="form-group">
-                          <label for="">user_name</label>
-                          <input type="text" class="form-control" id="" placeholder="Input field"  value = {response.data.user_name}/>
-                      </div>
-                  
-                      
-                  
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-                  
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card title="Card title" bordered={false}>
-                  Card content
-                </Card>
-              </Col>
-            
-            </Row>
-          </div>
-            
-        )
-        console.log(viewProfileComponent)
-        self.setState({
-            username: response.data.name,
-            viewProfile : viewProfileComponent
-        })
 
-        if(response.status === 200){
+        if(response.status === 200 ){
             console.log("Login successfull");
+            self.setState({
+                username: response.data.name,
+                address : response.data.address,
+                email : response.data.email,
+                phone: response.data.phone,
+                img: response.data.img
+            })
         
 
         }
@@ -105,16 +77,45 @@ class Profile extends React.Component {
         {this.handleLoad}
         
         return (
-            <div  onLoad = {this.handleLoad} >
-                !!! This ís Profile
-                <br/>
-                <br/>
-                <div class="container" >
-                {this.state.viewProfile}
-                    
+            <div style={{ background: '#ECECEC', padding: '30px' }}>
+            <Row gutter={32}>
+              <Col span={16}>
+                <Card title="Thông tin cá nhân" bordered={false}>
+                <label>Họ và tên:</label>
+
+                <div className="form-group">
+                    <input type="text" className="form-control" id="" placeholder={this.state.username}/>
                 </div>
-                
-            </div>
+                <label>Địa chỉ :</label>
+
+                <div className="form-group">
+                    <input type="text" className="form-control" id="" placeholder={this.state.address}/>
+                </div>
+                <label>Email: </label>
+
+                <div className="form-group">
+                    <input type="text" className="form-control" id="" placeholder={this.state.email}/>
+                </div>
+                <label>Phone:</label>
+
+                <div className="form-group">
+                    <input type="text" className="form-control" id="" placeholder={this.state.phone}/>
+                </div>
+                <label>Image CMT:</label>
+
+                {/* <div className="form-group">
+                    <input type="text" className="form-control" id="" placeholder={this.state.img}/>
+                </div> */}
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card title="Image User" bordered={false} >
+
+                </Card>
+              </Col>
+            
+            </Row>
+          </div>
 
 
         )

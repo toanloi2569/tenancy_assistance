@@ -15,6 +15,8 @@ import HostScreen from './HostScreen';
 import CreateContract from './CreateContract';
 import HostProfile from './HostProfile';
 import TenantProfile from './TenantProfile';
+import InformationTenancy from './InfomationTenancy';
+import ListHouseRent from  './ListHouseRent';
 
 
 ReactDOM.render(
@@ -30,7 +32,8 @@ ReactDOM.render(
        <Route exact path ="/host" component = {HostScreen}/>
        <Route exact path = "/tenant" component = {TenantScreen}/>
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
-       {/* <Route exact path = "/tenant/thongtinthuenha" component = {TenantScreen}/> */}
+       <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>
+       <Route exact path = "/host/danhsachnhachothue" component = {ListHouseRent}/>
 
      </div>
   </HashRouter >

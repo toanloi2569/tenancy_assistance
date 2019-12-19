@@ -140,7 +140,7 @@ class CreateForm extends React.Component{
         event.preventDefault();
         console.log(this.state);
         alert("Dang Tin Thanh Cong");
-        axios.post()
+        // axios.post()
     
         }
 

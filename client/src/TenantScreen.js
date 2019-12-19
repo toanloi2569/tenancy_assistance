@@ -1,5 +1,6 @@
 import React from 'react';
 // import axios from 'axios';
+import OverViewHomeBox from './components/OverViewHomeBox';
 import TenantHeader from './components/Header/TenantHeader';
 import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
@@ -45,7 +46,15 @@ class TenantScreen extends React.Component{
                 <br/><br/><br/>
                 <Row>
                     <Col span={18} push={6}>
-                        <UploadScreen/>
+                        {/* <UploadScreen/> */}
+                        <div className="container">
+                            <div className="row">
+                                <OverViewHomeBox/>
+                                <OverViewHomeBox/>
+                                <OverViewHomeBox/>
+                                
+                            </div>
+            </div>
                     </Col>
                     <Col span={6} pull={18}>
                         <FilterHome/>

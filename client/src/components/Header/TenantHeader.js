@@ -23,9 +23,10 @@ export default class TenantHeader extends Component {
                                     <li className="nav-item"><a className="nav-link" href="#/tenant/thongtinthuenha">Xem thông tin thuê nhà</a></li>
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Tạo hợp đồng </a></li> */}
                                     <li className="nav-item"><a className="nav-link" href="#/tenant/profile">Xem thông tin cá nhân </a></li>
+                                    
                                 </ul>
                             </li>
-                            {/* <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li> */}
+                            <li className="nav-item"><a className="nav-link" href="#/tenant">Tìm nhà</a></li>
                             {/* <li className = "nav-item"><Link to = "/userProfile/createForm">Dang tin</Link></li> */}
                             <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
                         </ul>

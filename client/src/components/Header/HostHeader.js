@@ -23,10 +23,11 @@ export default class HostHeader extends Component {
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
                                     <li className="nav-item"><a className="nav-link" href="#/host/taohopdong">Tạo hợp đồng </a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/host/profile">Xem thông tin cá nhân </a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/host/danhsachnhachothue">Danh sách nhà cho thuê </a></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li>
-                            {/* <li className = "nav-item"><Link to = "/userProfile/createForm">Dang tin</Link></li> */}
+                            <li className="nav-item"><a className="nav-link" href="#/host">Trang chủ</a></li>
                             <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
                         </ul>
                     </div>

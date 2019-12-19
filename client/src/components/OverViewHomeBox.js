@@ -3,29 +3,29 @@ import React, { Component } from 'react';
 export default class OverViewHomeBox extends Component {
     render() {
         return (
-            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                <div class="course-block mx-auto">
+            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                <div className="course-block mx-auto">
                     <a href="index.ejs">
-                        <main class="bg-light">
+                        <main className="bg-light">
                             <img src="/image/room5.jpg" width="258" height="172" alt=""/>
-                                <div class="col-md-12"><h6 class="course-title">Home Title</h6></div>
-                                <div class="instructor-clist">
-                                    <div class="col-md-12">
-                                        <i class="fa fa-chalkboard-teacher"></i>&nbsp;
+                                <div className="col-md-12"><h6 className="course-title">Home Title</h6></div>
+                                <div className="instructor-clist">
+                                    <div className="col-md-12">
+                                        <i className="fa fa-chalkboard-teacher"></i>&nbsp;
                                 <span>Created by <b>Anh Dung</b></span>
                                     </div>
                                 </div>
                         </main>
                             <footer>
-                                <div class="c-row">
-                                    <div class="col-md-6 col-sm-6 col-6">
-                                        <h5 class="course-price"> 1500000 đ <s/></h5>
+                                <div className="c-row">
+                                    <div className="col-md-6 col-sm-6 col-6">
+                                        <h5 className="course-price"> 1500000 đ <s/></h5>
                                 </div>
-                                <div class="col-md-5 offset-md-1 col-sm-5 offset-sm-1 col-5 offset-1">
-                                    <star class="course-rating">
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
+                                <div className="col-md-5 offset-md-1 col-sm-5 offset-sm-1 col-5 offset-1">
+                                    <star className="course-rating">
+                                        <span className="fa fa-star"></span>
+                                        <span className="fa fa-star"></span>
+                                        <span className="fa fa-star"></span>
                                     </star>
                                 </div>
                         </div>
