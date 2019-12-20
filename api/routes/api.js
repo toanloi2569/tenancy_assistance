@@ -16,11 +16,5 @@ router.post('/getPost', New.searchPost)
 router.post('/updatePost', New.updatePost)
 router.post('/deletePost', New.deletePost)
 
-
-router.post('/createUser', User.createUser)
-router.post('/getUser', User.getUser)
-router.post('/updateUser', User.updateUser)
-router.post('/deleteUser', User.deleteUser)
-
 router.post('/createComment', Comment.createComment)
 router.post('/getComment', Comment.getComment)

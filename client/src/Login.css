@@ -1,0 +1,21 @@
+.login-form {
+  max-width: 300px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+body, html {
+  height: 100vh;
+  }
+  .bg {
+  background-image: url("");
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  }
+ 

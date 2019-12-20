@@ -1,5 +1,37 @@
-body {
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+.code-box-demo p {
   margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+}
+.ant-card { margin-bottom: 30px; }
+.mainhome{
+  background-image: url('https://1.bp.blogspot.com/-6LfVrjGkx_s/WoR3aUwA4TI/AAAAAAAAD_I/Nlf35WxugFkLko7RP30oLqeveFke3IVZwCLcBGAs/s1600/b_bg_0021.png');
+  margin-top: 12px;
+}
+.footer {
+  background-color:#04091e;
+
+}
+
+.dynamic-delete-button {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+.dynamic-delete-button:hover {
+  color: #777;
+}
+.dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
