@@ -17,6 +17,7 @@ import HostProfile from './HostProfile';
 import TenantProfile from './TenantProfile';
 import InformationTenancy from './InfomationTenancy';
 import ListHouseRent from  './ListHouseRent';
+import InfoHome from './InfoHome';
 
 
 ReactDOM.render(
@@ -34,7 +35,7 @@ ReactDOM.render(
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>
        <Route exact path = "/host/danhsachnhachothue" component = {ListHouseRent}/>
-
+       <Route exact path = "/infohome" component = {InfoHome}/>
      </div>
   </HashRouter >
 ), document.getElementById( 'root' ) )
