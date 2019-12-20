@@ -28,6 +28,12 @@ class Register extends Component {
     localregisterComponent.push(
       <MuiThemeProvider key={"theme"}>
         <div>
+        <TextField
+            hintText="User name full name"
+            floatingLabelText="Tenant full name"
+            onChange={(event, newValue) => this.setState({ name: newValue })}
+          />
+          <br />
           <TextField
             hintText="User name Tenant"
             floatingLabelText="Tenant Id"
@@ -70,6 +76,7 @@ class Register extends Component {
       registerComponent: localregisterComponent,
       registerRole: 'Tenant',
       socmt: '',
+      name: '',
 
       previewVisible: false,
       previewImage: '',
@@ -115,6 +122,12 @@ class Register extends Component {
         localregisterComponent.push(
           <MuiThemeProvider>
             <div>
+             <TextField
+                hintText="Enter your full name"
+                floatingLabelText="Tenant full name"
+                onChange={(event, newValue) => this.setState({ name: newValue })}
+              />
+              <br />
               <TextField
                 hintText="Enter your name"
                 floatingLabelText="Tenant Id"
@@ -155,7 +168,7 @@ class Register extends Component {
         )
         this.setState({ menuValue: 1, registerComponent: localregisterComponent,
            registerRole: 'Tenant',
-          socmt: '' })
+          socmt: '',name : '' })
       }
       else if (this.props.role === 'Host') {
         console.log("in Host componentWillMount");
@@ -163,6 +176,12 @@ class Register extends Component {
         localregisterComponent.push(
           <MuiThemeProvider>
             <div>
+              <TextField
+                hintText="Enter your full name"
+                floatingLabelText="Tenant Id"
+                onChange={(event, newValue) => this.setState({ name: newValue })}
+              />
+              <br />
               <TextField
                 hintText="Enter your name"
                 floatingLabelText="Host Id"
@@ -203,15 +222,15 @@ class Register extends Component {
           </MuiThemeProvider>
         )
         this.setState({ menuValue: 2, registerComponent: localregisterComponent,
-           registerRole: 'Host', socmt:'' })
+           registerRole: 'Host', socmt:'',name: '' })
       }
     }
 
   }
   handleClick(event) {
-    console.log("values in register handler", this.state.registerRole)
-    console.log("values in register handler", this.state)
-    console.log(this.state.fileList)
+    // console.log("values in register handler", this.state.registerRole)
+    // console.log("values in register handler", this.state)
+    // console.log(this.state.fileList)
     var apiBaseUrl = "http://localhost:4000/api/";
     // console.log("values in register handler",role);
     var self = this;
@@ -222,11 +241,13 @@ class Register extends Component {
       var payload = {
         // "first_name": this.state.first_name,
         "username": this.state.username,
-        "userid": this.state.email,
+        "name": this.state.name,
         "password": this.state.password,
         "role": this.state.registerRole,
         "img": this.state.fileList,
-        "cmt": this.state.socmt
+        "id_number": this.state.socmt,
+        "email": this.state.email,
+        "phone": this.state.phone
       }
       console.log(payload)
       axios.post(apiBaseUrl + '/register', payload)
@@ -269,6 +290,12 @@ class Register extends Component {
       localregisterComponent.push(
         <MuiThemeProvider key='{theme}'>
           <div>
+          <TextField
+                hintText="Enter your full name"
+                floatingLabelText="Tenant Id"
+                onChange={(event, newValue) => this.setState({ name: newValue })}
+              />
+              <br />
             <TextField
               hintText="Enter your name"
               floatingLabelText="Tenant Id"
@@ -314,6 +341,12 @@ class Register extends Component {
       localregisterComponent.push(
         <MuiThemeProvider key='{theme}'>
           <div>
+          <TextField
+                hintText="Enter your full name"
+                floatingLabelText="Tenant Id"
+                onChange={(event, newValue) => this.setState({ name: newValue })}
+              />
+              <br />
             <TextField
               hintText="Enter your name host"
               floatingLabelText="Host Id"
