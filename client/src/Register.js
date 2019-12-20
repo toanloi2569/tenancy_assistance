@@ -61,8 +61,6 @@ class Register extends Component {
       </MuiThemeProvider>
     )
     this.state = {
-      // first_name: '',
-      // last_name: '',
       username: '',
       email: '',
       password: '',
@@ -208,7 +206,7 @@ class Register extends Component {
         "img": this.state.fileList
       }
       console.log(payload)
-      axios.post(apiBaseUrl + '/user/register', payload)
+      axios.post(apiBaseUrl + '/register', payload)
         .then(function (response) {
           console.log(response);
           if (response.data.code === 200) {

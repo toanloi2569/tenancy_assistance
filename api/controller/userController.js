@@ -3,7 +3,7 @@ var Key = require('../controller/keyController')
 var FormData = require('form-data');
 var bcrypt = require('bcrypt');
 var axios = require('axios');
-var fs = require('fs');
+var fs = require('fs').promises;
 var settings = require('../config/setting')
 const { generateKeyPair } = require('crypto');
 
@@ -11,15 +11,21 @@ const { generateKeyPair } = require('crypto');
 exports.registerUser = function(req, res, next){    
 
     User.findOne({email: req.body.email, role: Number(req.body.role)}, async function(err, user){
-        if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
+        console.log(user);
+        
+        if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
+            console.log(req.body);
+            
+            pathImg1 = await getFileBase64(req.body.img[1])
+            pathImg2 = await getFileBase64(req.body.img[2])
             
             let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
 
             var form_data = new FormData()
             form_data.append("so_cmt", req.body.id_number)
             form_data.append("public_key", publicKey)
-            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(req.files.img1[0].path))
-            form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
+            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(pathImg1))
+            form_data.append("anh_cmt_mat_sau", fs.createReadStream(pathImg2))
             
             let authorization = await getAuthAdmin(settings.UsernameAdmin, settings.UsernameAdmin)
             await createUserForContract(req.body.username, req.body.password)
@@ -45,11 +51,19 @@ function createUserMongo(req, res) {
     
     user.save(function(err) {
         if (err) console.log(err);
-        
         console.log('Luu nguoi dung thanh cong');
-        // const token = await user.generateAuthToken();
         res.status(201).send({ user });
     });  
+}
+
+async function getFileBase64(img) {
+    fileName = String(Date.now())
+    img = img['thumbUrl'].replace('data:image/jpg;base64,','')
+    await fs.writeFile(fileName, img, 'base64', function(err) {
+        console.log(err);
+        return 
+      });
+    return fileName
 }
 
 function updateUserInfo(authorization, form_data) {
