@@ -3,12 +3,283 @@ import TopBar from './components/TopBar';
 import Banner from './components/Banner';
 import FooterHome from './components/Footer/FooterHome';
 import { Carousel } from 'antd';
+import { Modal, Button } from 'antd';
+import axios from 'axios';
+import { Form, Input, Icon } from 'antd';
+import { DatePicker } from 'antd';
+
 
 class InfoHome extends React.Component {
     constructor(props) {
         super(props);
+        this.state =({
+            loading: false,
+            visible: false,
+            showcontract: [],
+            ngaytao: '',
+            fullnameHost: '',
+            fullnameTenant: '',
+            cmtHost: '',
+            cmtTenant: '',
+            address: '',
+            addressHost: '',
+            addressTenant: '',
+            phoneHost: '',
+            phoneTenant:'',
+            thoihan: '',
+            dieukhoan:[],
+            mota: '',
+            dientich: '',
+            price: '',
+        })
+
         
     }
+    showModal = () => {
+
+        this.setState({
+          visible: true,
+        });
+        var self = this
+        var show = []
+        var apiBaseUrl = "http://localhost:9000/users/";
+        // axios.get(apiBaseUrl+'createContract')
+        // .then((response)=> {
+        // console.log(response);
+        
+
+        // if(response.status === 200 ){
+        //     console.log("Get data contract from Host successfull");
+            const formItemLayout = {
+                labelCol: {
+                  xs: { span: 24 },
+                  sm: { span: 4 },
+                },
+                wrapperCol: {
+                  xs: { span: 24 },
+                  sm: { span: 20 },
+                },
+              };
+            const formItemLayoutWithOutLabel = {
+            wrapperCol: {
+                xs: { span: 24, offset: 0 },
+                sm: { span: 20, offset: 4 },
+            },
+            };
+            show.push(
+                <Form onSubmit={this.handleSubmit}>
+                <Form.Item {...formItemLayoutWithOutLabel}>
+                    <Form.Item label= "NGÀY TẠO HỢP ĐỒNG">
+                        <DatePicker onChange={this.onChange} />
+                    </Form.Item>
+                </Form.Item>
+                
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <h>ĐẠI DIỆN HỢP ĐỒNG BÊN A</h>
+                <Form.Item label="Họ tên chủ trọ">
+                <Input placeholder="Họ tên chủ trọ" name = "fullnameHost" onChange = {this.handleChange} 
+                style={{ width: '80%', marginRight: 8, height: 40 }} >
+                
+                </Input>
+                </Form.Item>
+
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Số điện thoại:">
+                <Input placeholder="số điện thoại chủ trọ" name = "phoneHost" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Số chứng minh thư:">
+                <Input placeholder="CMND" name = "cmtHost" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Địa chỉ thường trú:">
+                <Input placeholder="Địa chỉ thường trú chủ trọ" name = "addressHost" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <h>ĐẠI DIỆN HỢP ĐỒNG BÊN B</h>
+                <Form.Item label="Họ tên người thuê trọ">
+                <Input placeholder="Họ tên người thuê trọ" name = "fullnameTenant" onChange = {this.handleChange} 
+                style={{ width: '80%', marginRight: 8, height: 40 }} >
+                
+                </Input>
+                </Form.Item>
+
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Số điện thoại:">
+                <Input placeholder="số điện thoại người thuê trọ" name = "phoneTenant" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Số chứng minh thư:">
+                <Input placeholder="CMND" name = "cmtTenant" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label="Địa chỉ thường trú:">
+                <Input placeholder="Địa chỉ thường trú người thuê trọ" name = "addressTenant" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <h>NỘI DUNG HỢP ĐỒNG:  </h>
+                <Form.Item label = "BÊN A">
+                    <Form.Item label="Nơi cho thuê trọ:">
+                    <Input placeholder="Địa chỉ thuê trọ" name = "address" onChange = {this.handleChange}
+                    style={{ width: '80%', marginRight: 8, height: 40 }}>
+                    
+                    </Input>
+                    </Form.Item>
+                    <Form.Item label="Đặc điểm:">
+                    <Input placeholder="Đặc điểm nhà" name = "mota" onChange = {this.handleChange}
+                    style={{ width: '80%', marginRight: 8, height: 40 }}>
+                    
+                    </Input>
+                    </Form.Item>
+                    <Form.Item label="Diện tích cho thuê:">
+                    <Input placeholder="Diện tích" name = "dientich" onChange = {this.handleChange}
+                    style={{ width: '80%', marginRight: 8, height: 40 }}>
+                    
+                    </Input>
+                    </Form.Item>
+                    <Form.Item label="Cam kết:">
+                    <span>Bên A đồng ý cho bên B thuê căn nhà này với mục đích và hiện trạng 
+                        được nêu như trên.
+                    </span>
+                    </Form.Item>
+                    
+
+
+                </Form.Item>
+
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                <Form.Item label = "BÊN B">
+                    <Form.Item label="Cam kết:">
+                    <span>Bên B đồng ý thuê nhà bên A với toàn bộ 
+                        hiện trạng và mục đích sử dụng như trên.</span>
+                    </Form.Item>
+
+                    
+
+
+                </Form.Item>
+
+                </Form.Item>
+                
+
+                
+
+                <Form.Item {...formItemLayoutWithOutLabel} >
+                    <h>THỜI HẠN HỢP ĐỒNG</h>
+                <Form.Item label="Thời gian thuê nhà (theo tháng): ">
+                <Input placeholder="kể từ ngày tạo hợp đồng" name = "thoihan" onChange = {this.handleChange}
+                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                
+                </Input>
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel}>
+                    <h>GIÁ TIỀN CHO THUÊ:</h>
+                <Form.Item label="Giá tiền thuê nhà ">
+                
+                </Form.Item>
+                </Form.Item>
+                <Form.Item {...formItemLayoutWithOutLabel}>
+                    <h>ĐIỀU KHOẢN CHUNG TRONG HỢP ĐỒNG:</h>
+                </Form.Item>
+
+        
+                
+                    
+                    
+                <Form.Item {...formItemLayoutWithOutLabel}>
+                <Button type="dashed" onClick={this.add} style={{ width: '80%' } }>
+                    <Icon type="plus" /> Thêm điều khoản
+                </Button>
+                </Form.Item>
+
+                <Form.Item {...formItemLayoutWithOutLabel}>
+                <Button type="primary" htmlType="submit">
+                    Tạo hợp đồng
+                </Button>
+                </Form.Item>
+            </Form>
+
+            )
+            self.setState({
+                showcontract:show
+            })
+        //     self.setState({
+        //         ngaytao: response.data.ngaytao,
+        //         fullnameHost: response.data.fullnameHost,
+        //         fullnameTenant: response.data.fullnameTenant,
+        //         cmtHost: response.data.cmtHost,
+        //         cmtTenant: response.data.cmtTenant,
+        //         address: response.data.address,
+        //         addressHost: response.data.addressHost,
+        //         addressTenant: response.data.addressTenant,
+        //         phoneHost: response.data.phoneHost,
+        //         phoneTenant:response.data.phoneTenant,
+        //         thoihan: response.data.thoihan,
+        //         dieukhoan:response.data.dieukhoan,
+        //         mota:  response.data.mota,
+        //         dientich: response.data.dientich,
+        //         price: response.data.price,
+        //         showcontract: show
+                
+        //     })
+        
+
+        // }
+        // else if(response.status === 204){
+        //     console.log("Loi server");
+        //     alert(response.data.success)
+        // }
+        // else{
+        //     console.log("Loi server");
+        //     alert("Loi server");
+        // }
+        // })
+
+
+
+
+      };
+    
+    handleOk = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+        this.setState({ loading: false, visible: false });
+    }, 3000);
+    };
+
+    handleCancel = () => {
+    this.setState({ visible: false });
+    };
 
     render() {
         return (
@@ -40,7 +311,28 @@ class InfoHome extends React.Component {
                                                 <h2>{this.props.name}</h2>
                                             </div>
                                             <div class="col-md-3 d-flex">
-                                                <button type="button" class="btn btn-outline-warning ml-auto align-self-center">Thue Nha</button>
+                                                {/* <button type="button" class="btn btn-outline-warning ml-auto align-self-center">Thue Nha</button> */}
+                                                <div>
+                                                    <Button type="primary" onClick={this.showModal}>
+                                                    Tạo hợp đồng
+                                                    </Button>
+                                                    <Modal
+                                                    visible={this.state.visible}
+                                                    title="Title"
+                                                    onOk={this.handleOk}
+                                                    onCancel={this.handleCancel}
+                                                    footer={[
+                                                        <Button key="back" onClick={this.handleCancel}>
+                                                        Return
+                                                        </Button>,
+                                                        <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleOk}>
+                                                        Submit
+                                                        </Button>,
+                                                    ]}
+                                                    >
+                                                   {this.state.showcontract}
+                                                    </Modal>
+                                                </div>
                                             </div>
                                             <div class="d-flex bd-highlight">
                                                 <div class="p-2 flex-fill bd-highlight">
