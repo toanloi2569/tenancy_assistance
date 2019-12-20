@@ -20,12 +20,12 @@ class InfoHome extends React.Component {
                             <div class="col-lg-8 posts-list">
                                 <div class="single-post row">
                                     <div class="col-lg-12">
-                                        <div class="img-fluid">
-                                            <Carousel autoplay>
-                                                <div><img class="img-fluid" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}} /></div>
-                                                <div><img class="img-fluid" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
-                                                <div><img class="img-fluid" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
-                                                <div><img class="img-fluid" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
+                                        <div>
+                                            <Carousel autoplay >
+                                                <div ><img class="img-fluid w-100" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
+                                                <div ><img class="img-fluid w-100" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
+                                                <div ><img class="img-fluid w-100" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
+                                                <div ><img class="img-fluid w-100" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
                                             </Carousel>
                                         </div>
                                     </div>
