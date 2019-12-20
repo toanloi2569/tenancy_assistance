@@ -10,7 +10,7 @@ const CheckboxGroup = Checkbox.Group;
 const priceOptions = ['<5tr', '5tr-10tr', '>10tr'];
 const defaultCheckPrice = ['<5tr'];
 
-const squareOptions = ['<10m2', '10m2-50m2', '50m2-100m2',">100m2"];
+const squareOptions = ['<10m2', '10m2-50m2',">50m2"];
 const defaultCheckSquare = ['10m2'];
 
 class FilterHome extends React.Component {
@@ -62,26 +62,6 @@ class FilterHome extends React.Component {
     render() {
         return (
             <div className="container">
-                {/* <Search />
-                <br />
-                <label>Tim kiem theo cac hang muc sau:</label>
-                <div>
-                    <div style={{ borderBottom: '1px solid #E9E9E9' }}>
-                        <Checkbox
-                            indeterminatePrice={this.state.indeterminatePrice}
-                            onChange={this.onCheckAllChange}
-                            checked={this.state.checkAllPrice}
-                        >
-                            Check all
-                </Checkbox>
-                    </div>
-                    <br />
-                    <CheckboxGroup
-                        options={priceOptions}
-                        value={this.state.checkedListPrice}
-                        onChange={this.onChange}
-                    />
-                </div> */}
                 <Card title="Tìm kiếm theo các hạng mục "  >
                 <p> 
                     <label>Address:</label>
@@ -125,10 +105,8 @@ class FilterHome extends React.Component {
                             value={this.state.checkedListSquare}
                             onChange={this.onChangeSquare}
                         />
-
                     </div>
-                </p>
-                
+                </p> 
                 </Card>
 
             </div>

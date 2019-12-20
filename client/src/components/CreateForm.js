@@ -123,6 +123,7 @@ class CreateForm extends React.Component{
             this.setState({
                 pictures: this.state.pictures.concat(picture),
             });
+            console.log(this.state.pictures)
         }
 
 
@@ -139,6 +140,9 @@ class CreateForm extends React.Component{
         onHandleSubmit(event){
         event.preventDefault();
         console.log(this.state);
+        // const fd = new FormData();
+        // fd.append('image', this.state.pictures, this.state.pictures.name);
+        // axios.post('')
         alert("Dang Tin Thanh Cong");
         // axios.post()
     
