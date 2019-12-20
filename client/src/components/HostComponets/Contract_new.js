@@ -7,6 +7,7 @@ import { Form, Input, Icon, Button } from 'antd';
 import { DatePicker } from 'antd';
 import PriceInput from './PriceInput';
 import ShowContract from './ShowContract';
+import axios from 'axios';
 
 
 let id = 0;
@@ -15,17 +16,6 @@ class DynamicFieldSet extends React.Component {
   constructor(props){
     super(props);
     this.state = ({
-    //   dieukhoan: [],
-    //   time : [],
-    //   hoten: '',
-    //   hotenbenB: '',
-    //   price : [],
-    //   phone: '',
-    //   address: '',
-    //   socmt:'',
-    //   socmtbenB:'',
-    //   square: '',
-
 
       ngaytao: '',
       fullnameHost: '',
@@ -36,9 +26,8 @@ class DynamicFieldSet extends React.Component {
       addressHost: '',
       addressTenant: '',
       phoneHost: '',
-      phoneTenant: '',
+      phoneTenant:'',
       thoihan: '',
-    //   giathuenha: '',
       dieukhoan:[],
       mota: '',
       dientich: '',
@@ -118,8 +107,42 @@ class DynamicFieldSet extends React.Component {
           dieukhoan: keys.map(key =>names[key]),
           price: values.price
         })
-      }
-    });
+      var payload = {
+          'ngaytao': this.state.ngaytao,
+          'fullnameHost': this.state.fullnameHost,
+          'fullnameTenant': this.state.fullnameTenant,
+          'cmtHost': this.state.cmtHost,
+          'cmtTenant': this.state.cmtTenant,
+          'address': this.state.address,
+          'addressHost': this.state.addressHost,
+          'addressTenant': this.state.addressTenant,
+          'phoneHost': this.state.phoneHost,
+          'phoneTenant': this.state.phoneTenant,
+          'thoihan': this.state.thoihan,
+          'dieukhoan':keys.map(key =>names[key]),
+          'mota': this.state.mota,
+          'dientich': this.state.dientich,
+          'price': values.price,
+
+          }
+        var apiBaseUrl = "http://localhost:9000/";
+        axios.post(apiBaseUrl + '/', payload)
+        .then(function (response) {
+          console.log(response);
+          if (response.data.code === 200) {
+            console.log("create contract by Host successfull");
+
+
+          }
+          else {
+            console.log("some error ocurred", response.data.code);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  });
     
   };
 
@@ -158,7 +181,7 @@ class DynamicFieldSet extends React.Component {
     const formItems = keys.map((k, index) => (
       <Form.Item
         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-        label={index === 0 ? 'ĐK' : ''}
+        label={index === 0 ? 'ĐK' : this.state}
         required={false}
         key={k}
       >

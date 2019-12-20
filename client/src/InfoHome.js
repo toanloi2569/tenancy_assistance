@@ -5,6 +5,11 @@ import FooterHome from './components/Footer/FooterHome';
 import { Carousel } from 'antd';
 
 class InfoHome extends React.Component {
+    constructor(props) {
+        super(props);
+        
+    }
+
     render() {
         return (
             <div>
@@ -32,7 +37,7 @@ class InfoHome extends React.Component {
                                     <div class="col-lg-12 col-md-12 blog_details">
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <h2>Phong Tro khu vuc Bach Kinh Xay</h2>
+                                                <h2>{this.props.name}</h2>
                                             </div>
                                             <div class="col-md-3 d-flex">
                                                 <button type="button" class="btn btn-outline-warning ml-auto align-self-center">Thue Nha</button>
