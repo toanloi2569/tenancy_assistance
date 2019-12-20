@@ -6,7 +6,7 @@ var settings = require('../config/setting')
 var Schema = mongoose.Schema;
 
 var User_schema = new Schema({
-    user_name: {
+    username: {
         type: String,
     },
 
@@ -15,6 +15,11 @@ var User_schema = new Schema({
         required: true,
         trim: true,
         minlength: 6
+    },
+
+    email: {
+        type: String,
+        require : true,
     },
 
     role: {
