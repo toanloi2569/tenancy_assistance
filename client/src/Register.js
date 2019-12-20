@@ -69,6 +69,7 @@ class Register extends Component {
       phone: '',
       registerComponent: localregisterComponent,
       registerRole: 'Tenant',
+      socmt: '',
 
       previewVisible: false,
       previewImage: '',
@@ -141,11 +142,20 @@ class Register extends Component {
                 onChange={(event, newValue) => this.setState({ phone: newValue })}
               />
               <br />
+              <TextField
+                type="value"
+                hintText="Enter your CMT"
+                floatingLabelText="CMT Tenant"
+                onChange={(event, newValue) => this.setState({ socmt: newValue })}
+              />
+              <br />
               <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
             </div>
           </MuiThemeProvider>
         )
-        this.setState({ menuValue: 1, registerComponent: localregisterComponent, registerRole: 'Tenant' })
+        this.setState({ menuValue: 1, registerComponent: localregisterComponent,
+           registerRole: 'Tenant',
+          socmt: '' })
       }
       else if (this.props.role === 'Host') {
         console.log("in Host componentWillMount");
@@ -180,12 +190,20 @@ class Register extends Component {
                 onChange={(event, newValue) => this.setState({ phone: newValue })}
               />
               <br />
+              <TextField
+                type="value"
+                hintText="Enter your CMT"
+                floatingLabelText="CMT Host"
+                onChange={(event, newValue) => this.setState({ somct: newValue })}
+              />
+              <br />
 
               <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
             </div>
           </MuiThemeProvider>
         )
-        this.setState({ menuValue: 2, registerComponent: localregisterComponent, registerRole: 'Host' })
+        this.setState({ menuValue: 2, registerComponent: localregisterComponent,
+           registerRole: 'Host', socmt:'' })
       }
     }
 
@@ -193,18 +211,22 @@ class Register extends Component {
   handleClick(event) {
     console.log("values in register handler", this.state.registerRole)
     console.log("values in register handler", this.state)
+    console.log(this.state.fileList)
     var apiBaseUrl = "http://localhost:4000/api/";
     // console.log("values in register handler",role);
     var self = this;
     //To be done:check for empty values before hitting submit
-    if (this.state.username.length > 0 && this.state.email.length > 0 && this.state.password.length > 0 && this.state.phone.length > 0) {
+    if (this.state.username.length > 0 && this.state.email.length > 0 
+      && this.state.password.length > 0 && this.state.phone.length > 0
+      && this.state.socmt.length> 0) {
       var payload = {
         // "first_name": this.state.first_name,
         "username": this.state.username,
         "userid": this.state.email,
         "password": this.state.password,
         "role": this.state.registerRole,
-        "img": this.state.fileList
+        "img": this.state.fileList,
+        "cmt": this.state.socmt
       }
       console.log(payload)
       axios.post(apiBaseUrl + '/register', payload)
@@ -274,6 +296,13 @@ class Register extends Component {
               onChange={(event, newValue) => this.setState({ phone: newValue })}
             />
             <br />
+            <TextField
+              type="value"
+              hintText="Enter your CMT"
+              floatingLabelText="CMT Tenant"
+              onChange={(event, newValue) => this.setState({ socmt: newValue })}
+            />
+            <br />
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
           </div>
         </MuiThemeProvider>
@@ -310,6 +339,13 @@ class Register extends Component {
               hintText="Enter your phone"
               floatingLabelText="Phone Host"
               onChange={(event, newValue) => this.setState({ phone: newValue })}
+            />
+            <br />
+            <TextField
+              type="value"
+              hintText="Enter your CMT"
+              floatingLabelText="CMT Host"
+              onChange={(event, newValue) => this.setState({ socmt: newValue })}
             />
             <br />
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
