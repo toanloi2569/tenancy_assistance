@@ -7,9 +7,70 @@ import FilterHome from './components/FilterHome';
 import {Row, Col} from 'antd';
 import 'antd/dist/antd.css';
 class TenantScreen extends React.Component{
-    // constructor(props){
-    //     super(props);
-    // }
+    constructor(props){
+        super(props);
+        this.state = ({
+            list : [
+                {
+                    id: 1,
+                    name: "Chung cư mini giá rẻ",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "3.500.000",
+                    address: "128 Lương Đắng Bằng ",
+                    status: true
+                },
+                {
+                    id: 2,
+                    name: "Nhà trọ sinh viên",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "2.500.000",
+                    address: "68 Hoàng Mai, Hà Nội",
+                    status: true
+                },
+                {
+                    id: 3,
+                    name: "Nhà cấp 4 đầy đủ tiện nghi",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "5.000.000",
+                    address: "69 Đường Lê Duẫn",
+                    status: true
+                },
+                {
+                    id: 4,
+                    name: "Nhà cấp 4 đầy đủ tiện nghi",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "5.000.000",
+                    address: "69 Đường Lê Duẫn",
+                    status: true
+                },
+                {
+                    id: 5,
+                    name: "Nhà cấp 4 đầy đủ tiện nghi",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "5.000.000",
+                    address: "69 Đường Lê Duẫn",
+                    status: true
+                },
+                {
+                    id: 6,
+                    name: "Chung cư mini giá rẻ",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "3.500.000",
+                    address: "128 Lương Đắng Bằng ",
+                    status: true
+                },
+                {
+                    id: 7,
+                    name: "Nhà trọ sinh viên",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "2.500.000",
+                    address: "68 Hoàng Mai, Hà Nội",
+                    status: true
+                },
+            ]
+        });
+
+    }
     // componentDidMount() {
     //     window.addEventListener('load', this.handleLoad);
     // }
@@ -37,7 +98,28 @@ class TenantScreen extends React.Component{
     //     });
     // }
 
+    
+
     render(){
+
+        let elements = this.state.list.map((home, index) => {
+            if (home.status) {
+                return (
+                    <OverViewHomeBox
+                        key={home.id}
+                        name={home.name}
+                        price={home.price}
+                        address = {home.address}
+                        img={home.img} />
+                        
+                )
+
+            }
+
+        })
+
+
+
         return(
             <div>
                 <TenantHeader/>
@@ -46,15 +128,12 @@ class TenantScreen extends React.Component{
                 <br/><br/><br/>
                 <Row>
                     <Col span={18} push={6}>
-                        {/* <UploadScreen/> */}
                         <div className="container">
                             <div className="row">
-                                <OverViewHomeBox/>
-                                <OverViewHomeBox/>
-                                <OverViewHomeBox/>
+                                {elements}
                                 
                             </div>
-            </div>
+                        </div>
                     </Col>
                     <Col span={6} pull={18}>
                         <FilterHome/>

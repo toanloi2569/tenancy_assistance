@@ -23,9 +23,14 @@ var User_schema = new Schema({
     },
 
     role: {
-        type: Number,
-        enum: [1, 2],
+        type: String,
+        enum: ['Tenant', 'Host'],
         required: true
+    },
+
+    idv: {
+        type: String,
+        require: true
     },
 
     star: {

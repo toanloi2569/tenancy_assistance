@@ -3,7 +3,7 @@ var Key = require('../controller/keyController')
 var FormData = require('form-data');
 var bcrypt = require('bcrypt');
 var axios = require('axios');
-var fs = require('fs').promises;
+var fs = require('fs');
 var settings = require('../config/setting')
 const { generateKeyPair } = require('crypto');
 
@@ -14,8 +14,6 @@ exports.registerUser = function(req, res, next){
         console.log(user);
         
         if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
-            console.log(req.body);
-            
             pathImg1 = await getFileBase64(req.body.img[1])
             pathImg2 = await getFileBase64(req.body.img[2])
             
@@ -29,9 +27,9 @@ exports.registerUser = function(req, res, next){
             
             let authorization = await getAuthAdmin(settings.UsernameAdmin, settings.UsernameAdmin)
             await createUserForContract(req.body.username, req.body.password)
-            await updateUserInfo(authorization, form_data).then(res => {
-                console.log(res.data);
-                createUserMongo(req, res)  
+            await updateUserInfo(authorization, form_data).then(response => {
+                let idv = response.data.id 
+                createUserMongo(req, res, idv)  
             })
         }
         else {
@@ -40,25 +38,37 @@ exports.registerUser = function(req, res, next){
     })
 }
 
-function createUserMongo(req, res) {
+function createUserMongo(req, res, idv) {
     var user = new User ({
         user_name: req.body.username,
         password: req.body.password,
-        role: Number(req.body.role),
+        role: req.body.role,
         name: req.body.name,
-        id : req.body.id_number 
+        id : req.body.id_number,
+        idv: idv,
     })
     
     user.save(function(err) {
+        console.log(user);
+        
         if (err) console.log(err);
+        
         console.log('Luu nguoi dung thanh cong');
-        res.status(201).send({ user });
+        res.status(201).send(user)
     });  
 }
 
 async function getFileBase64(img) {
     fileName = String(Date.now())
-    img = img['thumbUrl'].replace('data:image/jpg;base64,','')
+    fileName = 'public/uploads/' + fileName
+
+    img = img.thumbUrl
+    img = img.replace('data:image/jpg;base64,','')
+    img = img.replace('data:image/jpeg;base64,','')
+    img = img.replace('data:image/png;base64,','')
+    img = img.replace('data:image/tiff;base64,','')
+    img = img.replace('data:image/bmp;base64,','')
+    
     await fs.writeFile(fileName, img, 'base64', function(err) {
         console.log(err);
         return 
