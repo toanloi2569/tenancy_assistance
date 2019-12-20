@@ -32,16 +32,17 @@ class DynamicFieldSet extends React.Component {
       fullnameTenant: '',
       cmtHost: '',
       cmtTenant: '',
+      address: '',
       addressHost: '',
       addressTenant: '',
       phoneHost: '',
       phoneTenant: '',
-      noidunghopdong: [],
       thoihan: '',
-      giathuenha: '',
-      trachnhiem: [],
-      chamduthopdong: [],
-      dieukhoanchung:[]
+    //   giathuenha: '',
+      dieukhoan:[],
+      mota: '',
+      dientich: '',
+      price: '',
 
 
 
@@ -88,6 +89,9 @@ class DynamicFieldSet extends React.Component {
   onChange(date, dateString) {
     console.log(date, dateString);
     console.log(date)
+    this.setState({
+        ngaytao: dateString
+    })
   }
 
   handleChange(event){
@@ -154,7 +158,7 @@ class DynamicFieldSet extends React.Component {
     const formItems = keys.map((k, index) => (
       <Form.Item
         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-        label={index === 0 ? 'Điều khoản' : ''}
+        label={index === 0 ? 'ĐK' : ''}
         required={false}
         key={k}
       >
@@ -167,7 +171,7 @@ class DynamicFieldSet extends React.Component {
               message: "Vui lòng nhập điều khoản hoặc xóa trường này đi",
             },
           ],
-        })(<Input placeholder="Điều khoản hợp đồng" style={{ width: '80%', marginRight: 8, height: 80 }} />)}
+        })(<Input placeholder="Điều khoản chung bên A hoặc bên B đề xuất" style={{ width: '80%', marginRight: 8, height: 80 }} />)}
         {keys.length > 1 ? (
           <Icon
             className="dynamic-delete-button"
@@ -179,22 +183,14 @@ class DynamicFieldSet extends React.Component {
     ));
     return (
       <Form onSubmit={this.handleSubmit}>
-        {/* {formItems}
         <Form.Item {...formItemLayoutWithOutLabel}>
-          <Button type="dashed" onClick={this.add} style={{ width: '80%' } }>
-            <Icon type="plus" /> Thêm điều khoản
-          </Button>
-        </Form.Item> */}
-        <Form.Item {...formItemLayoutWithOutLabel}>
-            <Form.Item label= "Ngày tạo hợp đồng">
-            <div className="container">
+            <Form.Item label= "NGÀY TẠO HỢP ĐỒNG">
                 <DatePicker onChange={this.onChange} />
-            </div>
             </Form.Item>
         </Form.Item>
         
         <Form.Item {...formItemLayoutWithOutLabel} >
-        <h>Đại diện hợp đồng bên A</h>
+        <h>ĐẠI DIỆN HỢP ĐỒNG BÊN A</h>
         <Form.Item label="Họ tên chủ trọ">
         <Input placeholder="Họ tên chủ trọ" name = "fullnameHost" onChange = {this.handleChange} 
         style={{ width: '80%', marginRight: 8, height: 40 }} >
@@ -222,14 +218,14 @@ class DynamicFieldSet extends React.Component {
         </Form.Item>
         <Form.Item {...formItemLayoutWithOutLabel} >
         <Form.Item label="Địa chỉ thường trú:">
-        <Input placeholder="Địa chỉ" name = "addressHost" onChange = {this.handleChange}
+        <Input placeholder="Địa chỉ thường trú chủ trọ" name = "addressHost" onChange = {this.handleChange}
         style={{ width: '80%', marginRight: 8, height: 40 }}>
         
         </Input>
         </Form.Item>
         </Form.Item>
         <Form.Item {...formItemLayoutWithOutLabel} >
-        <h>Đại diện hợp đồng bên B</h>
+        <h>ĐẠI DIỆN HỢP ĐỒNG BÊN B</h>
         <Form.Item label="Họ tên người thuê trọ">
         <Input placeholder="Họ tên người thuê trọ" name = "fullnameTenant" onChange = {this.handleChange} 
         style={{ width: '80%', marginRight: 8, height: 40 }} >
@@ -257,38 +253,73 @@ class DynamicFieldSet extends React.Component {
         </Form.Item>
         <Form.Item {...formItemLayoutWithOutLabel} >
         <Form.Item label="Địa chỉ thường trú:">
-        <Input placeholder="Địa chỉ" name = "addressTenant" onChange = {this.handleChange}
+        <Input placeholder="Địa chỉ thường trú người thuê trọ" name = "addressTenant" onChange = {this.handleChange}
         style={{ width: '80%', marginRight: 8, height: 40 }}>
         
         </Input>
         </Form.Item>
         </Form.Item>
+        <Form.Item {...formItemLayoutWithOutLabel} >
+        <h>NỘI DUNG HỢP ĐỒNG:  </h>
+        <Form.Item label = "BÊN A">
+            <Form.Item label="Nơi cho thuê trọ:">
+            <Input placeholder="Địa chỉ thuê trọ" name = "address" onChange = {this.handleChange}
+            style={{ width: '80%', marginRight: 8, height: 40 }}>
+            
+            </Input>
+            </Form.Item>
+            <Form.Item label="Đặc điểm:">
+            <Input placeholder="Đặc điểm nhà" name = "mota" onChange = {this.handleChange}
+            style={{ width: '80%', marginRight: 8, height: 40 }}>
+            
+            </Input>
+            </Form.Item>
+            <Form.Item label="Diện tích cho thuê:">
+            <Input placeholder="Diện tích" name = "dientich" onChange = {this.handleChange}
+            style={{ width: '80%', marginRight: 8, height: 40 }}>
+            
+            </Input>
+            </Form.Item>
+            <Form.Item label="Cam kết:">
+            <span>Bên A đồng ý cho bên B thuê căn nhà này với mục đích và hiện trạng 
+                được nêu như trên.
+            </span>
+            </Form.Item>
+            
+
+
+        </Form.Item>
+
+        </Form.Item>
+        <Form.Item {...formItemLayoutWithOutLabel} >
+        <Form.Item label = "BÊN B">
+            <Form.Item label="Cam kết:">
+            <span>Bên B đồng ý thuê nhà bên A với toàn bộ 
+                hiện trạng và mục đích sử dụng như trên.</span>
+            </Form.Item>
+
+            
+
+
+        </Form.Item>
+
+        </Form.Item>
+        
+
+        
 
         <Form.Item {...formItemLayoutWithOutLabel} >
-        <Form.Item label="Square ( m2 ) : ">
-        <Input placeholder="dien tich" name = "square" onChange = {this.handleChange}
+            <h>THỜI HẠN HỢP ĐỒNG</h>
+        <Form.Item label="Thời gian thuê nhà (theo tháng): ">
+        <Input placeholder="kể từ ngày tạo hợp đồng" name = "thoihan" onChange = {this.handleChange}
         style={{ width: '80%', marginRight: 8, height: 40 }}>
         
         </Input>
         </Form.Item>
-  
-
-
-        </Form.Item>
-
-        <Form.Item {...formItemLayoutWithOutLabel} >
-        <Form.Item label="Address">
-        <Input placeholder="Dia chi nha " name = "address" onChange = {this.handleChange}
-        style={{ width: '80%', marginRight: 8, height: 40 }}>
-        
-        </Input>
-        </Form.Item>
-  
-
-
         </Form.Item>
         <Form.Item {...formItemLayoutWithOutLabel}>
-        <Form.Item label="Price">
+            <h>GIÁ TIỀN CHO THUÊ:</h>
+        <Form.Item label="Giá tiền thuê nhà ">
           {getFieldDecorator('price', {
             initialValue: { number: 0, currency: 'vnd' },
             rules: [{ validator: this.checkPrice }],
@@ -296,9 +327,19 @@ class DynamicFieldSet extends React.Component {
           })(<PriceInput />)}
         </Form.Item>
         </Form.Item>
-          <Form.Item {...formItemLayoutWithOutLabel}>
+        <Form.Item {...formItemLayoutWithOutLabel}>
+            <h>ĐIỀU KHOẢN CHUNG TRONG HỢP ĐỒNG:</h>
+        </Form.Item>
 
-          </Form.Item>
+ 
+        
+              {formItems}
+            
+          <Form.Item {...formItemLayoutWithOutLabel}>
+          <Button type="dashed" onClick={this.add} style={{ width: '80%' } }>
+            <Icon type="plus" /> Thêm điều khoản
+          </Button>
+        </Form.Item>
 
         <Form.Item {...formItemLayoutWithOutLabel}>
           <Button type="primary" htmlType="submit">
