@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
+import InfoHome from '../InfoHome';
+import {Link} from 'react-router-dom';
 
 
 
 export default class OverViewHomeBox extends Component {
+    constructor(props){
+        super(props);
+    }
+
     render() {
         return (
             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                 <div className="course-block mx-auto">
-                    <a href="index.ejs">
+                    {/* <a href="#/infoHome" > */}
+                        <Link to ="/infoHome">
                         <main className="bg-light">
                             {/* <img src="/image/room5.jpg" width="258" height="172" alt=""/> */}
                             <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/>
@@ -35,7 +42,8 @@ export default class OverViewHomeBox extends Component {
                                 </div>
                         </div>
                     </footer>
-                    </a>
+                    </Link>
+                    {/* </a> */}
                 </div>
             </div>
         );

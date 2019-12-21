@@ -6,6 +6,7 @@ import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
 import {Row, Col} from 'antd';
 import 'antd/dist/antd.css';
+
 class TenantScreen extends React.Component{
     constructor(props){
         super(props);
