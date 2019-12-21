@@ -37,13 +37,13 @@ ReactDOM.render(
        <Route exact path="/host/dangtin" component={CreateForm} />
        <Route exact path = "/host/taohopdong" component = {CreateContract}/>
        <Route exact path="/register" component={Register} />
-       <Route exact path ="/host" component = {HostScreen}/>
-       <Route exact path = "/listhome" component = {TenantScreen}/>
+       <Route exact path ="/host/:id" component = {HostScreen}/>
+       <Route exact path = "/listhome/:id" component = {TenantScreen}/>
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>
        <Route exact path = "/host/profile" component = {HostProfile}/>
-       <Route exact path = "/host/quanlybaidang" component = {ListHouseRent}/>
-       <Route exact path = "/infohome" component = {InfoHome}/>
+       <Route exact path = "/host/quanlybaidang/:id" component = {ListHouseRent}/>
+       <Route exact path = "/infohome/:id" component = {InfoHome}/>
        <Route exact path = "/hopdong" component = {ViewConTract}/>
      </div>
   </HashRouter >
