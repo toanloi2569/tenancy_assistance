@@ -224,7 +224,7 @@ class InfoHome extends React.Component {
 
                 <Form.Item {...formItemLayoutWithOutLabel}>
                 <Button type="primary" htmlType="submit">
-                    Tạo hợp đồng
+                    Hoàn thiện hợp đồng
                 </Button>
                 </Form.Item>
             </Form>

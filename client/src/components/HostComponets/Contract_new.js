@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
@@ -6,7 +5,6 @@ import '../../index.css';
 import { Form, Input, Icon, Button } from 'antd';
 import { DatePicker } from 'antd';
 import PriceInput from './PriceInput';
-import ShowContract from './ShowContract';
 import axios from 'axios';
 
 
@@ -378,4 +376,3 @@ const WrappedDynamicFieldSet = Form.create({ name: 'dynamic_form_item' })(Dynami
 
 // ReactDOM.render(<WrappedDynamicFieldSet />, document.getElementById('root'));
 export default WrappedDynamicFieldSet;
-          
