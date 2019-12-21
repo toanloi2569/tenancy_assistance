@@ -4,12 +4,8 @@ import OverViewHomeBox from './components/OverViewHomeBox';
 import TenantHeader from './components/Header/TenantHeader';
 import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
-<<<<<<< HEAD
 import FooterHome from './components/Footer/FooterHome';
 import { Row, Col } from 'antd';
-=======
-import {Row, Col, Button} from 'antd';
->>>>>>> 727b5b42d0811837bf20d512e557eba426dd4469
 import 'antd/dist/antd.css';
 import 'react-router-dom';
 
