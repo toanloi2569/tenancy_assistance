@@ -147,7 +147,7 @@ exports.loginUser = async function(req, res) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
         var token = await user.generateAuthToken()
-        res.status(200).send({ user, token })
+        res.status(200).send({ token })
     } catch (error) {
         res.status(400).send(error)
         console.log("Error", error);
@@ -156,7 +156,9 @@ exports.loginUser = async function(req, res) {
 
 exports.profileUser = async function(req, res) {
     // View logged in user profile
-    res.send(req.user)
+    // const user = await User.findById(req.userid)
+    const user = req.user
+    res.status(200).send({user})
 }
 
 exports.logoutUser = async function (req, res) {
@@ -177,8 +179,9 @@ exports.logoutallUser = async function(req, res) {
     try {
         req.user.tokens.splice(0, req.user.tokens.length)
         await req.user.save()
-        res.send()
+        res.status(200).send("okkkkk")
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 }
