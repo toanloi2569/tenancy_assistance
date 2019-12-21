@@ -13,14 +13,31 @@ router.get('/', Post.getMainPage)
 /* Sinh hợp đồng */
 router.post('/fillContract', Contract.fillContract)
 
+/* Lấy tất cả các contract trong db */
+router.get('/getContracts', Contract.getContracts)
+
+/* Lấy thông tin chi tiết của 1 contract */
+router.get('/checkContractAfterFill', Contract.checkContractAfterFill)
+
 /* Ký hợp đồng */
 router.post('/sign/contract_id/:contract_id', Contract.sign)
 
-/* Lấy thông tin hợp đồng */
+/* Lấy thông tin hợp đồng gốc của chủ nhà khi chưa ai điền thôn tin */
 router.get('/fillContract/post_id/:post_id', Contract.getContractInfo)
 
 /* Gửi dữ liệu lên vchain */
-router.post('/storeContract/contract_id/:contract_id/username/:username/password/:password', Contract.storeContract)
+router.post('/storeContractToBlockChain/contract_id/:contract_id/username/:username/password/:password', 
+                Contract.storeContractToBlockChain)
+
+/* Lấy thông tin hợp đồng từ block chain */
+router.get('/getContractFromBlockChain/idv_contract/:idv_contract', Contract.getContractFromBlockChain)
+
+/* Lấy thông tin để xác thực hợp đồng */
+router.get('/getValidContract/idv_contract/:idv_contract', Contract.getValidContract)
+
+/* Lấy sign đã decode để valid contract */
+router.get('/validContract/signature/:signature/publicKey/:publicKey', Contract.validContract)
+
 
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */
 router.post('/searchPost', Post.searchPost)

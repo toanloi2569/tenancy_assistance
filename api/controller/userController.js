@@ -9,10 +9,8 @@ const { generateKeyPair } = require('crypto');
 
 
 exports.registerUser = function(req, res, next){    
-
     User.findOne({email: req.body.email, role: Number(req.body.role)}, async function(err, user){
-        console.log(user);
-        
+
         if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
             imgPath1 = await getFileBase64(req.body.img[0])
             imgPath2 = await getFileBase64(req.body.img[1])
@@ -25,11 +23,9 @@ exports.registerUser = function(req, res, next){
             form_data.append("anh_cmt_mat_truoc", fs.createReadStream(imgPath1))
             form_data.append("anh_cmt_mat_sau", fs.createReadStream(imgPath2))
             
-            let authorization = await getAuthAdmin()
+            let authorization = await getAuthAdmin(settings.UsernameAdmin, settings.PasswordAdmin)
             await createUserForContract(req.body.username, req.body.password)
             await updateUserInfo(authorization, form_data).then(response => {
-                console.log(response);
-                
                 let idv = response.data.id 
                 createUserMongo(req, res, idv, privateKey, publicKey)  
             })
@@ -38,6 +34,16 @@ exports.registerUser = function(req, res, next){
             res.json({err: 'Chung minh thu da duoc dung'})
         }
     })
+}
+
+exports.profileUser = async function(req, res) {
+    user = await User.findById(req.user._id).exec().catch(err => {return err})
+    axios.get(settings.vChainPort + '/UserInfo/get?id='+user.idv)
+            .then(data => {
+                res.send(data)
+            }).catch(err => {
+                return err
+            })
 }
 
 function createUserMongo(req, res, idv, privateKey, publicKey) {
@@ -106,35 +112,15 @@ function createUserForContract(username, password) {
     })
 }
 
-function getAuthAdmin() {
+function getAuthAdmin(username, password) {
     return axios.post(settings.vChainPort + '/authentication', {
-        "password" : settings.PasswordAdmin,
-        "username" : settings.UsernameAdmin,
+        "password" : password,
+        "username" : username,
     }).then(res => {
         return res.data.authorization
     })
     .catch(err => {
         return err
-    })
-}
-
-
-exports.requireContract = function (req, res, next) {
-    postID = req.params.postID;
-    tenantID = req.params.tenantID;
-    landlordID = req.params.landlordID;
-
-    User.findById(landlordID, function(err, landlord) {
-        if (err) {return next(err);}
-
-        message = {
-            sender: tenantID,
-            is_contract: true,
-        }
-        landlord.messages.push(message)
-        landlord.save(function(err){
-            if (err) {return next(err)}
-        })
     })
 }
 
@@ -154,13 +140,6 @@ exports.loginUser = async function(req, res) {
         res.status(400).send(error)
         console.log("Error", error);
     }
-}
-
-exports.profileUser = async function(req, res) {
-    // View logged in user profile
-    // const user = await User.findById(req.userid)
-    const user = req.user
-    res.status(200).send({user})
 }
 
 exports.logoutUser = async function (req, res) {

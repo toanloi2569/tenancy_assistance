@@ -18,6 +18,14 @@ var UserSchema = new Schema({
     idv: { type: String, require: true },
     privateKey: { type: String, required: true },
     publicKey: { type: String, required: true },
+    contracts_info : [{
+        timeStart : Date,
+        timeEnd : Date,
+        time : Number,
+        landlord : String,
+        tenant : String,
+        idv_contract : String,
+    }],
 
     star: { type: Number },
     number_rated: { type: Number },
