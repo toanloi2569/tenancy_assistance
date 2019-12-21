@@ -31,9 +31,19 @@ class InfoHome extends React.Component {
             mota: '',
             dientich: '',
             price: '',
+            id_post: '',
         })
 
         
+    }
+    componentDidMount() {
+        // window.addEventListener('load', this.handleLoad);
+        const {match:{params}} = this.props;
+        console.log(params.id)
+        this.setState({
+            id_post: params.id
+        })
+
     }
     showModal = () => {
 
@@ -42,14 +52,23 @@ class InfoHome extends React.Component {
         });
         var self = this
         var show = []
-        var apiBaseUrl = "http://localhost:9000/users/";
-        // axios.get(apiBaseUrl+'createContract')
-        // .then((response)=> {
-        // console.log(response);
-        
+        var apiBaseUrl = "http://localhost:9000/users/fillContract/post_id/"+this.state.id_post;
+        axios.get(apiBaseUrl, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+        if(response.status === 200 ){
+            console.log(response)
 
-        // if(response.status === 200 ){
-        //     console.log("Get data contract from Host successfull");
+        }
+        else if(response.status === 204){
+            console.log("");
+            
+        }
+        else{
+            console.log("");
+            alert("");
+        }
+        })
+        
             const formItemLayout = {
                 labelCol: {
                   xs: { span: 24 },
@@ -60,7 +79,7 @@ class InfoHome extends React.Component {
                   sm: { span: 20 },
                 },
               };
-            const formItemLayoutWithOutLabel = {
+            const formItemLayoutWithOutLabel = {    
             wrapperCol: {
                 xs: { span: 24, offset: 0 },
                 sm: { span: 20, offset: 4 },
@@ -70,43 +89,34 @@ class InfoHome extends React.Component {
                 <Form onSubmit={this.handleSubmit}>
                 <Form.Item {...formItemLayoutWithOutLabel}>
                     <Form.Item label= "NGÀY TẠO HỢP ĐỒNG">
-                        <DatePicker onChange={this.onChange} />
+                        {/* <DatePicker onChange={this.onChange} /> */}
+                        <span>{this.state.ngaytao}</span>
                     </Form.Item>
                 </Form.Item>
                 
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <h>ĐẠI DIỆN HỢP ĐỒNG BÊN A</h>
                 <Form.Item label="Họ tên chủ trọ">
-                <Input placeholder="Họ tên chủ trọ" name = "fullnameHost" onChange = {this.handleChange} 
-                style={{ width: '80%', marginRight: 8, height: 40 }} >
+                    <span>{this.state.fullnameHost}</span>.
                 
-                </Input>
                 </Form.Item>
 
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Số điện thoại:">
-                <Input placeholder="số điện thoại chủ trọ" name = "phoneHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                    <span>{this.state.phoneHost}</span>
                 
-                </Input>
                 </Form.Item>
 
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Số chứng minh thư:">
-                <Input placeholder="CMND" name = "cmtHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{this.state.cmtHost}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Địa chỉ thường trú:">
-                <Input placeholder="Địa chỉ thường trú chủ trọ" name = "addressHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{this.state.addressHost}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
@@ -148,22 +158,13 @@ class InfoHome extends React.Component {
                 <h>NỘI DUNG HỢP ĐỒNG:  </h>
                 <Form.Item label = "BÊN A">
                     <Form.Item label="Nơi cho thuê trọ:">
-                    <Input placeholder="Địa chỉ thuê trọ" name = "address" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                   <span>{this.state.address}</span>
                     </Form.Item>
                     <Form.Item label="Đặc điểm:">
-                    <Input placeholder="Đặc điểm nhà" name = "mota" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                   <span>{this.state.mota}</span>
                     </Form.Item>
                     <Form.Item label="Diện tích cho thuê:">
-                    <Input placeholder="Diện tích" name = "dientich" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                    <span>{this.state.dientich}</span>
                     </Form.Item>
                     <Form.Item label="Cam kết:">
                     <span>Bên A đồng ý cho bên B thuê căn nhà này với mục đích và hiện trạng 
@@ -196,31 +197,17 @@ class InfoHome extends React.Component {
                 <Form.Item {...formItemLayoutWithOutLabel} >
                     <h>THỜI HẠN HỢP ĐỒNG</h>
                 <Form.Item label="Thời gian thuê nhà (theo tháng): ">
-                <Input placeholder="kể từ ngày tạo hợp đồng" name = "thoihan" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{this.state.thoihan}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel}>
                     <h>GIÁ TIỀN CHO THUÊ:</h>
                 <Form.Item label="Giá tiền thuê nhà ">
+                    <span>{this.state.price}</span>
                 
                 </Form.Item>
-                </Form.Item>
-                <Form.Item {...formItemLayoutWithOutLabel}>
-                    <h>ĐIỀU KHOẢN CHUNG TRONG HỢP ĐỒNG:</h>
                 </Form.Item>
 
-        
-                
-                    
-                    
-                <Form.Item {...formItemLayoutWithOutLabel}>
-                <Button type="dashed" onClick={this.add} style={{ width: '80%' } }>
-                    <Icon type="plus" /> Thêm điều khoản
-                </Button>
-                </Form.Item>
 
                 <Form.Item {...formItemLayoutWithOutLabel}>
                 <Button type="primary" htmlType="submit">
@@ -287,9 +274,9 @@ class InfoHome extends React.Component {
                 <header className="header-area" id="top-bar">
                     <TopBar />
                 </header>
-                <section className="banner-area">
-                    <div style={{ padding: "30px" }}></div>
-                </section>
+                    <section className="banner-area">
+                        <div style={{ padding: "30px" }}></div>
+                    </section>
                 <section class="blog_area single-post-area">
                     <div class="container">
                         <div class="row">

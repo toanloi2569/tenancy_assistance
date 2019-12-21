@@ -17,7 +17,7 @@ router.post('/fillContract', Contract.fillContract)
 router.post('/sign/contract_id/:contract_id', Contract.sign)
 
 /* Lấy thông tin hợp đồng */
-router.get('/fillContract/contract_id/:contract_id', Contract.getContractInfo)
+router.get('/fillContract/post_id/:post_id', Contract.getContractInfo)
 
 /* Gửi dữ liệu lên vchain */
 router.post('/storeContract/contract_id/:contract_id/username/:username/password/:password', Contract.storeContract)
@@ -30,7 +30,7 @@ router.post('/searchPost', Post.searchPost)
 router.post('/createPost', Post.createPost)
 
 /* Xem thông tin chi tiết 1 bài đăng qua id */
-router.get('/detailPost/posts/:post_id', Post.seeDetailPost)
+router.get('/detailPost/posts/:post_id',auth, Post.seeDetailPost)
 
 /* Xóa 1 post */
 router.post('/deletePost/posts/:post_id', Post.deletePost)

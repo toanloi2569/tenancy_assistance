@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var Post = new Schema({
     landlord_id: {type: Schema.Types.ObjectId, required: true},
     comment_id: [{type: Schema.Types.ObjectId}],
+    contract_id : {type: Schema.Types.ObjectId},
 
     square: {type: Number, required: true},
     price: {type: Number, require: true},

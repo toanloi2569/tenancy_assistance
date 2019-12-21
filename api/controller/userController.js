@@ -14,8 +14,8 @@ exports.registerUser = function(req, res, next){
         console.log(user);
         
         if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
-            imgPath1 = await getFileBase64(req.body.img[1])
-            imgPath2 = await getFileBase64(req.body.img[2])
+            imgPath1 = await getFileBase64(req.body.img[0])
+            imgPath2 = await getFileBase64(req.body.img[1])
             
             let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
 
@@ -147,7 +147,9 @@ exports.loginUser = async function(req, res) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
         var token = await user.generateAuthToken()
-        res.status(200).send({ token })
+        const role = user.role
+        const id = user.id
+        res.status(200).send({id, role, token })
     } catch (error) {
         res.status(400).send(error)
         console.log("Error", error);

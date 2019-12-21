@@ -1,6 +1,6 @@
 
 var fs = require('fs')
-
+var mongoose = require('mongoose')
 var Post = require('../schema/post')
 var Contract = require('../schema/contract')
 var CommentController = require('./commentController')
@@ -47,26 +47,13 @@ exports.createPost = async function(req, res, next) {
         let imgPath = await getFileBase64(postDetail.img[i])
         imgPaths.push(imgPath)
     }
-    
-    var post = new Post ({
-        landlord_id : req.user._id,
 
-        square : Number(postDetail.square),
-        price : Number(postDetail.price),
-        district : postDetail.district,
-
-        address : postDetail.address,
-        phone : postDetail.phone,
-        image : imgPaths,
-        content : postDetail.content,
-
-        availability : true,
-        date : Date.now(),
-    })
-
+    contract_id = mongoose.Types.ObjectId()
     var contract = new Contract({
-        landlord_id : req.user._id,
-        // landlord_id : '5dfd6f33d6a08c3a711da14e', 
+        _id : contract_id,
+
+        // landlord_id : req.user._id,
+        landlord_id : '5dfd6f33d6a08c3a711da14e', 
 
         /* Landlord Info*/
         landlordName: contractDetail.landlordName,
@@ -90,6 +77,26 @@ exports.createPost = async function(req, res, next) {
 
         rule: contractDetail.rule,
     })
+    
+    var post = new Post ({
+        // landlord_id : req.user._id,ongoose
+        landlord_id : '5dfd6f33d6a08c3a711da14e',
+        contract_id : contract_id,
+
+        square : Number(postDetail.square),
+        price : Number(postDetail.price),
+        district : postDetail.district,
+
+        address : postDetail.address,
+        phone : postDetail.phone,
+        image : imgPaths,
+        content : postDetail.content,
+
+        availability : true,
+        date : Date.now(),
+    })
+
+    
     
     post.save(function (err) {
         if (err) {return next(err);}
