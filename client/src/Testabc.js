@@ -4,15 +4,13 @@ import {selectHome} from './action/index';
 import {bindActionCreators} from 'redux';
 
 
-
 class Test extends React.Component{
+
     showlist(){
         let listItems = this.props.danhsach.map(
             (eachDS)=>{
                 return(
-                    <li key={eachDS.id} onCick={()=>(
-                        this.props.selectHome(eachDS)
-                    )}>{eachDS.name}</li>
+                    <li key={eachDS.id} >{eachDS.name}</li>
 
                 );
             }
@@ -24,7 +22,6 @@ class Test extends React.Component{
         return(
             <div>
                 {this.showlist()}
-                {/* {this.props.danhsach.id} */}
             </div>
         )
     }
