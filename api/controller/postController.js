@@ -23,6 +23,17 @@ exports.searchPost = function(req, res, next) {
         .sort([["price"]])
         .exec(function (err, posts) {
             if (err) {return next(err);}
+            for (i = 0; i < posts.length; i++) {
+                post = posts[i]
+                for (j = 0; j < post.image.length; j++) {
+                    pos = post.image[j].search('base64,')
+                    ext = post.image[j].slice(0, pos+7)
+
+                    image = readFileBase64(post.image[j])
+                    image = "data:image/" + ext + image
+                    posts[i][j] = image
+                }
+            }
             res.send(posts)
         })
 }
@@ -111,8 +122,14 @@ exports.seeDetailPost = function(req, res) {
         
         images = []
         for (i = 0; i < post.image.length; i++) {
-            images.push(readFileBase64(post.image[i]))
+            pos = post.image[i].search('base64,')
+            ext = post.image[i].slice(0, pos+7)
+
+            image = readFileBase64(post.image[i])
+            image = "data:image/" + ext + image
+            images.push(image)
         }
+        post.image = images
 
         comments = []
         for (var i=0; i > length(post.comment_id); i++) {
@@ -120,12 +137,12 @@ exports.seeDetailPost = function(req, res) {
             comments.push(comment)
         }
 
-        res.send({"post": post, "comments": comments, "images": image})
+        res.send({"post": post, "comments": comments})
     })
 }
 
-function readFileBase64(img) {
-    var bitmap = fs.readFileSync(img);
+function readFileBase64(imgPath) {
+    var bitmap = fs.readFileSync(imgPath);
     return new Buffer(bitmap).toString('base64');
 }
 

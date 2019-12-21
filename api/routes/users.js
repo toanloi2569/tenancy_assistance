@@ -20,7 +20,7 @@ router.post('/sign/contract_id/:contract_id', Contract.sign)
 router.get('/fillContract/contract_id/:contract_id', Contract.getContractInfo)
 
 /* Gửi dữ liệu lên vchain */
-// router.push('/storeContract/')
+router.post('/storeContract/', Contract.storeContract)
 
 
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */
