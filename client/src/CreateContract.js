@@ -221,23 +221,23 @@ class CreateContract extends React.Component{
         
     
         var payload = {
-            hopdong: {
-                'ngaytao': this.state.ngaytao,
-                'fullnameHost': this.state.fullnameHost,
-                'fullnameTenant': this.state.fullnameTenant,
-                'cmtHost': this.state.cmtHost,
-                'cmtTenant': this.state.cmtTenant,
+            contractDetail : {
+                'timeStart': this.state.ngaytao,
+                'landlordName': this.state.fullnameHost,
+                'tenantName': this.state.fullnameTenant,
+                'landlordID': this.state.cmtHost,
+                'tenantID': this.state.cmtTenant,
                 'address': this.state.address,
-                'addressHost': this.state.addressHost,
-                'addressTenant': this.state.addressTenant,
-                'phoneHost': this.state.phoneHost,
-                'phoneTenant': this.state.phoneTenant,
-                'thoihan': this.state.thoihan,
-                'mota': this.state.mota,
-                'dientich': this.state.dientich,
+                'landlordAddress': this.state.addressHost,
+                'tenantAddress': this.state.addressTenant,
+                'landlordPhone': this.state.phoneHost,
+                'tenantPhone': this.state.phoneTenant,
+                'time': this.state.thoihan,
+                'feature': this.state.mota,
+                'square': this.state.dientich,
                 'price': this.state.price,
             },
-            thongtinnha:{
+            postDetail:{
                 "square": this.state.textSquare,
                 "price": this.state.textPrice,
                 "address": this.state.textDistrict,
@@ -245,15 +245,13 @@ class CreateContract extends React.Component{
                 "img": this.state.fileList,
                 "phone": this.state.phone,
                 "content": this.state.textDesc
-
-
             }
             
 
             }
         console.log(payload)
-        var apiBaseUrl = "http://localhost:9000/";
-        axios.post(apiBaseUrl + '/', payload)
+        var apiBaseUrl = "http://localhost:9000";
+        axios.post(apiBaseUrl + '/users/createPost', payload)
         .then(function (response) {
             console.log(response);
             alert("Dang tin thanh cong")

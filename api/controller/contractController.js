@@ -71,7 +71,7 @@ exports.sign = async function(req, res, next) {
 }
 
 exports.storeContract = function storeContract() {
-
+    
 }
 
 exports.getContent = function getContent(contract) {
