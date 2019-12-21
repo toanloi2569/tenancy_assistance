@@ -5,50 +5,48 @@ var router = express.Router();
 var Post = require('../controller/postController')
 var User = require('../controller/userController')
 var Comment = require('../controller/commentController')
+var Contract = require('../controller/contractController')
 
 /* GET users listing. */
 router.get('/', Post.getMainPage)
 
-/* Yêu cầu hợp đồng */
-router.post('/requireContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.requireContract)
-
-/* Sinh hợp đồng mẫu */
-router.post('/getTemplateContract')
+/* Sinh hợp đồng */
+router.post('/createContract', Contract.createContract)
 
 /* Gửi hợp đồng kèm chữ ký */
-router.post('/responseContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.responseContract)
+// router.post('/responseContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.responseContract)
 
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */
 router.post('/searchPost', Post.searchPost)
 
 /* Tạo 1 post mới */
+/* checked */
 router.post('/createPost', Post.createPost)
 
 /* Xem thông tin chi tiết 1 bài đăng qua id */
-router.get('/detailPost/posts/:postID', Post.seeDetailPost)
+router.get('/detailPost/posts/:post_id', Post.seeDetailPost)
 
 /* Xóa 1 post */
-router.post('/deletePost/posts/:postID', Post.deletePost)
+router.post('/deletePost/posts/:post_id', Post.deletePost)
 
 /* Chính sửa post */
-router.post('updatePost/posts/:postID', Post.updatePost)
+router.post('updatePost/posts/:post_id', Post.updatePost)
 
 /* Tạo bình luận mới */
 router.post('createComment', Comment.createComment)
 
 /* Xóa bình luận */
-router.post('deleteComment/comments/commentID', Comment.deleteComment)
+router.post('deleteComment/comments/comment_id', Comment.deleteComment)
 
 /* Tìm kiếm bình luận qua id */
-router.get('searchComment/comments/:commentID', Comment.searchComment)
+router.get('searchComment/comments/:comment_id', Comment.searchComment)
 
 /* Chính sửa bình luận */
-router.post('updateComment/comments/:commentID', Comment.updateComment)
+router.post('updateComment/comments/:comment_id', Comment.updateComment)
 
 // router.post('/comment', User.comment)
 
 // test dang nhap dang xuat
-router.post('/loginUser', User.loginUser)
 router.post('/logoutUser', auth, User.logoutUser)
 router.post('/logoutallUser', auth, User.logoutallUser)
 router.get('/profileUser', auth, User.profileUser)

@@ -7,6 +7,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
 import TopBar from './components/TopBar';
+import settings from './config';
 // import { ContentSort } from 'material-ui/svg-icons';
 // import TenantScreen from './TenantScreen';
 // import { colors } from 'material-ui/styles';
@@ -104,7 +105,7 @@ class Login extends Component {
     }
   }
   handleClick(event) {
-    var apiBaseUrl = "http://localhost:9000/users/";
+    var apiBaseUrl = settings.apiBaseUrl;
     var self = this;
     // if (this.state.loginRole === "Tenant") {
     //   self.props.history.push("/tenant")
@@ -117,7 +118,7 @@ class Login extends Component {
         "password":this.state.password,
         // "role":this.state.loginRole
       }
-      axios.post(apiBaseUrl+'loginUser', payload)
+      axios.post(apiBaseUrl+'/loginUser', payload)
      .then(function (response) {
        console.log(response);
        if(response.status === 200){

@@ -10,6 +10,7 @@ import axios from 'axios';
 // import HostScreen from '../HostScreen';
 // import './index.css';
 import { Upload, Icon, Modal } from 'antd';
+import settings from '../config'
 
 
 const vn = {
@@ -165,14 +166,15 @@ class CreateForm extends React.Component{
         onHandleSubmit(event){
         event.preventDefault();
         console.log(this.state);
-        var apiBaseUrl = "http://localhost:9000/";
+        var apiBaseUrl = settings.apiBaseUrl;
         var self = this;
 
         var payload = {
           "square": this.state.textSquare,
           "price": this.state.textPrice,
-          "district": this.state.textDistrict,
-          "address": this.state.address,
+          // swap adress and district
+          "address": this.state.textDistrict,
+          "district": this.state.address,
           "img": this.state.fileList,
           "phone": this.state.phone,
           "content": this.state.textDesc
@@ -219,7 +221,7 @@ class CreateForm extends React.Component{
                         
                         <form onSubmit={this.onHandleSubmit} >
 
-                            <label> Address:</label>
+                            <label> District:</label>
                             <Cascader 
                                 style={{ width: "100%" }}
                                 options={convertAddress(vn)}
@@ -228,7 +230,7 @@ class CreateForm extends React.Component{
                                 />
                     
                             <div className="form-group">
-                            <label >District: </label>
+                            <label >Address: </label>
                             <input type="text" className="form-control" name = "textDistrict" 
                             onChange={this.onHandleChange}
                             value = {this.state.textDistrict}/> 

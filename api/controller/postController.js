@@ -1,4 +1,6 @@
 
+var fs = require('fs')
+
 var Post = require('../schema/post')
 var CommentController = require('./commentController')
 
@@ -24,17 +26,25 @@ exports.searchPost = function(req, res, next) {
         })
 }
 
-exports.createPost = function(req, res, next) {
+exports.createPost = async function(req, res, next) {
+    let imgPaths = []
+    for (i = 1; i < req.body.img.length; i++) {
+        let imgPath = await getFileBase64(req.body.img[i])
+        imgPaths.push(imgPath)
+    }
+    
+
     var post = new Post ({
-        landlord_id : req.user._id,
+        // landlord_id : req.user._id,
+        landlord_id : '5dfd6f33d6a08c3a711da14e',
 
         square : Number(req.body.square),
         price : Number(req.body.price),
-        district : req.body.district,
+        district : req.body.district.join(),
 
         address : req.body.address,
         phone : req.body.phone,
-        image : (req.body.image == undefined) ? null : req.body.image,
+        image : imgPaths,
         content : req.body.content,
 
         availability : true,
@@ -48,8 +58,22 @@ exports.createPost = function(req, res, next) {
     })
 }
 
+async function getFileBase64(img) {
+    fileName = String(Date.now())
+    fileName = 'public/uploads/house/' + fileName
+    
+    pos = img.thumbUrl.search('base64,')
+    img = img.thumbUrl.slice(pos+7)
+    
+    await fs.writeFile(fileName, img, 'base64', function(err) {
+        console.log(err);
+        return 
+    });
+    return fileName
+}
+
 exports.seeDetailPost = function(req, res) {
-    Post.findById(req.params.postID, function(err, post) {
+    Post.findById(req.params.post_id, function(err, post) {
         if (err) {return next(err);}
         
         comments = []
@@ -63,7 +87,7 @@ exports.seeDetailPost = function(req, res) {
 }
 
 exports.deletePost = function(req, res) {
-    Post.findById(req.params.postID, function(err, post) {
+    Post.findById(req.params.post_id, function(err, post) {
         if (err) {return next(err);}
         
         for (var i=0; i > length(post.comment_id); i++) {
@@ -78,7 +102,7 @@ exports.deletePost = function(req, res) {
 }
 
 exports.updatePost = function(req, res) {
-    Post.findByIdAndUpdate(req.params.postID, req.body, function(err, post) {
+    Post.findByIdAndUpdate(req.params.post_id, req.body, function(err, post) {
         if (err) {return next(err);}
         console.log(post);
         res.send(post);

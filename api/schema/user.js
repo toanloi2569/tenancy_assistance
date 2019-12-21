@@ -5,62 +5,23 @@ var settings = require('../config/setting')
 
 var Schema = mongoose.Schema;
 
-var User_schema = new Schema({
-    username: {
-        type: String,
-    },
+var User = new Schema({
+    username: { type: String, },
+    password: { type: String, required: true, trim: true, minlength: 6 },
 
-    password: {
-        type: String,
-        required: true,
-        trim: true,
-        minlength: 6
-    },
+    name: { type: String, required: true },
+    phone: { type: String, require: true },
+    email: { type: String, require: true, },
+    ID: { type: String, require: true },
+    role: { type: String, enum: ['Tenant', 'Host'], required: true },
 
-    email: {
-        type: String,
-        require : true,
-    },
+    idv: { type: String, require: true },
+    privateKey: { type: String, required: true },
+    publicKey: { type: String, required: true },
 
-    role: {
-        type: String,
-        enum: ['Tenant', 'Host'],
-        required: true
-    },
-
-    idv: {
-        type: String,
-        require: true
-    },
-
-    star: {
-        type: Number
-    },
-
-    number_rated: {
-        type: Number
-    },
-
-    id_comment: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
-
-    name: {
-        type: String,
-        required: true
-    },
-
-    messages: [{
-        type: Object,
-        sender: Schema.Types.ObjectId,
-        is_contract: Boolean,
-        contract: {
-            content: String,
-            sign1: String,
-            sign2: String,
-        }
-    }],
+    star: { type: Number },
+    number_rated: { type: Number },
+    id_comment: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 
     tokens: [{
         token: {
@@ -69,7 +30,7 @@ var User_schema = new Schema({
     }],
 })
 
-User_schema.virtual('star_avg')
+User.virtual('star_avg')
     .get(function () {
         if (this.number_rated != 0) {
             return Math.round(this.star / this.number_rated)
@@ -79,7 +40,7 @@ User_schema.virtual('star_avg')
         }
     })
 
-User_schema.pre('save', function (next) {
+User.pre('save', function (next) {
     var user = this;
     var SALT_FACTOR = 5;
     if (!user.isModified('password')) {
@@ -99,7 +60,7 @@ User_schema.pre('save', function (next) {
     });
 });
 
-User_schema.methods.generateAuthToken = async function () {
+User.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
     const user = this
     const token = jwt.sign({ _id: user._id, role: user.role }, settings.JWT_KEY)
@@ -108,27 +69,23 @@ User_schema.methods.generateAuthToken = async function () {
     return token
 }
 
-User_schema.statics.findByCredentials = function (user_name, password) {
-    // Search for a user by user_name and password.
-    console.log("inside")
-    const f_user = User.findOne({ user_name : user_name }, async function (err, user) {
+User.statics.findByCredentials = function (username, password) {
+    const f_user = User.findOne({ username: username }, async function (err, user) {
         if (err) console.log(err);
         if (!user) {
             throw new Error({ error: 'Invalid login credentials' })
         }
         var isPasswordMatch = await bcrypt.compare(password, user.password)
-        
+
         if (!isPasswordMatch) {
             throw new Error({ error: 'Invalid login credentials' })
         }
-        console.log(isPasswordMatch)
         return user
     })
     return f_user
 }
 
-User_schema.methods.comparePassword = function (passwordAttempt, cb) {
-
+User.methods.comparePassword = function (passwordAttempt, cb) {
     bcrypt.compare(passwordAttempt, this.password, function (err, isMatch) {
 
         if (err) {
@@ -137,12 +94,6 @@ User_schema.methods.comparePassword = function (passwordAttempt, cb) {
             cb(null, isMatch);
         }
     });
-
 }
 
-// cái đm mongodb #$%@#$%@#$^
-User = mongoose.model('User', User_schema);
-module.exports = User
-// try {
-//     exports.getModel = ()=> mongoose.model('User', User)
-//  } catch (err){ exports.getModel = ()=> mongoose.model('User')}
+module.exports = mongoose.model('User', User);
