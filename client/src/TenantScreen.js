@@ -5,9 +5,10 @@ import TenantHeader from './components/Header/TenantHeader';
 import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
 import FooterHome from './components/Footer/FooterHome';
-import { Row, Col } from 'antd';
-import 'antd/dist/antd.css';
-import 'react-router-dom';
+// import { Row, Col } from 'antd';
+// import 'antd/dist/antd.css';
+// import 'react-router-dom';
+import { Button } from 'antd';
 
 class TenantScreen extends React.Component {
     constructor(props) {
@@ -16,60 +17,48 @@ class TenantScreen extends React.Component {
             list: [
                 {
                     _id: 1,
-                    name: "Chung cư mini giá rẻ",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                   
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "3.500.000",
                     address: "128 Lương Đắng Bằng ",
-                    status: true
+                    
                 },
                 {
                     _id: 2,
-                    name: "Nhà trọ sinh viên",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "2.500.000",
                     address: "68 Hoàng Mai, Hà Nội",
-                    status: true
+                    
                 },
                 {
                     _id: 3,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+      
                 },
                 {
                     _id: 4,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+     
                 },
                 {
                     _id: 5,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+
                 },
                 {
                     _id: 6,
-                    name: "Chung cư mini giá rẻ",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "3.500.000",
                     address: "128 Lương Đắng Bằng ",
-                    status: true
+    
                 },
-                {
-                    _id: 7,
-                    name: "Nhà trọ sinh viên",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
-                    price: "2.500.000",
-                    address: "68 Hoàng Mai, Hà Nội",
-                    status: true
-                },
+
 
             ]
         });
@@ -157,11 +146,10 @@ class TenantScreen extends React.Component {
                     <OverViewHomeBox
                         key={home._id}
                         href={link_to}
-                        name={home.name}
                         price={home.price}
-                        address={home.address}
-                        img={home.img} />
-
+                        address = {home.address}
+                        img={home.image[0]} />
+                        
                 )
 
             // }
@@ -176,6 +164,9 @@ class TenantScreen extends React.Component {
                 <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
                         <FilterHome />
+                        <Button type="primary" icon="search" onClick={this.onSearch}>
+                        Search
+                        </Button>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12">
                         <div className="container">

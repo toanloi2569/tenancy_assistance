@@ -28,10 +28,10 @@ exports.searchPost = function(req, res, next) {
                 for (j = 0; j < post.image.length; j++) {
                     pos = post.image[j].search('base64,')
                     ext = post.image[j].slice(21, pos+7)
-
+                    
                     image = readFileBase64(post.image[j])
                     image = "data:image/" + ext + image
-                    posts[i][j] = image
+                    posts[i].image[j] = image
                 }
             }
             res.send(posts)
