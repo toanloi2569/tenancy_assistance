@@ -16,6 +16,7 @@ router.post('/createContract', Contract.createContract)
 /* Gửi hợp đồng kèm chữ ký */
 // router.post('/responseContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.responseContract)
 
+
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */
 router.post('/searchPost', Post.searchPost)
 

@@ -59,10 +59,10 @@ exports.createPost = async function(req, res, next) {
 }
 
 async function getFileBase64(img) {
-    fileName = String(Date.now())
-    fileName = 'public/uploads/house/' + fileName
-    
+    imgName = String(Date.now())
     pos = img.thumbUrl.search('base64,')
+
+    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
     img = img.thumbUrl.slice(pos+7)
     
     await fs.writeFile(fileName, img, 'base64', function(err) {
@@ -76,14 +76,24 @@ exports.seeDetailPost = function(req, res) {
     Post.findById(req.params.post_id, function(err, post) {
         if (err) {return next(err);}
         
+        images = []
+        for (i = 0; i < post.image.length; i++) {
+            images.push(readFileBase64(post.image[i]))
+        }
+
         comments = []
         for (var i=0; i > length(post.comment_id); i++) {
             comment = CommentController.searchComment(post.comment_id[i])
             comments.push(comment)
         }
 
-        res.send({"post": post, "comments": comments})
+        res.send({"post": post, "comments": comments, "images": image})
     })
+}
+
+function readFileBase64(img) {
+    var bitmap = fs.readFileSync(img);
+    return new Buffer(bitmap).toString('base64');
 }
 
 exports.deletePost = function(req, res) {
