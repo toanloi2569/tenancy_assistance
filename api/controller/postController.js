@@ -27,7 +27,7 @@ exports.searchPost = function(req, res, next) {
                 post = posts[i]
                 for (j = 0; j < post.image.length; j++) {
                     pos = post.image[j].search('base64,')
-                    ext = post.image[j].slice(0, pos+7)
+                    ext = post.image[j].slice(21, pos+7)
 
                     image = readFileBase64(post.image[j])
                     image = "data:image/" + ext + image
@@ -43,7 +43,7 @@ exports.createPost = async function(req, res, next) {
     contractDetail = req.body.contractDetail 
 
     let imgPaths = []
-    for (i = 1; i < postDetail.img.length; i++) {
+    for (i = 0; i < postDetail.img.length; i++) {
         let imgPath = await getFileBase64(postDetail.img[i])
         imgPaths.push(imgPath)
     }
@@ -104,7 +104,7 @@ exports.createPost = async function(req, res, next) {
             if (err) {return next(err)}
         })
 
-        res.send("Luu thanh cong")
+        res.send({"post":post, "contract": contract})
     })
 }
 
@@ -129,21 +129,23 @@ exports.seeDetailPost = function(req, res) {
         images = []
         for (i = 0; i < post.image.length; i++) {
             pos = post.image[i].search('base64,')
-            ext = post.image[i].slice(0, pos+7)
-
-            image = readFileBase64(post.image[i])
+            ext = post.image[i].slice(21, pos+7)
+            
+            image = readFileBase64(post.image[i])   
             image = "data:image/" + ext + image
+            
             images.push(image)
         }
         post.image = images
 
-        comments = []
-        for (var i=0; i > length(post.comment_id); i++) {
-            comment = CommentController.searchComment(post.comment_id[i])
-            comments.push(comment)
-        }
-
-        res.send({"post": post, "comments": comments})
+        // comments = []
+        // for (var i=0; i < post.comment_id.length; i++) {
+        //     comment = CommentController.searchComment(post.comment_id[i])
+        //     comments.push(comment)
+        // }
+    
+        // res.send({"post": post, "comments": comments})
+        res.send({"post": post})
     })
 }
 

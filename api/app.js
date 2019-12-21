@@ -34,7 +34,7 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(upload.fields([{name:'img1'}, {name:'img2'}]))
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
