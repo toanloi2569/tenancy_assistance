@@ -4,7 +4,6 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
-import Login from './Login';
 import TopBar from './components/TopBar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -67,8 +66,6 @@ class Register extends Component {
       </MuiThemeProvider>
     )
     this.state = {
-      // first_name: '',
-      // last_name: '',
       username: '',
       email: '',
       password: '',
@@ -82,12 +79,6 @@ class Register extends Component {
       previewVisible: false,
       previewImage: '',
       fileList: [
-        // {
-        //   uid: '-4',
-        //   name: 'image.png',
-        //   status: 'done',
-        //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
         {
           uid: '-5',
           name: 'image.png',
@@ -119,7 +110,6 @@ class Register extends Component {
       var localregisterComponent = [];
       if (this.props.role === 'Tenant') {
         console.log("in Tenant componentWillMount");
-        // var localregisterComponent=[];
         localregisterComponent.push(
           <MuiThemeProvider>
             <div>
@@ -173,7 +163,6 @@ class Register extends Component {
       }
       else if (this.props.role === 'Host') {
         console.log("in Host componentWillMount");
-        // var localregisterComponent=[];
         localregisterComponent.push(
           <MuiThemeProvider>
             <div>
@@ -232,12 +221,8 @@ class Register extends Component {
     var apiBaseUrl = settings.apiBaseUrl;
     // console.log("values in register handler",role);
     var self = this;
-    //To be done:check for empty values before hitting submit
-    if (this.state.username.length > 0 && this.state.email.length > 0 
-      && this.state.password.length > 0 && this.state.phone.length > 0
-      && this.state.socmt.length> 0) {
+
       var payload = {
-        // "first_name": this.state.first_name,
         "username": this.state.username,
         "name": this.state.name,
         "password": this.state.password,
@@ -253,15 +238,7 @@ class Register extends Component {
           console.log(response);
           if (response.data.code === 200) {
             console.log("registration successfull");
-            var loginscreen = [];
-            loginscreen.push(<Login parentContext={this} appContext={self.props.appContext} role={self.props.role} />);
-            var loginmessage = "Not Registered yet.Go to registration";
-            self.props.parentContext.setState({
-              loginscreen: loginscreen,
-              loginmessage: loginmessage,
-              buttonLabel: "Register",
-              isLogin: true
-            });
+
           }
           else {
             console.log("some error ocurred", response.data.code);
@@ -270,10 +247,7 @@ class Register extends Component {
         .catch(function (error) {
           console.log(error);
         });
-    }
-    else {
-      alert("Input field value is missing");
-    }
+
 
   }
 
@@ -283,7 +257,6 @@ class Register extends Component {
     var localregisterComponent = [];
     var registerRole;
     if (value === 1) {
-      // var localregisterComponent = [];
       registerRole = 'Tenant';
       localregisterComponent.push(
         <MuiThemeProvider key='{theme}'>
@@ -334,7 +307,7 @@ class Register extends Component {
       )
     }
     else if (value === 2) {
-      // var localregisterComponent = [];
+
       registerRole = 'Host';
       localregisterComponent.push(
         <MuiThemeProvider key='{theme}'>
@@ -405,7 +378,6 @@ class Register extends Component {
         <div className="ant-upload-text">Upload CMT mặt trước và mặt sau</div>
       </div>
     );
-    // console.log("state",this.state.registerRole);
 
     return (
       <div className="row">

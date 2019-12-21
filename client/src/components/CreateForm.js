@@ -9,6 +9,7 @@ import HostHeader from './Header/HostHeader';
 import axios from 'axios';
 // import HostScreen from '../HostScreen';
 // import './index.css';
+import { Upload, Icon, Modal } from 'antd';
 
 
 const vn = {
@@ -92,39 +93,63 @@ const convertAddress = obj => {
     return result;
   };
 
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
 class CreateForm extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = {
-        //   textAddress: "",
           textDistrict: "",
           textSquare: 0,
           textPrice: 0,
           textDesc:"",
           pictures : [],
-          address :[]
+          address :[],
+          phone : '',
+          previewVisible: false,
+          previewImage: '',
+          fileList: [
+            {
+              uid: '-5',
+              name: 'image.png',
+              status: 'error',
+            }
+          ],
 
         };
         this.onHandleChange = this.onHandleChange.bind(this);
         this.onHandleSubmit = this.onHandleSubmit.bind(this);
-        this.onDrop = this.onDrop.bind(this);
         this.handleAddress =  this.handleAddress.bind(this);
         
       }
-        handleAddress(address) {
-            this.setState({
-                address: this.state.address.concat(address),
-
-            });
-            }
-
-        onDrop(picture) {
-            this.setState({
-                pictures: this.state.pictures.concat(picture),
-            });
-            console.log(this.state.pictures)
+      handleCancel = () => this.setState({ previewVisible: false });
+      handlePreview = async file => {
+        if (!file.url && !file.preview) {
+          file.preview = await getBase64(file.originFileObj);
         }
+        this.setState({
+          previewImage: file.url || file.preview,
+          previewVisible: true,
+        });
+      };
+    
+      handleChange = ({ fileList }) => this.setState({ fileList });
+      handleAddress(address) {
+          this.setState({
+              address: this.state.address.concat(address),
+
+          });
+      }
+
+
 
 
 
@@ -140,19 +165,49 @@ class CreateForm extends React.Component{
         onHandleSubmit(event){
         event.preventDefault();
         console.log(this.state);
-        // const fd = new FormData();
-        // fd.append('image', this.state.pictures, this.state.pictures.name);
-        // axios.post('')
-        alert("Dang Tin Thanh Cong");
-        // axios.post()
+        var apiBaseUrl = "http://localhost:9000/";
+        var self = this;
+
+        var payload = {
+          "square": this.state.textSquare,
+          "price": this.state.textPrice,
+          "district": this.state.textDistrict,
+          "address": this.state.address,
+          "img": this.state.fileList,
+          "phone": this.state.phone,
+          "content": this.state.textDesc
+        }
+        axios.post(apiBaseUrl + '/users/createPost', payload)
+        .then(function (response) {
+          console.log(response);
+          if (response.data.code === 200) {
+            console.log("registration successfull");
+          }
+          else {
+            console.log("some error ocurred", response.data.code);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
     
         }
 
 
     render(){
+
+      const previewVisible = this.state.previewVisible;
+      const previewImage = this.state.previewImage;
+      const fileList = this.state.fileList;
+      const uploadButton = (
+        <div>
+          <Icon type="plus" />
+          <div className="ant-upload-text">Upload CMT mặt trước và mặt sau</div>
+        </div>
+      );
         return(
             <div>
-              {/* <UserHeader/> */}
               <HostHeader/>
                 <div className="container ">       
                     <div className="row" style ={{marginTop: 7 + 'em'}} >
@@ -163,8 +218,6 @@ class CreateForm extends React.Component{
                         <div className="col align-self-center" >
                         
                         <form onSubmit={this.onHandleSubmit} >
-                        {/* <div className="col align-self-start">
-                        </div> */}
 
                             <label> Address:</label>
                             <Cascader 
@@ -192,6 +245,12 @@ class CreateForm extends React.Component{
                             onChange={this.onHandleChange}
                             value = {this.state.textPrice}/> 
                             </div>
+                            <div className="form-group">
+                            <label >Phone:</label>
+                            <input type="number" className="form-control" name = "phone" 
+                            onChange={this.onHandleChange}
+                            value = {this.state.phone}/> 
+                            </div>
 
                             <div className="form-group">
                             <label >Content:</label>
@@ -203,14 +262,20 @@ class CreateForm extends React.Component{
                             
                             </div>
                             <label> Upload Image:</label>
-
-                            <ImageUploader
-                                withIcon={false}
-                                buttonText='Choose images'
-                                onChange={this.onDrop}
-                                imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                                maxFileSize={5242880}
-                            />
+                            <div className="clearfix">
+                            <Upload
+                              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                              listType="picture-card"
+                              fileList={fileList}
+                              onPreview={this.handlePreview}
+                              onChange={this.handleChange}
+                            >
+                              {fileList.length >= 5 ? null : uploadButton}
+                            </Upload>
+                            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                              <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                            </Modal>
+                          </div>
                             <div className="form-group">
                             <label >Phone number:</label>
                             <PhoneInput

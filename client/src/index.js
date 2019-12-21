@@ -17,12 +17,20 @@ import HostProfile from './HostProfile';
 import TenantProfile from './TenantProfile';
 import InformationTenancy from './InfomationTenancy';
 import ListHouseRent from  './ListHouseRent';
+import InfoHome from './InfoHome';
+import {createStore} from 'redux';
+import allListHome from './reducers/index';
+import Testabc from './Testabc'
+import {Provider} from 'react-redux';
+const store = createStore(allListHome);
+
 
 
 ReactDOM.render(
-  (
-  <HashRouter>
+  (<Provider store = {store}>
+    <HashRouter>
      <div>
+     <Route exact path="/testabc" component={Testabc} />
        <Route exact path="/" component={Home} />
        <Route exact path="/login" component={Login} />
        <Route exact path="/host/dangtin" component={CreateForm} />
@@ -34,9 +42,11 @@ ReactDOM.render(
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>
        <Route exact path = "/host/danhsachnhachothue" component = {ListHouseRent}/>
-
+       <Route exact path = "/infohome" component = {InfoHome}/>
      </div>
   </HashRouter >
+  </Provider>
+  
 ), document.getElementById( 'root' ) )
 
 registerServiceWorker();
