@@ -4,15 +4,16 @@ import OverViewHomeBox from './components/OverViewHomeBox';
 import TenantHeader from './components/Header/TenantHeader';
 import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
-import {Row, Col} from 'antd';
+import FooterHome from './components/Footer/FooterHome';
+import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import 'react-router-dom';
 
-class TenantScreen extends React.Component{
-    constructor(props){
+class TenantScreen extends React.Component {
+    constructor(props) {
         super(props);
         this.state = ({
-            list : [
+            list: [
                 {
                     id: 1,
                     name: "Chung cư mini giá rẻ",
@@ -75,11 +76,11 @@ class TenantScreen extends React.Component{
     }
     componentDidMount() {
         // window.addEventListener('load', this.handleLoad);
-        const {match:{params}} = this.props;
+        const { match: { params } } = this.props;
         console.log(params.id)
 
     }
-    
+
     // handleLoad() {
     //     var apiBaseUrl = "http://localhost:9000/users/";
     //     axios.get(apiBaseUrl+'profileUser', { 'headers': { 'Authorization': localStorage.token } })
@@ -103,11 +104,11 @@ class TenantScreen extends React.Component{
     //     });
     // }
 
-    
 
-    render(){
+
+    render() {
         let elements = this.state.list.map((home, index) => {
-            let link_to = "/infoHome/"+home.id
+            let link_to = "/infoHome/" + home.id
             if (home.status) {
                 return (
                     <OverViewHomeBox
@@ -115,37 +116,33 @@ class TenantScreen extends React.Component{
                         href={link_to}
                         name={home.name}
                         price={home.price}
-                        address = {home.address}
+                        address={home.address}
                         img={home.img} />
-                        
+
                 )
 
             }
 
         })
-
-
-
-        return(
+        return (
             <div>
-                <TenantHeader/>
-                <br/><br/><br/>
-                <br/><br/><br/>
-                <br/><br/><br/>
-                <Row>
-                    <Col span={18} push={6}>
+                <TenantHeader />
+                <br /><br /><br />
+                <br /><br /><br />
+                <br /><br /><br />
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
+                        <FilterHome />
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12">
                         <div className="container">
                             <div className="row">
-                                {elements}
-                                
+                                {elements}  
                             </div>
                         </div>
-                    </Col>
-                    <Col span={6} pull={18}>
-                        <FilterHome/>
-                    </Col>
-                </Row>
-                
+                    </div>
+                </div>
+                <FooterHome/>
             </div>
         )
     }

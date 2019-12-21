@@ -19,7 +19,7 @@ export default class OverViewHomeBox extends Component {
         // var  id ="/infoHome"+ "/"+this.props.key
         // console.log(this.props.key)
         return (
-            <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+            <div className="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                 <div className="course-block mx-auto">
                     {/* <a href="#/infoHome" > */}
                         <Link to ={this.props.href}>

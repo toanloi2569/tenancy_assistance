@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import {Link} from 'react-dom';
+import { Badge, Icon } from 'antd';
+
 
 
 export default class HostHeader extends Component {
-    
-
     render() {
         return (
             <div className="container">
@@ -18,6 +18,18 @@ export default class HostHeader extends Component {
                     <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul className="nav navbar-nav menu_nav ml-auto">
                             <li className="nav-item submenu dropdown">
+                                <a className="nav-link">
+                                    Thông Báo
+                                    <Badge count={1} dot/>
+                                </a>
+                                <ul className="dropdown-menu">
+                                    {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item submenu dropdown">
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Quản lý</a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
@@ -28,7 +40,7 @@ export default class HostHeader extends Component {
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li>
                             <li className="nav-item"><a className="nav-link" href="#/host">Trang chủ</a></li>
-                            <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link" href="/" >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>
