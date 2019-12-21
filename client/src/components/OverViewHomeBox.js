@@ -28,8 +28,11 @@ export default class OverViewHomeBox extends Component {
                             {/* <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/> */}
                             {/* <img style='display:block; width:100px;height:100px;' id='base64image'                 
                             src='data:image/png;base64, LzlqLzRBQ...<!-- base64 data -->' /> */}
+                          <img style={{height:"400px"}} id='base64image'                 
+                                                src= {this.props.img}
+                                                class="img-fluid w-100" />
                                 <div className="col-md-12">
-                                    <h6 className="course-title">{this.props.name}</h6></div>
+                                    <h6 className="course-title">Duyt me</h6></div>
                                 <div className="instructor-clist">
                                     <div className="col-md-12">
                                         <i className="fa fa-chalkboard-teacher"></i>&nbsp;

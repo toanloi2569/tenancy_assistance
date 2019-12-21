@@ -15,60 +15,48 @@ class TenantScreen extends React.Component{
             list : [
                 {
                     _id: 1,
-                    name: "Chung cư mini giá rẻ",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                   
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "3.500.000",
                     address: "128 Lương Đắng Bằng ",
-                    status: true
+                    
                 },
                 {
                     _id: 2,
-                    name: "Nhà trọ sinh viên",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "2.500.000",
                     address: "68 Hoàng Mai, Hà Nội",
-                    status: true
+                    
                 },
                 {
                     _id: 3,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+      
                 },
                 {
                     _id: 4,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+     
                 },
                 {
                     _id: 5,
-                    name: "Nhà cấp 4 đầy đủ tiện nghi",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
-                    status: true
+
                 },
                 {
                     _id: 6,
-                    name: "Chung cư mini giá rẻ",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "3.500.000",
                     address: "128 Lương Đắng Bằng ",
-                    status: true
+    
                 },
-                {
-                    _id: 7,
-                    name: "Nhà trọ sinh viên",
-                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
-                    price: "2.500.000",
-                    address: "68 Hoàng Mai, Hà Nội",
-                    status: true
-                },
+
 
             ]
         });
@@ -157,10 +145,9 @@ class TenantScreen extends React.Component{
                     <OverViewHomeBox
                         key={home._id}
                         href={link_to}
-                        name={home.name}
                         price={home.price}
                         address = {home.address}
-                        img={home.img} />
+                        img={home.image[0]} />
                         
                 )
 
