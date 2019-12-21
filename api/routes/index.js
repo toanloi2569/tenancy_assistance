@@ -15,6 +15,11 @@ router.get('/listhome', function(req,res,next){
 });
 
 /* Đăng ký */
+/* checked */
 router.post('/register', User.registerUser)
+
+/* Đăng nhập */
+/* checked */
+router.post('/loginUser', User.loginUser)
 
 module.exports = router;

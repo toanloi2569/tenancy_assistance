@@ -221,7 +221,7 @@ class CreateContract extends React.Component{
         
     
         var payload = {
-            hopdong: {
+            contractDetail: {
                 'ngaytao': this.state.ngaytao,
                 'fullnameHost': this.state.fullnameHost,
                 'fullnameTenant': this.state.fullnameTenant,
@@ -237,7 +237,7 @@ class CreateContract extends React.Component{
                 'dientich': this.state.dientich,
                 'price': this.state.price,
             },
-            thongtinnha:{
+            postDetail:{
                 "square": this.state.textSquare,
                 "price": this.state.textPrice,
                 "address": this.state.textDistrict,

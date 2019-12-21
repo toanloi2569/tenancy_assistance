@@ -14,22 +14,24 @@ exports.registerUser = function(req, res, next){
         console.log(user);
         
         if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
-            pathImg1 = await getFileBase64(req.body.img[1])
-            pathImg2 = await getFileBase64(req.body.img[2])
+            imgPath1 = await getFileBase64(req.body.img[1])
+            imgPath2 = await getFileBase64(req.body.img[2])
             
             let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
 
             var form_data = new FormData()
             form_data.append("so_cmt", req.body.id_number)
             form_data.append("public_key", publicKey)
-            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(pathImg1))
-            form_data.append("anh_cmt_mat_sau", fs.createReadStream(pathImg2))
+            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(imgPath1))
+            form_data.append("anh_cmt_mat_sau", fs.createReadStream(imgPath2))
             
-            let authorization = await getAuthAdmin(settings.UsernameAdmin, settings.UsernameAdmin)
+            let authorization = await getAuthAdmin()
             await createUserForContract(req.body.username, req.body.password)
             await updateUserInfo(authorization, form_data).then(response => {
+                console.log(response);
+                
                 let idv = response.data.id 
-                createUserMongo(req, res, idv)  
+                createUserMongo(req, res, idv, privateKey, publicKey)  
             })
         }
         else {
@@ -38,14 +40,20 @@ exports.registerUser = function(req, res, next){
     })
 }
 
-function createUserMongo(req, res, idv) {
+function createUserMongo(req, res, idv, privateKey, publicKey) {
     var user = new User ({
-        user_name: req.body.username,
+        username: req.body.username,
         password: req.body.password,
-        role: req.body.role,
+
         name: req.body.name,
-        id : req.body.id_number,
+        email: req.body.email,
+        phone: req.body.phone,
+        ID: req.body.id_number,
+        role: req.body.role,
+
         idv: idv,
+        privateKey: privateKey,
+        publicKey: publicKey,
     })
     
     user.save(function(err) {
@@ -59,21 +67,17 @@ function createUserMongo(req, res, idv) {
 }
 
 async function getFileBase64(img) {
-    fileName = String(Date.now())
-    fileName = 'public/uploads/' + fileName
+    imgName = String(Date.now())
+    pos = img.thumbUrl.search('base64,')
 
-    img = img.thumbUrl
-    img = img.replace('data:image/jpg;base64,','')
-    img = img.replace('data:image/jpeg;base64,','')
-    img = img.replace('data:image/png;base64,','')
-    img = img.replace('data:image/tiff;base64,','')
-    img = img.replace('data:image/bmp;base64,','')
+    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
+    img = img.thumbUrl.slice(pos+7)
     
-    await fs.writeFile(fileName, img, 'base64', function(err) {
+    await fs.writeFile(imgPath, img, 'base64', function(err) {
         console.log(err);
         return 
       });
-    return fileName
+    return imgPath
 }
 
 function updateUserInfo(authorization, form_data) {
@@ -102,7 +106,7 @@ function createUserForContract(username, password) {
     })
 }
 
-function getAuthAdmin(username, password) {
+function getAuthAdmin() {
     return axios.post(settings.vChainPort + '/authentication', {
         "password" : settings.PasswordAdmin,
         "username" : settings.UsernameAdmin,
@@ -134,10 +138,6 @@ exports.requireContract = function (req, res, next) {
     })
 }
 
-exports.responseContract = function(req, res, next) {
-
-}
-
 exports.loginUser = async function(req, res) {
     //Login a registered user
     try {
@@ -147,16 +147,20 @@ exports.loginUser = async function(req, res) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
         var token = await user.generateAuthToken()
-        res.status(200).send({ user, token })
+        const role = user.role
+        const id = user.id
+        res.status(200).send({id, role, token })
     } catch (error) {
         res.status(400).send(error)
-        console.log("err");
+        console.log("Error", error);
     }
 }
 
 exports.profileUser = async function(req, res) {
     // View logged in user profile
-    res.send(req.user)
+    // const user = await User.findById(req.userid)
+    const user = req.user
+    res.status(200).send({user})
 }
 
 exports.logoutUser = async function (req, res) {
@@ -177,8 +181,9 @@ exports.logoutallUser = async function(req, res) {
     try {
         req.user.tokens.splice(0, req.user.tokens.length)
         await req.user.save()
-        res.send()
+        res.status(200).send("okkkkk")
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 }
