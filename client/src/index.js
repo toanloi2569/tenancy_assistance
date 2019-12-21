@@ -28,7 +28,7 @@ ReactDOM.render(
        <Route exact path="/login" component={Login} />
        <Route exact path="/host/dangtin" component={CreateForm} />
        <Route exact path="/host/profile" component={HostProfile}/>
-       <Route exact path = "/host/taohopdong" component = {CreateContract}/>
+       <Route exact path ="/host/taohopdong" component = {CreateContract}/>
        <Route exact path="/register" component={Register} />
        <Route exact path ="/host" component = {HostScreen}/>
        <Route exact path = "/tenant" component = {TenantScreen}/>
