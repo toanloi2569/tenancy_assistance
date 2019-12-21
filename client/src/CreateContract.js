@@ -3,7 +3,7 @@ import HostHeader from './components/Header/HostHeader';
 import 'antd/dist/antd.css';
 import { Card, Col, Row } from 'antd';
 import ReactDOM from 'react-dom';
-import WrappedDynamicFieldSet from './components/HostComponets/Contract';
+import WrappedDynamicFieldSet from './components/HostComponets/Contract_new';
 import ShowContract from './components/HostComponets/ShowContract';
 
 class CreateContract extends React.Component{
