@@ -6,15 +6,13 @@ exports.searchPost = function(req, res, next) {
     minPrice = (req.body.minPrice == undefined) ? 0 : req.params.minPrice;
     maxPrice = (req.body.maxPrice == undefined) ? 1000000000 : req.params.maxPrice;
     minSquare = (req.body.minSquare == undefined) ? 0 : req.params.minSquare;
-    district = (req.body.district == undefined) ? /(.*)?/ : `/${req.params.district}/`;
-    ward = (req.body.ward == undefined) ? /(.*)?/ : `/${req.params.ward}/`;
+    district = (req.body.district == undefined) ? /(.*)?/ : `/${req.params.district}/`
 
     Post.find({
         price: {$gte: minPrice},
         price: {$lte: maxPrice},
         square: {$gte: minSquare},
         district: {$regex : district},
-        ward : {$regex : ward},
     })
         .sort([["price"]])
         .exec(function (err, posts) {

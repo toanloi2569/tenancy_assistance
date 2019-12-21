@@ -25,7 +25,8 @@ export default class OverViewHomeBox extends Component {
                         <Link to ={this.props.href}>
                         <main className="bg-light">
                             {/* <img src="/image/room5.jpg" width="258" height="172" alt=""/> */}
-                            <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/>
+                            {/* <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/> */}
+                                
                                 <div className="col-md-12">
                                     <h6 className="course-title">{this.props.name}</h6></div>
                                 <div className="instructor-clist">
