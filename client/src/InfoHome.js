@@ -35,6 +35,12 @@ class InfoHome extends React.Component {
 
         
     }
+    componentDidMount() {
+        // window.addEventListener('load', this.handleLoad);
+        const {match:{params}} = this.props;
+        console.log(params.id)
+
+    }
     showModal = () => {
 
         this.setState({

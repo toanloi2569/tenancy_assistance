@@ -124,7 +124,8 @@ class Login extends Component {
          console.log("Login successfull");
          localStorage.setItem("token", response.data.token)
          if (response.data.user.role === 1){
-          self.props.history.push("/tenant")
+          var id = ":"+ response.data.user._id
+          self.props.history.push("/tenant/"+id)
          }
          else {
           self.props.history.push("/host")

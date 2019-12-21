@@ -8,13 +8,21 @@ export default class OverViewHomeBox extends Component {
     constructor(props){
         super(props);
     }
+    componentDidMount() {
+        // window.addEventListener('load', this.handleLoad);
+        // const {match:{params}} = this.props;
+        // console.log(this.props.key)
+
+    }
 
     render() {
+        // var  id ="/infoHome"+ "/"+this.props.key
+        // console.log(this.props.key)
         return (
             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                 <div className="course-block mx-auto">
                     {/* <a href="#/infoHome" > */}
-                        <Link to ="/infoHome">
+                        <Link to ={this.props.href}>
                         <main className="bg-light">
                             {/* <img src="/image/room5.jpg" width="258" height="172" alt=""/> */}
                             <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/>

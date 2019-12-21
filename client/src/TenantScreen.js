@@ -6,6 +6,7 @@ import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
 import {Row, Col} from 'antd';
 import 'antd/dist/antd.css';
+import 'react-router-dom';
 
 class TenantScreen extends React.Component{
     constructor(props){
@@ -72,9 +73,12 @@ class TenantScreen extends React.Component{
         });
 
     }
-    // componentDidMount() {
-    //     window.addEventListener('load', this.handleLoad);
-    // }
+    componentDidMount() {
+        // window.addEventListener('load', this.handleLoad);
+        const {match:{params}} = this.props;
+        console.log(params.id)
+
+    }
     
     // handleLoad() {
     //     var apiBaseUrl = "http://localhost:9000/users/";
@@ -102,12 +106,13 @@ class TenantScreen extends React.Component{
     
 
     render(){
-
         let elements = this.state.list.map((home, index) => {
+            let link_to = "/infoHome/"+home.id
             if (home.status) {
                 return (
                     <OverViewHomeBox
                         key={home.id}
+                        href={link_to}
                         name={home.name}
                         price={home.price}
                         address = {home.address}
