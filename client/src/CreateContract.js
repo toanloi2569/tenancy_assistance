@@ -218,7 +218,7 @@ class CreateContract extends React.Component {
 
 
         var payload = {
-            contractDetail: {
+            contractDetail : {
                 'timeStart': this.state.ngaytao,
                 'landlordName': this.state.fullnameHost,
                 'tenantName': this.state.fullnameTenant,
@@ -242,8 +242,6 @@ class CreateContract extends React.Component {
                 "img": this.state.fileList,
                 "phone": this.state.phone,
                 "content": this.state.textDesc
-
-
             }
 
 
