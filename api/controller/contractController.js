@@ -1,5 +1,6 @@
 var Contract = require('../schema/contract')
 var User = require('../schema/user')
+var Post = require('../schema/post')
 var KeyController = require('../controller/keyController')
 
 exports.fillContract = function (req, res, next) {
@@ -36,9 +37,14 @@ exports.fillContract = function (req, res, next) {
 }
 
 exports.getContractInfo = function(req, res, next) {
-    Contract.findById(req.params.contract_id, function(err, contract) {
-        if (err) return next(err)
-        res.send(contract)
+    var contract_id     
+    Post.findById(req.params.post_id, function(err, post){
+        contract_id = post.contract_id
+        Contract.findById(contract_id, function(err, contract) {
+            if (err) return next(err)
+            console.log(contract);
+            res.send(contract)
+        })
     })
 }
 

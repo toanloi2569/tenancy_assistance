@@ -37,7 +37,7 @@ ReactDOM.render(
        <Route exact path="/host/profile/:id" component={HostProfile}/>
        <Route exact path = "/host/taohopdong" component = {CreateContract}/>
        <Route exact path="/register" component={Register} />
-       <Route exact path ="/host" component = {HostScreen}/>
+       <Route exact path ="/host/:id" component = {HostScreen}/>
        <Route exact path = "/tenant/:id" component = {TenantScreen}/>
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>

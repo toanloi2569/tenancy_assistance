@@ -52,10 +52,11 @@ class InfoHome extends React.Component {
         });
         var self = this
         var show = []
-        var apiBaseUrl = "http://localhost:9000/users/";
-        axios.post(apiBaseUrl+'', { 'headers': { 'Authorization': localStorage.token } })
+        var apiBaseUrl = "http://localhost:9000/users/fillContract/post_id/"+this.state.id_post;
+        axios.get(apiBaseUrl, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
+            console.log(response)
 
         }
         else if(response.status === 204){

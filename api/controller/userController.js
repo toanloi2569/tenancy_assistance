@@ -14,8 +14,8 @@ exports.registerUser = function(req, res, next){
         console.log(user);
         
         if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
-            imgPath1 = await getFileBase64(req.body.img[1])
-            imgPath2 = await getFileBase64(req.body.img[2])
+            imgPath1 = await getFileBase64(req.body.img[0])
+            imgPath2 = await getFileBase64(req.body.img[1])
             
             let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
 

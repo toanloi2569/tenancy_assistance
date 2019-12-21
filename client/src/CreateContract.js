@@ -123,13 +123,7 @@ class CreateContract extends React.Component{
           phone : '',
           previewVisible: false,
           previewImage: '',
-          fileList: [
-            {
-              uid: '-5',
-              name: 'image.png',
-              status: 'error',
-            }
-          ],
+          fileList: [],
           // hop dong
           ngaytao: '',
         fullnameHost: '',

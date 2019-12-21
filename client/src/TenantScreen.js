@@ -151,7 +151,7 @@ class TenantScreen extends React.Component{
     render(){
         console.log(this.state.list)
         let elements = this.state.list.map((home, index) => {
-            let link_to = "/infoHome/"+home.landlord_id
+            let link_to = "/infoHome/"+home._id
             // if (home.status) {
                 return (
                     <OverViewHomeBox

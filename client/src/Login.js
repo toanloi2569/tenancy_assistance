@@ -123,14 +123,19 @@ class Login extends Component {
        console.log(response);
        if(response.status === 200){
          console.log("Login successfull");
+         console.log(self.state)
          localStorage.setItem("token", response.data.token)
-         if (response.data.role === 'Tenant'){
+         if (response.data.role === 'Tenant' && self.state.menuValue === 1 ){
           var id = ":"+ response.data.id
           self.props.history.push("/tenant/"+id)
          }
-         else 
+         else if(response.data.role === 'Host' && self.state.menuValue === 2)
          {
+          var id = ":"+ response.data.id
           self.props.history.push("/host/"+id)
+         }
+         else{
+           alert("Bạn chưa có tài khoản hoặc bạn chọn sai tư cách đăng nhập")
          }
 
         //  var uploadScreen=[];
