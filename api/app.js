@@ -34,7 +34,7 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(upload.fields([{name:'img1'}, {name:'img2'}]))
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -42,7 +42,7 @@ mongoose.connect(settings.hostDB, { useNewUrlParser: true, useUnifiedTopology: t
 var db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.use(express.json())
+// app.use(express.json())
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
@@ -56,6 +56,7 @@ app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
+    console.log('Error', err)
 
     // render the error page
     res.status(err.status || 500);

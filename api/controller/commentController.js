@@ -14,14 +14,14 @@ exports.createComment = function(req, res, next) {
 }
 
 exports.searchComment = function(req, res, next) {
-    Comment.findById(req.params.commentID, function(err, comment){
+    Comment.findById(req.params.comment_id, function(err, comment){
         if (err) {return next(err);}
         return (comment)
     })
 }
 
 exports.deleteComment = function(req, res, next) {
-    Comment.findByIdAndDelete(req.params.commentID, function(err, comment) {
+    Comment.findByIdAndDelete(req.params.comment_id, function(err, comment) {
         if (err) {return next(err);}
         console.log(comment)
         res.send(comment);
@@ -29,7 +29,7 @@ exports.deleteComment = function(req, res, next) {
 }
 
 exports.updateComment = function(req, res, next) {
-    Comment.findByIdAndUpdate(req.params.commentID, req.params, function(err, comment) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.params, function(err, comment) {
         if (err) {return next(err);}
         console.log(comment);
         res.send(comment);

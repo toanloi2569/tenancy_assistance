@@ -12,7 +12,7 @@ const auth = async function(req, res, next) {
         if (!user) {
             throw new Error();
         }
-        if(Role[Number(data.role)].find(function(url){ return url==req.path})){
+        if(Role[data.role].find(function(url){ return url==req.baseUrl})){
             req.user = user;
             req.token = token;
             next();

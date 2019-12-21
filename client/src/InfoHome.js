@@ -15,6 +15,7 @@ class InfoHome extends React.Component {
         this.state =({
             loading: false,
             visible: false,
+            // Dung cho hop dong
             showcontract: [],
             ngaytao: '',
             fullnameHost: '',
@@ -27,20 +28,112 @@ class InfoHome extends React.Component {
             phoneHost: '',
             phoneTenant:'',
             thoihan: '',
-            dieukhoan:[],
             mota: '',
             dientich: '',
             price: '',
+            id_post: '',
+            // Dung cho bai post
+            // tenbaidang: '',
+            diachinha: '',
+            image: '',
+            sodienthoai: '',
+            dientichnha:'',
+            giatiennha: '',
+            motanha:'',
+
+
+
         })
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleLoad = this.handleLoad.bind(this)
 
         
     }
+    handleChange(event){
+        var target = event.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+          [name]: value
+        })
+    
+      }
+    
     componentDidMount() {
+        setTimeout(()=>{
+            this.handleLoad();
+        },10)
+
         // window.addEventListener('load', this.handleLoad);
+        // const {match:{params}} = this.props;
+        // console.log(params.id)
+    }
+    componentWillUnmount(){
+        
+    }
+
+    handleLoad(){
         const {match:{params}} = this.props;
-        console.log(params.id)
+        this.setState({
+            id_post: params.id
+        })
+        // Lay gia tien, mo ta cho hop dong 
+        var apiBaseUrl1 = "http://localhost:9000/users/detailPost/posts/"+this.state.id_post;
+        axios.get(apiBaseUrl1, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+            if (response.status === 200){
+                console.log(response.data)
+                this.setState({
+                    // bai dang
+                    giatiennha: response.data.post.price,
+                    diachinha: response.data.post.district,
+                    image: response.data.post.image,
+                    sodienthoai: response.data.post.phone,
+                    motanha: response.data.post.content,
+                    dientichnha: response.data.post.square,
+                }) 
+                console.log(this.state)
+
+            }
+        })
+
+        var apiBaseUrl2 = "http://localhost:9000/users/fillContract/post_id/"+this.state.id_post;
+        axios.get(apiBaseUrl2, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+            if (response.status === 200){
+                console.log(response.data)
+                this.setState({
+                    // hop dong
+                    ngaytao: response.data.timeStart,
+                    fullnameHost: response.data.landlordName,
+                    fullnameTenant: response.data.tenantName,
+                    cmtHost: response.data.landlordID,
+                    cmtTenant: response.data.tenantID,
+                    address: response.data.address,
+                    addressHost:response.data.landlordAddress,
+                    addressTenant: response.data.tenantAddress,
+                    phoneHost: response.data.landlordPhone,
+                    phoneTenant: response.data.tenantPhone,
+                    thoihan: response.data.time,
+                    mota: response.data.feature,
+                    dientich: response.data.square,
+                    price: response.data.price
+
+
+
+                }) 
+                // console.log(this.state)
+
+            }
+        })
+
+
 
     }
+
+
+
     showModal = () => {
 
         this.setState({
@@ -48,14 +141,12 @@ class InfoHome extends React.Component {
         });
         var self = this
         var show = []
-        var apiBaseUrl = "http://localhost:9000/users/";
-        // axios.get(apiBaseUrl+'createContract')
-        // .then((response)=> {
-        // console.log(response);
-        
+        var apiBaseUrl = "http://localhost:9000/users/fillContract/post_id/"+this.state.id_post;
+        axios.get(apiBaseUrl, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+        if(response.status === 200 ){
+            console.log(response)
 
-        // if(response.status === 200 ){
-        //     console.log("Get data contract from Host successfull");
             const formItemLayout = {
                 labelCol: {
                   xs: { span: 24 },
@@ -66,7 +157,7 @@ class InfoHome extends React.Component {
                   sm: { span: 20 },
                 },
               };
-            const formItemLayoutWithOutLabel = {
+            const formItemLayoutWithOutLabel = {    
             wrapperCol: {
                 xs: { span: 24, offset: 0 },
                 sm: { span: 20, offset: 4 },
@@ -76,43 +167,33 @@ class InfoHome extends React.Component {
                 <Form onSubmit={this.handleSubmit}>
                 <Form.Item {...formItemLayoutWithOutLabel}>
                     <Form.Item label= "NGÀY TẠO HỢP ĐỒNG">
-                        <DatePicker onChange={this.onChange} />
+                        <span>{response.data.timeStart}</span>
                     </Form.Item>
                 </Form.Item>
                 
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <h>ĐẠI DIỆN HỢP ĐỒNG BÊN A</h>
                 <Form.Item label="Họ tên chủ trọ">
-                <Input placeholder="Họ tên chủ trọ" name = "fullnameHost" onChange = {this.handleChange} 
-                style={{ width: '80%', marginRight: 8, height: 40 }} >
+                    <span>{response.data.landlordName}</span>.
                 
-                </Input>
                 </Form.Item>
 
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Số điện thoại:">
-                <Input placeholder="số điện thoại chủ trọ" name = "phoneHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
+                    <span>{response.data.landlordPhone}</span>
                 
-                </Input>
                 </Form.Item>
 
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Số chứng minh thư:">
-                <Input placeholder="CMND" name = "cmtHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{response.data.landlordID}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
                 <Form.Item label="Địa chỉ thường trú:">
-                <Input placeholder="Địa chỉ thường trú chủ trọ" name = "addressHost" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{response.data.landlordAddress}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel} >
@@ -154,22 +235,13 @@ class InfoHome extends React.Component {
                 <h>NỘI DUNG HỢP ĐỒNG:  </h>
                 <Form.Item label = "BÊN A">
                     <Form.Item label="Nơi cho thuê trọ:">
-                    <Input placeholder="Địa chỉ thuê trọ" name = "address" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                   <span>{response.data.address}</span>
                     </Form.Item>
                     <Form.Item label="Đặc điểm:">
-                    <Input placeholder="Đặc điểm nhà" name = "mota" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                   <span>{response.data.feature}</span>
                     </Form.Item>
                     <Form.Item label="Diện tích cho thuê:">
-                    <Input placeholder="Diện tích" name = "dientich" onChange = {this.handleChange}
-                    style={{ width: '80%', marginRight: 8, height: 40 }}>
-                    
-                    </Input>
+                    <span>{response.data.square}</span>
                     </Form.Item>
                     <Form.Item label="Cam kết:">
                     <span>Bên A đồng ý cho bên B thuê căn nhà này với mục đích và hiện trạng 
@@ -202,81 +274,65 @@ class InfoHome extends React.Component {
                 <Form.Item {...formItemLayoutWithOutLabel} >
                     <h>THỜI HẠN HỢP ĐỒNG</h>
                 <Form.Item label="Thời gian thuê nhà (theo tháng): ">
-                <Input placeholder="kể từ ngày tạo hợp đồng" name = "thoihan" onChange = {this.handleChange}
-                style={{ width: '80%', marginRight: 8, height: 40 }}>
-                
-                </Input>
+                    <span>{response.data.time}</span>
                 </Form.Item>
                 </Form.Item>
                 <Form.Item {...formItemLayoutWithOutLabel}>
                     <h>GIÁ TIỀN CHO THUÊ:</h>
                 <Form.Item label="Giá tiền thuê nhà ">
+                    <span>{response.data.price}</span>
                 
                 </Form.Item>
                 </Form.Item>
-                <Form.Item {...formItemLayoutWithOutLabel}>
-                    <h>ĐIỀU KHOẢN CHUNG TRONG HỢP ĐỒNG:</h>
-                </Form.Item>
 
-        
-                
-                    
-                    
-                <Form.Item {...formItemLayoutWithOutLabel}>
-                <Button type="dashed" onClick={this.add} style={{ width: '80%' } }>
-                    <Icon type="plus" /> Thêm điều khoản
-                </Button>
-                </Form.Item>
-
-                <Form.Item {...formItemLayoutWithOutLabel}>
-                <Button type="primary" htmlType="submit">
-                    Hoàn thiện hợp đồng
-                </Button>
-                </Form.Item>
             </Form>
 
             )
             self.setState({
-                showcontract:show
+                showcontract:show,
+                ngaytao: response.data.timeStart,
+                fullnameHost: response.data.landlordName,
+                fullnameTenant: response.data.tenantName,
+                cmtHost: response.data.landlordID,
+                cmtTenant: response.data.tenantID,
+                address: response.data.address,
+                addressHost:response.data.landlordAddress,
+                addressTenant: response.data.tenantAddress,
+                phoneHost: response.data.landlordPhone,
+                phoneTenant: response.data.tenantPhone,
+                thoihan: response.data.time,
+                mota: response.data.feature,
+                dientich: response.data.square,
+                price: response.data.price
+
+
             })
-        //     self.setState({
-        //         ngaytao: response.data.ngaytao,
-        //         fullnameHost: response.data.fullnameHost,
-        //         fullnameTenant: response.data.fullnameTenant,
-        //         cmtHost: response.data.cmtHost,
-        //         cmtTenant: response.data.cmtTenant,
-        //         address: response.data.address,
-        //         addressHost: response.data.addressHost,
-        //         addressTenant: response.data.addressTenant,
-        //         phoneHost: response.data.phoneHost,
-        //         phoneTenant:response.data.phoneTenant,
-        //         thoihan: response.data.thoihan,
-        //         dieukhoan:response.data.dieukhoan,
-        //         mota:  response.data.mota,
-        //         dientich: response.data.dientich,
-        //         price: response.data.price,
-        //         showcontract: show
-                
-        //     })
+
+            // console.log(this.state)
+
+        }
+        else if(response.status === 204){
+            console.log("");
+            
+        }
+        else{
+            console.log("");
+            alert("");
+        }
+        })
         
-
-        // }
-        // else if(response.status === 204){
-        //     console.log("Loi server");
-        //     alert(response.data.success)
-        // }
-        // else{
-        //     console.log("Loi server");
-        //     alert("Loi server");
-        // }
-        // })
-
-
+       
 
 
       };
     
-    handleOk = () => {
+    handleOk = e => {
+        e.preventDefault();
+        console.log(this.state)
+        var payload = {
+            
+        }
+        
     this.setState({ loading: true });
     setTimeout(() => {
         this.setState({ loading: false, visible: false });
@@ -288,6 +344,8 @@ class InfoHome extends React.Component {
     };
 
     render() {
+        console.log(this.state.image)
+        
         return (
             <div>
                 <header className="header-area" id="top-bar">
@@ -304,17 +362,21 @@ class InfoHome extends React.Component {
                                     <div class="col-lg-12">
                                         <div>
                                             <Carousel autoplay >
+                                                {/* <div ><img class="img-fluid w-100" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
                                                 <div ><img class="img-fluid w-100" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
-                                                <div ><img class="img-fluid w-100" src="image/facilites_bg.jpg" alt="" style={{height:"400px"}}/></div>
-                                                <div ><img class="img-fluid w-100" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
-                                                <div ><img class="img-fluid w-100" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div>
+                                                
+                                                <div ><img class="img-fluid w-100" src="image/blog/feature-img1.jpg" alt="" style={{height:"400px"}}/></div> */}
+                                               <div> <img style={{height:"400px"}} id='base64image'                 
+                                                src= {this.state.image[0]}
+                                                class="img-fluid w-100" /></div>
+                                                {/* <div ><img class="img-fluid w-100" src={} alt="" style={{height:"400px"}}/></div> */}
                                             </Carousel>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12 blog_details">
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <h2>{this.props.name}</h2>
+                                                <h2>{this.state.diachinha}</h2>
                                             </div>
                                             <div class="col-md-3 d-flex">
                                                 {/* <button type="button" class="btn btn-outline-warning ml-auto align-self-center">Thue Nha</button> */}
@@ -342,13 +404,13 @@ class InfoHome extends React.Component {
                                             </div>
                                             <div class="d-flex bd-highlight">
                                                 <div class="p-2 flex-fill bd-highlight">
-                                                    <a><i class="lnr lnr-user" style={{ paddingRight: "5px" }}></i>Anh Dung</a>
+                                                    <a><i class="lnr lnr-user" style={{ paddingRight: "5px" }}></i>{this.state.fullnameHost}</a>
                                                 </div>
                                                 <div class="p-2 flex-fill bd-highlight">
-                                                    <a><i class="lnr lnr-phone-handset" style={{ paddingRight: "5px" }}></i>0123456789</a>
+                                                    <a><i class="lnr lnr-phone-handset" style={{ paddingRight: "5px" }}></i>{this.state.sodienthoai}</a>
                                                 </div>
                                                 <div class="p-2 flex-fill bd-highlight">
-                                                    <a><i class="lnr lnr-location"></i>5 Ta Quang Buu, Phuong Bach Khoa, Quan Hai Ba Trung</a>
+                                                    <a><i class="lnr lnr-location"></i>{this.state.diachinha}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -360,13 +422,13 @@ class InfoHome extends React.Component {
                                                 <aside>
                                                     <h3> Thong tin Phong tro</h3>
                                                     <h6 style={{ paddingLeft: "10px" }}>
-                                                        Gia Phong : 2000000 VND<br />
-                                                        Dien Tich : 20 m2<br />
-                                                        Dia Chi : 5 Ta Quang Buu, Phuong Bach Khoa, Quan Hai Ba Trung, Ha Noi<br />
+                                                        Gia Phong : {this.state.giatiennha} VND<br />
+                                                        Dien Tich : {this.state.dientichnha} m2<br />
+                                                        Dia Chi : {this.state.diachinha}<br />
                                                         Mo Ta Chi Tiet :<br />
                                                         <h7>
-                                                            &emsp;- Co nha ve sinh rong rai <br />
-                                                            &emsp;- Co nong lanh, mang wifi
+                                                            &emsp;- {this.state.motanha}<br />
+                                                            
                                                         </h7>
                                                     </h6>
                                                 </aside>
@@ -499,12 +561,12 @@ class InfoHome extends React.Component {
                                     <aside class="single_sidebar_widget author_widget">
                                         <div class="blog_info text-left" style={{ paddingTop: "5px" }}>
                                             <ul class="blog_meta list_style">
-                                                <li><a><i class="lnr lnr-location"></i>5 Ta Quang Buu, Phuong Bach Khoa</a></li>
-                                                <li><a><i class="lnr lnr-map-marker"></i>Quan Hai Ba Trung</a></li>
-                                                <li><a><i class="lnr lnr-diamond"></i>2000000 VND</a></li>
+                                                <li><a><i class="lnr lnr-location"></i>{this.state.diachinha}</a></li>
+                                                {/* <li><a><i class="lnr lnr-map-marker"></i>Quan Hai Ba Trung</a></li> */}
+                                                <li><a><i class="lnr lnr-diamond"></i>{this.state.giatiennha} VND</a></li>
                                                 <li><a><i class="lnr lnr-crop"></i>20 m2</a></li>
-                                                <li><a><i class="lnr lnr-phone-handset"></i>0123456789</a></li>
-                                                <li><a><i class="lnr lnr-user"></i>Anh Dung</a></li>
+                                                <li><a><i class="lnr lnr-phone-handset"></i>{this.state.sodienthoai}</a></li>
+                                                <li><a><i class="lnr lnr-user"></i>{this.state.fullnameHost}</a></li>
                                             </ul>
                                         </div>
                                         <div class="br"></div>

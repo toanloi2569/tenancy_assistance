@@ -10,51 +10,29 @@ const { generateKeyPair } = require('crypto');
 
 exports.registerUser = function(req, res, next){    
 
-    User.findOne({name: req.body.name, role: Number(req.body.role)}, async function(err, user){
-        if(user === null){ //Kiểm tra xem cmt đã được sử dụng chưa
+    User.findOne({email: req.body.email, role: Number(req.body.role)}, async function(err, user){
+        console.log(user);
+        
+        if(user == null){ //Kiểm tra xem cmt đã được sử dụng chưa
+            imgPath1 = await getFileBase64(req.body.img[0])
+            imgPath2 = await getFileBase64(req.body.img[1])
             
-            // var form_data = new FormData()
-            // form_data.append("so_cmt", req.body.id_number)
-            // form_data.append("public_key", req.body.public_key)
-            // form_data.append("anh_cmt_mat_truoc", fs.createReadStream(req.files.img1[0].path))
-            // form_data.append("anh_cmt_mat_sau", fs.createReadStream(req.files.img2[0].path))
-
-            // let authorization;
-            // // await createUserForAPI1(req.body.username, req.body.password)
-            // // await createUserForAPI2(req.body.username, req.body.password)
-            // // await new Promise(resolve => setTimeout(resolve, 3000));
-            // await getAuth(req.body.username, req.body.password)
-            //     .then(res=>{
-            //         authorization = res.data.authorization;
-            //     })
             let [publicKey, privateKey] = await Key.generateKey(req.body.id_number)
-            console.log(publicKey, privateKey);
-            
-            
-            
-            // var req_to_Vchain = {
-            //     method: "post",
-            //     url: settings.vChainPort + "/userInfor/create",
-            //     headers: {
-            //         // 'Content-type': 'multipart/form-data',
-            //         // Accept : 'multipart/form-data',
-            //         Authorization : authorization,
-            //     },
-            //     data: form_data
-            // }
 
-            // console.log(req_to_Vchain);
-            // await new Promise(resolve => setTimeout(resolve, 3000));
-
-            // axios(req_to_Vchain)
-            //     .then(function(response){
-                        createUserMongo(req, res)
-                    
-                // })
-                // .catch(function (err) {
-                //     console.log(err);
-                // });
-
+            var form_data = new FormData()
+            form_data.append("so_cmt", req.body.id_number)
+            form_data.append("public_key", publicKey)
+            form_data.append("anh_cmt_mat_truoc", fs.createReadStream(imgPath1))
+            form_data.append("anh_cmt_mat_sau", fs.createReadStream(imgPath2))
+            
+            let authorization = await getAuthAdmin()
+            await createUserForContract(req.body.username, req.body.password)
+            await updateUserInfo(authorization, form_data).then(response => {
+                console.log(response);
+                
+                let idv = response.data.id 
+                createUserMongo(req, res, idv, privateKey, publicKey)  
+            })
         }
         else {
             res.json({err: 'Chung minh thu da duoc dung'})
@@ -62,56 +40,81 @@ exports.registerUser = function(req, res, next){
     })
 }
 
-function createUserMongo(req, res) {
+function createUserMongo(req, res, idv, privateKey, publicKey) {
     var user = new User ({
-        user_name: req.body.username,
+        username: req.body.username,
         password: req.body.password,
-        role: Number(req.body.role),
+
         name: req.body.name,
-        id : req.body.id_number 
+        email: req.body.email,
+        phone: req.body.phone,
+        ID: req.body.id_number,
+        role: req.body.role,
+
+        idv: idv,
+        privateKey: privateKey,
+        publicKey: publicKey,
     })
     
     user.save(function(err) {
+        console.log(user);
+        
         if (err) console.log(err);
         
         console.log('Luu nguoi dung thanh cong');
-        // const token = await user.generateAuthToken();
-        res.status(201).send({ user });
-    });
-       
-  
+        res.status(201).send(user)
+    });  
+}
+
+async function getFileBase64(img) {
+    imgName = String(Date.now())
+    pos = img.thumbUrl.search('base64,')
+
+    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
+    img = img.thumbUrl.slice(pos+7)
     
+    await fs.writeFile(imgPath, img, 'base64', function(err) {
+        console.log(err);
+        return 
+      });
+    return imgPath
 }
 
-function createUserForAPI1(username, password) {
-    return axios.post(settings.vChainPort + '/user', {
-        "password" : password,
-        "role" : "USER",
-        "username" : username
-    })
-    .catch(function (error) {
-        return error
-    });
+function updateUserInfo(authorization, form_data) {
+    return axios.post(
+        settings.vChainPort + "/UserInfo/create",
+        form_data, {
+            headers: {
+                Authorization : authorization,
+                'Content-Type': `multipart/form-data; boundary=${form_data._boundary}`,
+                }
+        }).catch(err => {
+            console.log(err);
+        })
 }
 
-function createUserForAPI2(username, password) {
-    return axios.post(setting.vChainPortContract + '/user', {
+function createUserForContract(username, password) {
+    return axios.post(settings.vChainPortContract + '/user', {
         "password" : password,
         "role" : "USER",
         "username" : username,
+    }).then(res => {
+        console.log(res.data);  
     })
     .catch(function(error){
         return error
     })
 }
 
-function getAuth(username, password) {
+function getAuthAdmin() {
     return axios.post(settings.vChainPort + '/authentication', {
-        "password" : password,
-        "username" : username,
+        "password" : settings.PasswordAdmin,
+        "username" : settings.UsernameAdmin,
+    }).then(res => {
+        return res.data.authorization
     })
-    .catch(function(error) {
-        return error
+    .catch(err => {
+        return err
     })
 }
 
@@ -135,34 +138,29 @@ exports.requireContract = function (req, res, next) {
     })
 }
 
-exports.responseContract = function(req, res, next) {
-
-}
-
 exports.loginUser = async function(req, res) {
-
     //Login a registered user
     try {
         var { username, password } = req.body
-        console.log(req.body)
-        console.log(username)
         var user = await User.findByCredentials(username, password)
-        // console.log(user)
         if (!user) {
             return res.status(401).send({error: 'Login failed! Check authentication credentials'})
         }
         var token = await user.generateAuthToken()
-        res.status(200).send({ user, token })
+        const role = user.role
+        const id = user.id
+        res.status(200).send({id, role, token })
     } catch (error) {
         res.status(400).send(error)
-        console.log("err");
-        
+        console.log("Error", error);
     }
 }
 
 exports.profileUser = async function(req, res) {
     // View logged in user profile
-    res.send(req.user)
+    // const user = await User.findById(req.userid)
+    const user = req.user
+    res.status(200).send({user})
 }
 
 exports.logoutUser = async function (req, res) {
@@ -183,8 +181,9 @@ exports.logoutallUser = async function(req, res) {
     try {
         req.user.tokens.splice(0, req.user.tokens.length)
         await req.user.save()
-        res.send()
+        res.status(200).send("okkkkk")
     } catch (error) {
+        console.log(error)
         res.status(500).send(error)
     }
 }

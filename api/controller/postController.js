@@ -1,71 +1,161 @@
 
+var fs = require('fs')
+var mongoose = require('mongoose')
 var Post = require('../schema/post')
+var Contract = require('../schema/contract')
 var CommentController = require('./commentController')
+var ContractController =require('./contractController')
 
 exports.searchPost = function(req, res, next) {
-    minPrice = (req.body.minPrice == undefined) ? 0 : req.params.minPrice;
-    maxPrice = (req.body.maxPrice == undefined) ? 1000000000 : req.params.maxPrice;
-    minSquare = (req.body.minSquare == undefined) ? 0 : req.params.minSquare;
-    district = (req.body.district == undefined) ? /(.*)?/ : `/${req.params.district}/`;
-    ward = (req.body.ward == undefined) ? /(.*)?/ : `/${req.params.ward}/`;
+    minPrice = (req.body.minPrice == undefined) ? 0 : req.body.minPrice;
+    maxPrice = (req.body.maxPrice == undefined) ? 1000000000 : req.body.maxPrice;
+    minSquare = (req.body.minSquare == undefined) ? 0 : req.body.minSquare;
+    maxSquare = (req.body.maxSquare == undefined) ? 1000000000 : req.body.maxPrice
+    district = (req.body.district == undefined) ? /(.*)?/ : `/${req.body.district}/`;
 
     Post.find({
         price: {$gte: minPrice},
         price: {$lte: maxPrice},
         square: {$gte: minSquare},
+        square: {$lte: maxSquare},
         district: {$regex : district},
-        ward : {$regex : ward},
     })
         .sort([["price"]])
         .exec(function (err, posts) {
             if (err) {return next(err);}
-            console.log(posts);
+            for (i = 0; i < posts.length; i++) {
+                post = posts[i]
+                for (j = 0; j < post.image.length; j++) {
+                    pos = post.image[j].search('base64,')
+                    ext = post.image[j].slice(21, pos+7)
+
+                    image = readFileBase64(post.image[j])
+                    image = "data:image/" + ext + image
+                    posts[i][j] = image
+                }
+            }
             res.send(posts)
         })
 }
 
-exports.createPost = function(req, res) {
+exports.createPost = async function(req, res, next) {
+    postDetail = req.body.postDetail
+    contractDetail = req.body.contractDetail 
 
-    comment_id = req.body.comment_id
-    comment_id = (comment_id == undefined) ? null : comment_id.split(',')
+    let imgPaths = []
+    for (i = 0; i < postDetail.img.length; i++) {
+        let imgPath = await getFileBase64(postDetail.img[i])
+        imgPaths.push(imgPath)
+    }
 
+    contract_id = mongoose.Types.ObjectId()
+    var contract = new Contract({
+        _id : contract_id,
+
+        // landlord_id : req.user._id,
+        landlord_id : '5dfd6f33d6a08c3a711da14e', 
+
+        /* Landlord Info*/
+        landlordName: contractDetail.landlordName,
+        landlordPhone: contractDetail.landlordPhone,
+        landlordID: contractDetail.landlordID,
+        landlordAddress: contractDetail.landlordAddress,
+
+        /* Tenant Info */
+        tenantName: contractDetail.tenantName,
+        tenantPhone: contractDetail.tenantPhone,  
+        tenantID: contractDetail.tenantID,
+        tenantAdress: contractDetail.tenantAdress,
+
+        /* Contract */
+        address: contractDetail.address,
+        feature: contractDetail.feature,
+        square: contractDetail.square,
+        price: contractDetail.price,
+        timeStart: contractDetail.timeStart,
+        time: contractDetail.time,
+
+        rule: contractDetail.rule,
+    })
+    
     var post = new Post ({
-        landlord_id : req.body.landlord_id,
-        comment_id : comment_id,
-        square : Number(req.body.square),
-        price : Number(req.body.price),
-        district : req.body.district,
-        address : req.body.address,
-        phone : req.body.phone,
-        image : (req.body.image == undefined) ? null : req.body.image,
-        content : req.body.content,
-        availability : Boolean(req.body.availability),
-        date : Date(req.body.date),
+        // landlord_id : req.user._id,ongoose
+        landlord_id : '5dfd6f33d6a08c3a711da14e',
+        contract_id : contract_id,
+
+        square : Number(postDetail.square),
+        price : Number(postDetail.price),
+        district : postDetail.district,
+
+        address : postDetail.address,
+        phone : postDetail.phone,
+        image : imgPaths,
+        content : postDetail.content,
+
+        availability : true,
+        date : Date.now(),
     })
 
+    
+    
     post.save(function (err) {
         if (err) {return next(err);}
-        console.log("Luu thanh cong");
-        res.send("Luu thanh cong")
+        contract.save(function(err){
+            if (err) {return next(err)}
+        })
+
+        res.send({"post":post, "contract": contract})
     })
+}
+
+async function getFileBase64(img) {
+    imgName = String(Date.now())
+    pos = img.thumbUrl.search('base64,')
+
+    imgPath = 'public/uploads/house/' + img.thumbUrl.slice(11, pos+7) + imgName
+    img = img.thumbUrl.slice(pos+7)
+    
+    await fs.writeFile(imgPath, img, 'base64', function(err) {
+        console.log(err);
+        return 
+    });
+    return imgPath
 }
 
 exports.seeDetailPost = function(req, res) {
-    Post.findById(req.params.postID, function(err, post) {
+    Post.findById(req.params.post_id, function(err, post) {
         if (err) {return next(err);}
         
-        comments = []
-        for (var i=0; i > length(post.comment_id); i++) {
-            comment = CommentController.searchComment(post.comment_id[i])
-            comments.push(comment)
+        images = []
+        for (i = 0; i < post.image.length; i++) {
+            pos = post.image[i].search('base64,')
+            ext = post.image[i].slice(21, pos+7)
+            
+            image = readFileBase64(post.image[i])   
+            image = "data:image/" + ext + image
+            
+            images.push(image)
         }
+        post.image = images
 
-        res.send({"post": post, "comments": comments})
+        // comments = []
+        // for (var i=0; i < post.comment_id.length; i++) {
+        //     comment = CommentController.searchComment(post.comment_id[i])
+        //     comments.push(comment)
+        // }
+    
+        // res.send({"post": post, "comments": comments})
+        res.send({"post": post})
     })
 }
 
+function readFileBase64(imgPath) {
+    var bitmap = fs.readFileSync(imgPath);
+    return new Buffer(bitmap).toString('base64');
+}
+
 exports.deletePost = function(req, res) {
-    Post.findById(req.params.postID, function(err, post) {
+    Post.findById(req.params.post_id, function(err, post) {
         if (err) {return next(err);}
         
         for (var i=0; i > length(post.comment_id); i++) {
@@ -80,7 +170,7 @@ exports.deletePost = function(req, res) {
 }
 
 exports.updatePost = function(req, res) {
-    Post.findByIdAndUpdate(req.params.postID, req.body, function(err, post) {
+    Post.findByIdAndUpdate(req.params.post_id, req.body, function(err, post) {
         if (err) {return next(err);}
         console.log(post);
         res.send(post);
