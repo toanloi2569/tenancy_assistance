@@ -240,8 +240,8 @@ class CreateContract extends React.Component{
             thongtinnha:{
                 "square": this.state.textSquare,
                 "price": this.state.textPrice,
-                "district": this.state.textDistrict,
-                "address": this.state.address,
+                "address": this.state.textDistrict,
+                "district": this.state.address,
                 "img": this.state.fileList,
                 "phone": this.state.phone,
                 "content": this.state.textDesc
@@ -330,7 +330,7 @@ class CreateContract extends React.Component{
                                         
                                         <form onSubmit={this.onHandleSubmit} >
 
-                                            <label> Address:</label>
+                                            <label> District:</label>
                                             <Cascader 
                                                 style={{ width: "100%" }}
                                                 options={convertAddress(vn)}
@@ -339,7 +339,7 @@ class CreateContract extends React.Component{
                                                 />
                                     
                                             <div className="form-group">
-                                            <label >District: </label>
+                                            <label >Address: </label>
                                             <input type="text" className="form-control" name = "textDistrict" 
                                             onChange={this.onHandleChange}
                                             value = {this.state.textDistrict}/> 
