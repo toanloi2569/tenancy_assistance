@@ -10,6 +10,7 @@ import MenuItem from 'material-ui/MenuItem';
 import 'antd/dist/antd.css';
 import './index.css';
 import { Upload, Icon, Modal } from 'antd';
+import settings from './config'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -217,10 +218,13 @@ class Register extends Component {
 
   }
   handleClick(event) {
-    var apiBaseUrl = "http://localhost:9000/";
-
+    var apiBaseUrl = settings.apiBaseUrl;
+    // console.log("values in register handler",role);
     var self = this;
-
+    //To be done:check for empty values before hitting submit
+    // if (this.state.username.length > 0 && this.state.email.length > 0 
+    //   && this.state.password.length > 0 && this.state.phone.length > 0
+    //   && this.state.socmt.length> 0) {
       var payload = {
         "username": this.state.username,
         "name": this.state.name,
@@ -237,7 +241,15 @@ class Register extends Component {
           console.log(response);
           if (response.data.code === 200) {
             console.log("registration successfull");
-
+            // var loginscreen = [];
+            // loginscreen.push(<Login parentContext={this} appContext={self.props.appContext} role={self.props.role} />);
+            // var loginmessage = "Not Registered yet.Go to registration";
+            // self.props.parentContext.setState({
+            //   loginscreen: loginscreen,
+            //   loginmessage: loginmessage,
+            //   buttonLabel: "Register",
+            //   isLogin: true
+            // });
           }
           else {
             console.log("some error ocurred", response.data.code);
@@ -246,8 +258,6 @@ class Register extends Component {
         .catch(function (error) {
           console.log(error);
         });
-
-
   }
 
 

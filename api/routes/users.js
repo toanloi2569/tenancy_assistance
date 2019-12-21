@@ -9,14 +9,11 @@ var Comment = require('../controller/commentController')
 /* GET users listing. */
 router.get('/', Post.getMainPage)
 
-/* Đăng ký */
-router.post('/register', User.registerUser)
-
 /* Yêu cầu hợp đồng */
 router.post('/requireContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.requireContract)
 
 /* Sinh hợp đồng mẫu */
-router.post('getTemplateContract')
+router.post('/getTemplateContract')
 
 /* Gửi hợp đồng kèm chữ ký */
 router.post('/responseContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.responseContract)
@@ -51,7 +48,6 @@ router.post('updateComment/comments/:commentID', Comment.updateComment)
 // router.post('/comment', User.comment)
 
 // test dang nhap dang xuat
-// router.post('/registerUser', User.registerUser)
 router.post('/loginUser', User.loginUser)
 router.post('/logoutUser', auth, User.logoutUser)
 router.post('/logoutallUser', auth, User.logoutallUser)
