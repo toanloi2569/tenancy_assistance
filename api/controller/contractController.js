@@ -1,21 +1,21 @@
 var Contract = require('../schema/contract')
+var User = require('../schema/user')
+var KeyController = require('../controller/keyController')
 
-exports.createContract = function (req, res, next) {
+exports.fillContract = function (req, res, next) {
     contract = new Contract({
-        landlord_id : (req.body.landlord_id == undefined) ? req.user._id : req.body.landlord_id,
-        tenant_id : (req.body.landlord_id == undefined) ? undefined : req.user._id,
+        landlord_id : req.body.landlord_id,
+        tenant_id : req.user._id,
 
         /* Landlord Info*/
         landlordName: req.body.landlordName,
         landlordPhone: req.body.landlordPhone,
-        landlordEmail: req.body.landlordPhone,
         landlordID: req.body.landlordID,
         landlordAddress: req.body.landlordAddress,
 
         /* Tenant Info */
         tenantName: req.body.tenantName,
-        tenantPhone: req.body.tenantPhone,
-        tenanEmail: req.body.tenanEmail,
+        tenantPhone: req.body.tenantPhone,       
         tenantID: req.body.tenanID,
         tenantAdress: req.body.tenanAdress,
 
@@ -30,14 +30,47 @@ exports.createContract = function (req, res, next) {
         rule: req.body.rule,
     })
 
-    getContent(contract)
-
     contract.save(function(err){
         if (err) {return next(err)}
     })
 }
 
-function getContent(contract) {
+exports.getContractInfo = function(req, res, next) {
+    Contract.findById(req.params.contract_id, function(err, contract) {
+        if (err) return next(err)
+        res.send(contract)
+    })
+}
+
+exports.sign = async function(req, res, next) {
+    user_id = req.user._id
+    contract_id = req.params._id
+
+    var privateKey
+    await User.findById(user_id, function(err, data) {
+        if (err) return next(err)
+        privateKey = data.privateKey
+    })
+
+    Contract.findById(contract_id, async function (err, contract) {
+        content = getContent(contract)
+        contentHashed = await KeyController.hashText(content)
+        signature = await KeyController.privateEncrypt(privateKey, contentHashed)
+
+        if (req.user.role == 'Tenant') {
+            contract.tenantSign = signature
+        } else {
+            contract.landlordSign = signature
+        }
+
+        contract.save(function(err) {
+            if (err) return next(err)
+            req.send(contract)
+        })
+    })
+}
+
+exports.getContent = function getContent(contract) {
     content = `
         Đại diện hợp đồng bên A                             \n
         Họ tên chủ trọ : ${contract.landlordName}           \n
@@ -71,4 +104,5 @@ function getContent(contract) {
     for (i = 0; i < contract.length; i++) {
         content += contract.rule[i] + '\n'
     }
+    return content
 }

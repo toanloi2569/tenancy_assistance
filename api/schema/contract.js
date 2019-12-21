@@ -29,7 +29,7 @@ var Contract = new Schema({
 
     rule: [{ type: String }],
 
-    landlordSign : {type: String, require: true},
+    landlordSign : {type: String},
     tenantSign : {type: String}
 })
 

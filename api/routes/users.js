@@ -11,10 +11,16 @@ var Contract = require('../controller/contractController')
 router.get('/', Post.getMainPage)
 
 /* Sinh hợp đồng */
-router.post('/createContract', Contract.createContract)
+router.post('/fillContract', Contract.fillContract)
 
-/* Gửi hợp đồng kèm chữ ký */
-// router.post('/responseContract/post/:postID/tenant/:tenantID/landlord/:landlordID', User.responseContract)
+/* Ký hợp đồng */
+router.post('/sign/contract_id/:contract_id', Contract.sign)
+
+/* Lấy thông tin hợp đồng */
+router.get('/fillContract/contract_id/:contract_id', Contract.getContractInfo)
+
+/* Gửi dữ liệu lên vchain */
+// router.push('/storeContract/')
 
 
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */

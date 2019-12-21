@@ -2,7 +2,9 @@
 var fs = require('fs')
 
 var Post = require('../schema/post')
+var Contract = require('../schema/contract')
 var CommentController = require('./commentController')
+var ContractController =require('./contractController')
 
 exports.searchPost = function(req, res, next) {
     minPrice = (req.body.minPrice == undefined) ? 0 : req.body.minPrice;
@@ -21,39 +23,69 @@ exports.searchPost = function(req, res, next) {
         .sort([["price"]])
         .exec(function (err, posts) {
             if (err) {return next(err);}
-            console.log(posts);
             res.send(posts)
         })
 }
 
 exports.createPost = async function(req, res, next) {
+    postDetail = req.body.postDetail
+    contractDetail = req.body.contractDetail 
+
     let imgPaths = []
-    for (i = 1; i < req.body.img.length; i++) {
-        let imgPath = await getFileBase64(req.body.img[i])
+    for (i = 1; i < postDetail.img.length; i++) {
+        let imgPath = await getFileBase64(postDetail.img[i])
         imgPaths.push(imgPath)
     }
     
-
     var post = new Post ({
-        // landlord_id : req.user._id,
-        landlord_id : '5dfd6f33d6a08c3a711da14e',
+        landlord_id : req.user._id,
 
-        square : Number(req.body.square),
-        price : Number(req.body.price),
-        district : req.body.district.join(),
+        square : Number(postDetail.square),
+        price : Number(postDetail.price),
+        district : postDetail.district,
 
-        address : req.body.address,
-        phone : req.body.phone,
+        address : postDetail.address,
+        phone : postDetail.phone,
         image : imgPaths,
-        content : req.body.content,
+        content : postDetail.content,
 
         availability : true,
         date : Date.now(),
     })
 
+    var contract = new Contract({
+        landlord_id : req.user._id,
+        // landlord_id : '5dfd6f33d6a08c3a711da14e', 
+
+        /* Landlord Info*/
+        landlordName: contractDetail.landlordName,
+        landlordPhone: contractDetail.landlordPhone,
+        landlordID: contractDetail.landlordID,
+        landlordAddress: contractDetail.landlordAddress,
+
+        /* Tenant Info */
+        tenantName: contractDetail.tenantName,
+        tenantPhone: contractDetail.tenantPhone,  
+        tenantID: contractDetail.tenantID,
+        tenantAdress: contractDetail.tenantAdress,
+
+        /* Contract */
+        address: contractDetail.address,
+        feature: contractDetail.feature,
+        square: contractDetail.square,
+        price: contractDetail.price,
+        timeStart: contractDetail.timeStart,
+        time: contractDetail.time,
+
+        rule: contractDetail.rule,
+    })
+    
     post.save(function (err) {
         if (err) {return next(err);}
-        console.log("Luu thanh cong");
+        contract.save(function(err){
+            if (err) {return next(err)}
+        })
+
         res.send("Luu thanh cong")
     })
 }
@@ -62,14 +94,14 @@ async function getFileBase64(img) {
     imgName = String(Date.now())
     pos = img.thumbUrl.search('base64,')
 
-    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
+    imgPath = 'public/uploads/house/' + img.thumbUrl.slice(11, pos+7) + imgName
     img = img.thumbUrl.slice(pos+7)
     
-    await fs.writeFile(fileName, img, 'base64', function(err) {
+    await fs.writeFile(imgPath, img, 'base64', function(err) {
         console.log(err);
         return 
     });
-    return fileName
+    return imgPath
 }
 
 exports.seeDetailPost = function(req, res) {
