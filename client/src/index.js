@@ -22,6 +22,7 @@ import {createStore} from 'redux';
 import allListHome from './reducers/index';
 import Testabc from './Testabc'
 import {Provider} from 'react-redux';
+import ViewConTract from './ViewContract';
 const store = createStore(allListHome);
 
 
@@ -34,15 +35,16 @@ ReactDOM.render(
        <Route exact path="/" component={Home} />
        <Route exact path="/login" component={Login} />
        <Route exact path="/host/dangtin" component={CreateForm} />
-       <Route exact path="/host/profile/:id" component={HostProfile}/>
        <Route exact path = "/host/taohopdong" component = {CreateContract}/>
        <Route exact path="/register" component={Register} />
        <Route exact path ="/host/:id" component = {HostScreen}/>
-       <Route exact path = "/tenant/:id" component = {TenantScreen}/>
+       <Route exact path = "/listhome/:id" component = {TenantScreen}/>
        <Route exact path = "/tenant/profile"  component = {TenantProfile} />
        <Route exact path = "/tenant/thongtinthuenha" component = {InformationTenancy}/>
-       <Route exact path = "/host/danhsachnhachothue" component = {ListHouseRent}/>
+       <Route exact path = "/host/profile" component = {HostProfile}/>
+       <Route exact path = "/host/quanlybaidang/:id" component = {ListHouseRent}/>
        <Route exact path = "/infohome/:id" component = {InfoHome}/>
+       <Route exact path = "/hopdong" component = {ViewConTract}/>
      </div>
   </HashRouter >
   </Provider>

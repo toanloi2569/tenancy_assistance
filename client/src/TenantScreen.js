@@ -4,15 +4,17 @@ import OverViewHomeBox from './components/OverViewHomeBox';
 import TenantHeader from './components/Header/TenantHeader';
 import UploadScreen from './components/UploadScreen';
 import FilterHome from './components/FilterHome';
-import {Row, Col, Button} from 'antd';
-import 'antd/dist/antd.css';
-import 'react-router-dom';
+import FooterHome from './components/Footer/FooterHome';
+// import { Row, Col } from 'antd';
+// import 'antd/dist/antd.css';
+// import 'react-router-dom';
+import { Button } from 'antd';
 
-class TenantScreen extends React.Component{
-    constructor(props){
+class TenantScreen extends React.Component {
+    constructor(props) {
         super(props);
         this.state = ({
-            list : [
+            list: [
                 {
                     _id: 1,
                    
@@ -134,7 +136,6 @@ class TenantScreen extends React.Component{
     }
 
 
-    
 
     render(){
         console.log(this.state.list)
@@ -154,32 +155,28 @@ class TenantScreen extends React.Component{
             // }
 
         })
-
-
-
-        return(
+        return (
             <div>
-                <TenantHeader/>
-                <br/><br/><br/>
-                <br/><br/><br/>
-                <br/><br/><br/>
-                <Row>
-                    <Col span={18} push={6}>
+                <TenantHeader />
+                <br /><br /><br />
+                <br /><br /><br />
+                <br /><br /><br />
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
+                        <FilterHome />
+                        <Button type="primary" icon="search" onClick={this.onSearch}>
+                        Search
+                        </Button>
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12">
                         <div className="container">
                             <div className="row">
-                                {elements}
-                                
+                                {elements}  
                             </div>
                         </div>
-                    </Col>
-                    <Col span={6} pull={18}>
-                        <FilterHome/>
-                        <Button type="primary" icon="search" className="container" onClick = {this.onSearch}>
-                            Search
-                        </Button>
-                    </Col>
-                </Row>
-                
+                    </div>
+                </div>
+                <FooterHome/>
             </div>
         )
     }
