@@ -274,9 +274,9 @@ class InfoHome extends React.Component {
                 <header className="header-area" id="top-bar">
                     <TopBar />
                 </header>
-                <section className="banner-area">
-                    <div style={{ padding: "30px" }}></div>
-                </section>
+                    <section className="banner-area">
+                        <div style={{ padding: "30px" }}></div>
+                    </section>
                 <section class="blog_area single-post-area">
                     <div class="container">
                         <div class="row">
