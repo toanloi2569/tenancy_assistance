@@ -210,9 +210,8 @@ class CreateForm extends React.Component{
             <div>
               <HostHeader/>
                 <div className="container ">       
-                    <div className="row" style ={{marginTop: 7 + 'em'}} >
+                    <div className="row" style ={{marginTop: 1 + 'em'}} >
                     <div className="col align-self-start">
-                      <h1>Đăng Tin Thuê Nhà</h1>
                     </div>
                       
                         <div className="col align-self-center" >
