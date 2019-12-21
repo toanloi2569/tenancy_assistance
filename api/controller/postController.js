@@ -101,8 +101,6 @@ exports.createPost = async function(req, res, next) {
     post.save(function (err) {
         if (err) {return next(err);}
         contract.save(function(err){
-            console.log(contract);
-            
             if (err) {return next(err)}
         })
 

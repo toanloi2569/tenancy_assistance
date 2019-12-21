@@ -42,7 +42,6 @@ exports.getContractInfo = function(req, res, next) {
         contract_id = post.contract_id
         Contract.findById(contract_id, function(err, contract) {
             if (err) return next(err)
-            console.log(contract);
             res.send(contract)
         })
     })
