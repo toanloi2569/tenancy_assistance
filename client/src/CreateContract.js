@@ -16,6 +16,8 @@ import 'antd/dist/antd.css';
 import './index.css';
 import { Form, Input, Button } from 'antd';
 import { DatePicker } from 'antd';
+import { Mentions } from 'antd';
+
 // import PriceInput from './components/HostComponets/PriceInput';
 
 
@@ -319,7 +321,7 @@ class CreateContract extends React.Component {
                                         <form onSubmit={this.onHandleSubmit} >
                                             <label> District:</label>
                                             <Cascader
-                                                style={{ width: "100%" }}
+                                                style={{ width: "80%" }}
                                                 options={convertAddress(vn)}
                                                 placeholder="Select Address"
                                                 onChange={this.handleAddress}
@@ -369,13 +371,13 @@ class CreateContract extends React.Component {
                                                     {fileList.length >= 5 ? null : uploadButton}
                                                 </Upload>
                                                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                                                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                                                    <img alt="example" style={{ width: '80%' }} src={previewImage} />
                                                 </Modal>
                                             </div>
                                             <div className="form-group">
                                                 <label >Phone number:</label>
                                                 <PhoneInput
-                                                    style={{ width: "100%" }}
+                                                    style={{ width: "80%" }}
                                                     country={'vn'}
                                                     value={this.state.phone}
                                                     onChange={phone => this.setState({ phone })}
@@ -430,31 +432,37 @@ class CreateContract extends React.Component {
                                     <Form.Item {...formItemLayoutWithOutLabel} >
                                         <h>ĐẠI DIỆN HỢP ĐỒNG BÊN B</h>
                                         <Form.Item label="Họ tên người thuê trọ">
-                                            <Input placeholder="Họ tên người thuê trọ" name="fullnameTenant" onChange={this.ishandleChange}
+                                            {/* <Input placeholder="Họ tên người thuê trọ" name="fullnameTenant" onChange={this.ishandleChange}
                                                 style={{ width: '80%', marginRight: 8, height: 40 }} >
-                                            </Input>
+                                            </Input> */}
+                                            <Mentions style={{ width: '80%' }} placeholder="Họ tên người thuê trọ" disabled></Mentions>
+                                            
+                                           
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item {...formItemLayoutWithOutLabel} >
                                         <Form.Item label="Số điện thoại:">
-                                            <Input placeholder="số điện thoại người thuê trọ" name="phoneTenant" onChange={this.ishandleChange}
+                                            {/* <Input placeholder="số điện thoại người thuê trọ" name="phoneTenant" onChange={this.ishandleChange}
                                                 style={{ width: '80%', marginRight: 8, height: 40 }}>
-                                            </Input>
+                                            </Input> */}
+                                            <Mentions style={{ width: '80%' }} placeholder="số điện thoại người thuê trọ" disabled></Mentions>
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item {...formItemLayoutWithOutLabel} >
                                         <Form.Item label="Số chứng minh thư:">
-                                            <Input placeholder="CMND" name="cmtTenant" onChange={this.ishandleChange}
+                                            {/* <Input placeholder="CMND" name="cmtTenant" onChange={this.ishandleChange}
                                                 style={{ width: '80%', marginRight: 8, height: 40 }}>
-                                            </Input>
+                                            </Input> */}
+                                            <Mentions style={{ width: '80%' }} placeholder="Số chứng minh thư" disabled></Mentions>
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item {...formItemLayoutWithOutLabel} >
                                         <Form.Item label="Địa chỉ thường trú:">
-                                            <Input placeholder="Địa chỉ thường trú người thuê trọ" name="addressTenant" onChange={this.ishandleChange}
+                                            {/* <Input placeholder="Địa chỉ thường trú người thuê trọ" name="addressTenant" onChange={this.ishandleChange}
                                                 style={{ width: '80%', marginRight: 8, height: 40 }}>
 
-                                            </Input>
+                                            </Input> */}
+                                            <Mentions style={{ width: '80%' }} placeholder="Địa chỉ thường trú" disabled></Mentions>
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item {...formItemLayoutWithOutLabel} >
@@ -509,6 +517,12 @@ class CreateContract extends React.Component {
                                         <Form.Item label="Giá tiền thuê nhà ">
                                             <Input placeholder="theo tháng" name="price" onChange={this.ishandleChange}
                                                 style={{ width: '80%', marginRight: 8, height: 40 }} />
+                                        </Form.Item>
+                                    </Form.Item>
+                                    <Form.Item {...formItemLayoutWithOutLabel}>
+                                        <h>ĐIỀU KHOẢN HỢP ĐỒNG:</h>
+                                        <Form.Item label="Điều khoản chung">
+                                            <span></span>
                                         </Form.Item>
                                     </Form.Item>
                                     <Form.Item {...formItemLayoutWithOutLabel}>

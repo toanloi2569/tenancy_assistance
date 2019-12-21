@@ -17,7 +17,6 @@ class TenantScreen extends React.Component {
             list: [
                 {
                     _id: 1,
-                   
                     image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
                     price: "3.500.000",
                     address: "128 Lương Đắng Bằng ",

@@ -5,6 +5,32 @@ import { Badge, Icon } from 'antd';
 
 
 export default class HostHeader extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            count: 0,
+
+            
+        }
+
+
+    }
+    componentDidMount() {
+        this.interval = setInterval(() => {
+        //   console.log(this.state.number, this.props.counter)
+        //   if (this.props.counter === 'double') {
+        //     this.setState({number: this.state.number + this.state.number});        
+        //   } else {
+        //     this.setState({number: this.state.number + 1});
+        //   }
+        
+        }, 1000);
+      }
+      
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+      
     render() {
         return (
             <div className="container">
@@ -18,15 +44,15 @@ export default class HostHeader extends Component {
                     <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul className="nav navbar-nav menu_nav ml-auto">
                             <li className="nav-item submenu dropdown">
-                                <a className="nav-link">
+                                <a className="nav-link" onChange = {this.viewLetter}>
                                     Thông Báo
                                     <Badge count={1} dot/>
                                 </a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" onClick = {}>Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    {/* <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li> */}
                                 </ul>
                             </li>
                             <li className="nav-item submenu dropdown">
