@@ -5,7 +5,7 @@ var settings = require('../config/setting')
 
 var Schema = mongoose.Schema;
 
-var User = new Schema({
+var UserSchema = new Schema({
     username: { type: String, },
     password: { type: String, required: true, trim: true, minlength: 6 },
 
@@ -30,7 +30,7 @@ var User = new Schema({
     }],
 })
 
-User.virtual('star_avg')
+UserSchema.virtual('star_avg')
     .get(function () {
         if (this.number_rated != 0) {
             return Math.round(this.star / this.number_rated)
@@ -40,7 +40,7 @@ User.virtual('star_avg')
         }
     })
 
-User.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
     var user = this;
     var SALT_FACTOR = 5;
     if (!user.isModified('password')) {
@@ -60,7 +60,7 @@ User.pre('save', function (next) {
     });
 });
 
-User.methods.generateAuthToken = async function () {
+UserSchema.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
     const user = this
     const token = jwt.sign({ _id: user._id, role: user.role }, settings.JWT_KEY)
@@ -69,7 +69,7 @@ User.methods.generateAuthToken = async function () {
     return token
 }
 
-User.statics.findByCredentials = function (username, password) {
+UserSchema.statics.findByCredentials = function (username, password) {
     const f_user = User.findOne({ username: username }, async function (err, user) {
         if (err) console.log(err);
         if (!user) {
@@ -85,7 +85,7 @@ User.statics.findByCredentials = function (username, password) {
     return f_user
 }
 
-User.methods.comparePassword = function (passwordAttempt, cb) {
+UserSchema.methods.comparePassword = function (passwordAttempt, cb) {
     bcrypt.compare(passwordAttempt, this.password, function (err, isMatch) {
 
         if (err) {
@@ -96,4 +96,5 @@ User.methods.comparePassword = function (passwordAttempt, cb) {
     });
 }
 
-module.exports = mongoose.model('User', User);
+User = mongoose.model('User', UserSchema);
+module.exports = User;

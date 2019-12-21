@@ -28,6 +28,8 @@ exports.registerUser = function(req, res, next){
             let authorization = await getAuthAdmin()
             await createUserForContract(req.body.username, req.body.password)
             await updateUserInfo(authorization, form_data).then(response => {
+                console.log(response);
+                
                 let idv = response.data.id 
                 createUserMongo(req, res, idv, privateKey, publicKey)  
             })
@@ -66,9 +68,9 @@ function createUserMongo(req, res, idv, privateKey, publicKey) {
 
 async function getFileBase64(img) {
     imgName = String(Date.now())
-    imgPath = 'public/uploads/user/' + imgName
-
     pos = img.thumbUrl.search('base64,')
+
+    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
     img = img.thumbUrl.slice(pos+7)
     
     await fs.writeFile(imgPath, img, 'base64', function(err) {
