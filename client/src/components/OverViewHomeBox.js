@@ -13,7 +13,8 @@ export default class OverViewHomeBox extends Component {
         return (
             <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                 <div className="course-block mx-auto">
-                    <a href="#/infoHome" >
+                    {/* <a href="#/infoHome" > */}
+                        <Link to ="/infoHome">
                         <main className="bg-light">
                             {/* <img src="/image/room5.jpg" width="258" height="172" alt=""/> */}
                             <img alt={this.props.name} src={this.props.img} style = {{width: 258, height:172}}/>
@@ -41,7 +42,8 @@ export default class OverViewHomeBox extends Component {
                                 </div>
                         </div>
                     </footer>
-                    </a>
+                    </Link>
+                    {/* </a> */}
                 </div>
             </div>
         );
