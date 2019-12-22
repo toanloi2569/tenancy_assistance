@@ -87,7 +87,7 @@ export default class HostHeader extends Component {
                                 </a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" >Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" style={{lineHeight:"25px"}}>Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
                                     {/* <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li> */}
                                 </ul>
