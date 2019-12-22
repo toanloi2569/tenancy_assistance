@@ -1,8 +1,11 @@
 import React from 'react';
 import FooterHome from './components/Footer/FooterHome';
 import Header from './components/Header';
-import axios from 'axios'
-
+import axios from 'axios';
+import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
+import { Modal, Button } from 'antd';
+import { Input } from 'antd';
 
 export default class HostSingContract extends React.Component {
 
@@ -29,16 +32,24 @@ export default class HostSingContract extends React.Component {
             price: '',
             id_post: '',
             id_contract: '',
-            landlord_id : ''
-            
+            landlord_id : '',
+            // password
+            loading: false,
+            visible: false,
+            password: '',
+            username:''
+                        
 
       
         }
+        this.handleChange = this.handleChange.bind(this);
     }
-
     componentDidMount(){
         const {match:{params}} = this.props;
-        console.log(params.id); 
+        // console.log(params.id); 
+        this.setState({
+            id_contract: params.id
+        })
         var apiBaseUrl = "http://localhost:9000/users/";
         setTimeout(()=>{ 
             axios.get(apiBaseUrl+'auth', { 'headers': { 'Authorization': localStorage.token } })
@@ -46,7 +57,7 @@ export default class HostSingContract extends React.Component {
                 if(response.status === 200 ){ 
                     this.setState({ role: response.data })
                 }
-                console.log(this.state)
+                // console.log(this.state)
             })
         },0)
 
@@ -55,7 +66,7 @@ export default class HostSingContract extends React.Component {
             axios.get(apiBaseUrl2+'checkContractAfterFill/'+params.id, { 'headers': { 'Authorization': localStorage.token } })
             .then((response)=> {
                 if(response.status === 200 ){ 
-                    console.log(response)
+        
                     this.setState({
                         ngaytao: response.data.timeStart,
                         fullnameHost: response.data.landlordName,
@@ -77,10 +88,83 @@ export default class HostSingContract extends React.Component {
 
                      })
                 }
-                console.log(this.state)
+                // console.log(this.state)
             })
         },0)
     }
+
+    handleChange(event){
+        var target = event.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+          [name]: value
+        })
+    
+        }
+    showModal = () => {
+        alert("ky thanh cong")
+        this.setState({
+          visible: true,
+        });
+      };
+
+
+
+    handleOk = () => {
+    // e.preventDefault();
+    this.setState({ loading: true });
+    console.log(this.state)
+
+    var payload = {
+        'timeStart': this.state.ngaytao,
+        'landlordName': this.state.fullnameHost,
+        'tenantName': this.state.fullnameTenant,
+        'landlordID': this.state.cmtHost,
+        'tenantID': this.state.cmtTenant,
+        'address': this.state.address,
+        'landlordAddress': this.state.addressHost,
+        'tenantAddress': this.state.addressTenant,
+        'landlordPhone': this.state.phoneHost,
+        'tenantPhone': this.state.phoneTenant,
+        'time': this.state.thoihan,
+        'feature': this.state.mota,
+        'square': this.state.dientich,
+        'price': this.state.price,    
+        'landlord_id':this.state.landlord_id, 
+        'username': this.state.username,
+        'password': this.state.password
+    }
+    
+    // /storeContractToBlockChain/contract_id/:contract_id/username/:username/password/:password'
+    var baseURL = "http://localhost:9000/users/"+"storeContractToBlockChain/contract_id/"+
+        this.state.id_contract+"/username/"+
+        this.state.username+ "/password/"+
+        this.state.password;
+    axios.post(baseURL, payload,{ 'headers': { 'Authorization': localStorage.token } })
+    .then((response)=> {
+        
+    if(response.status === 200 ){
+        this.setState({
+            visible1: true,
+        });
+        alert("Gui len VChain thanh cong!!!")
+
+    }
+    else{
+        // console.log(response.status)
+    }
+})
+    setTimeout(() => {
+        this.setState({ loading: false, visible: false });
+    }, 3000);
+    };
+
+    handleCancel = () => {
+    this.setState({ visible: false });
+    };
+
+    
 
     handleClickBtn1 = () => {
         this.setState({
@@ -100,6 +184,7 @@ export default class HostSingContract extends React.Component {
     render() {
 
         const { showCheck1,showCheck2 } = this.state;
+        const { visible, loading } = this.state;
 
         return (
             <div>
@@ -226,16 +311,34 @@ export default class HostSingContract extends React.Component {
                 <div class="card-deck text-center" style={{ padding: "30px", paddingTop: "0px" }}>
                     <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
                         <h3 class="border bg-warning"> Chu  Ky Ben A</h3>
+                        <div>
+                            <Button type="primary" onClick={this.showModal}>
+                            KY HOP DONG
+                            </Button>
+                            <Modal
+                            visible={visible}
+                            title="Bạn có muốn đẩy hợp đồng này lên VCHAIN không"
+                            onOk={this.handleOk}
+                            onCancel={this.handleCancel}
+                            footer={[
+                                <Button key="back" onClick={this.handleCancel}>
+                                Return
+                                </Button>,
+                                <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                                Xac thuc
+                                </Button>,
+                            ]}
+                            ><label>User Name:</label>
+                            <Input placeholder="user name" name = "username" onChange = {this.handleChange} />
+                            <label>Password:</label>
+                            <Input.Password placeholder="input password" name ="password" onChange = {this.handleChange} />
+                            </Modal>
+                        </div>
                         
-                        <button id="btn1" type="button" class="btn btn-primary" onClick={this.handleClickBtn1}>KY HOP DONG</button>
+                        {/* <button id="btn1" type="button" class="btn btn-primary" onClick={this.handleClickBtn1}>KY HOP DONG</button> */}
                         <div class="br"></div>
                     </aside>
-                    {/* <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
-                        <h3 class="border bg-warning"> Chu ky Ben B</h3>
-                       
-                        <button id="btn2" type="button" class="btn btn-primary" onClick={this.handleClickBtn2}>Kiem tra chu ky</button>
-                        <div class="br"></div>
-                    </aside> */}
+                    
                 </div>
                 <div class="row text-center" style={{ padding: "30px", paddingTop: "0px" }}>
                     {showCheck1 && <aside class="col-6 single_sidebar_widget author_widget" style={{ padding: "10px" }}>
