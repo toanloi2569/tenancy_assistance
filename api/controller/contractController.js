@@ -23,8 +23,8 @@ exports.fillContract = function (req, res, next) {
         /* Tenant Info */
         tenantName: req.body.tenantName,
         tenantPhone: req.body.tenantPhone,       
-        tenantID: req.body.tenanID,
-        tenantAdress: req.body.tenanAdress,
+        tenantID: req.body.tenantID,
+        tenantAddress: req.body.tenantAddress,
 
         /* Contract */
         address: req.body.address,

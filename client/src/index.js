@@ -23,7 +23,9 @@ import allListHome from './reducers/index';
 import Testabc from './Testabc'
 import {Provider} from 'react-redux';
 import ViewConTract from './ViewContract';
+import HostSignContract from './HostSignContract';
 const store = createStore(allListHome);
+
 
 
 
@@ -44,7 +46,8 @@ ReactDOM.render(
        <Route exact path = "/host/profile" component = {HostProfile}/>
        <Route exact path = "/host/quanlybaidang/:id" component = {ListHouseRent}/>
        <Route exact path = "/infohome/:id" component = {InfoHome}/>
-       <Route exact path = "/hopdong" component = {ViewConTract}/>
+       {/* <Route exact path = "/hopdong/" component = {ViewConTract}/> */}
+       <Route exact path = "/hopdong/:id" component = {HostSignContract}/>
      </div>
   </HashRouter >
   </Provider>
