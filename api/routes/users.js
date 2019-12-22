@@ -17,7 +17,7 @@ router.post('/fillContract', auth, Contract.fillContract)
 router.get('/getContracts', auth, Contract.getContracts)
 
 /* Lấy thông tin chi tiết của 1 contract */
-router.get('/checkContractAfterFill', auth, Contract.checkContractAfterFill)
+router.get('/checkContractAfterFill/:contract_id', auth, Contract.checkContractAfterFill)
 
 /* Ký hợp đồng */
 router.post('/sign/contract_id/:contract_id', auth, Contract.sign)

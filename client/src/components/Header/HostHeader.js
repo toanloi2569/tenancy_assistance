@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 // import {Link} from 'react-dom';
 import { Badge, Icon } from 'antd';
-import axios from 'axios'
+import axios from 'axios';
+import ViewContract from '../../ViewContract';  
+import {Link} from 'react-router-dom';
+import { Modal, Button } from 'antd';
 
 
 
@@ -10,8 +13,7 @@ export default class HostHeader extends Component {
         super(props);
         this.state={
             count: 0,
-            contract: [],
-            // id_contract: '',
+            contracts: [],
             viewContract: [],
 
             
@@ -22,7 +24,8 @@ export default class HostHeader extends Component {
 
 
     }
-
+    
+    
     viewLetter(){
         this.setState({
             count: 0
@@ -36,13 +39,13 @@ export default class HostHeader extends Component {
         axios.get(apiBaseUrl+'getContracts', { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
-            console.log(response.data)
             this.setState({
                 count:  response.data.no_read,
-                contract: response.data.contracts,
-                // id_contract: response.data.contracts._id
+                contracts: response.data.contracts,
+                
 
             })
+            
 
     
         }
@@ -63,11 +66,25 @@ export default class HostHeader extends Component {
       componentWillUnmount() {
         clearInterval(this.interval);
       }
+
+
       
     render() {
-        // let element = this.state.contracts.map((cotract,index)=>{
-        //     // link_to = 
-        // })
+        let elements = this.state.contracts.map((contract, index) => {
+            let link_to = "/hopdong/"+contract._id
+            return (
+                <li className="nav-item">
+                    <Link to ={link_to}   className="nav-link" style={{lineHeight:"25px"}}>
+                        <span>{contract.tenantName} muốn thuê</span>
+                    
+                    </Link>
+                </li>
+            )
+
+        })
+        // console.log(elements)
+        // console.log(this.state.contracts)
+    
         
         return (
             <div className="container">
@@ -81,15 +98,12 @@ export default class HostHeader extends Component {
                     <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul className="nav navbar-nav menu_nav ml-auto">
                             <li className="nav-item submenu dropdown">
-                                <a className="nav-link" onChange = {this.viewLetter}>
+                                <a className="nav-link" onClick = {this.viewLetter}>
                                     Thông Báo
-                                    <Badge count={this.state.count} dot/>
+                                    <Badge count={this.state.count}  overflowCount={99}/>
                                 </a>
                                 <ul className="dropdown-menu">
-                                    {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" style={{lineHeight:"25px"}}>Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
-                                    {/* <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li> */}
+                                    {elements}
                                 </ul>
                             </li>
                             <li className="nav-item submenu dropdown">

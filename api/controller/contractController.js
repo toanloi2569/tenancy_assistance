@@ -23,8 +23,8 @@ exports.fillContract = function (req, res, next) {
         /* Tenant Info */
         tenantName: req.body.tenantName,
         tenantPhone: req.body.tenantPhone,       
-        tenantID: req.body.tenanID,
-        tenantAdress: req.body.tenanAdress,
+        tenantID: req.body.tenantID,
+        tenantAddress: req.body.tenantAddress,
 
         /* Contract */
         address: req.body.address,
@@ -36,12 +36,10 @@ exports.fillContract = function (req, res, next) {
 
         rule: req.body.rule,
     })
-    console.log("hihi")
     contract.save(function(err){
         if (err) {return next(err)}
     })
-    console.log("toang")
-    res.status(200).send("thanh cong")
+    res.status(200).send({"contract" : contract})
 }
 
 exports.getContracts = function(req, res, next) {
@@ -83,7 +81,7 @@ exports.getContractInfo = function(req, res, next) {
 
 exports.sign = async function(req, res, next) {
     user_id = req.user._id
-    contract_id = req.params._id
+    contract_id = req.params.contract_id
 
     var privateKey
     await User.findById(user_id, function(err, data) {
@@ -92,8 +90,10 @@ exports.sign = async function(req, res, next) {
     })
 
     contract = await Contract.findById(contract_id).exec() 
+    
     content = getContent(contract)
     contentHashed = await KeyController.hashText(content)
+    contentHashed = Buffer.from(contentHashed, 'utf8')
     signature = await KeyController.privateEncrypt(privateKey, contentHashed)
 
     if (req.user.role == 'Tenant') {
@@ -104,8 +104,11 @@ exports.sign = async function(req, res, next) {
 
     contract.save(function(err) {
         if (err) return next(err)
-        req.send(contract)
+        console.log(contract);
+            
     })
+    console.log(contract);
+    res.send(contract)
 }
 
 exports.storeContractToBlockChain = async function storeContract() {
@@ -180,7 +183,8 @@ exports.getValidContract = async function(req, res) {
 exports.validContract = function(req, res) {
     signature = req.params.signature,
     publicKey = req.params.publicKey
-
+    signature = Buffer.from(signature, 'utf8')
+    
     contentDecoded = KeyController.publicDecrypt(publicKey, signature)
     res.send(contentDecoded)
 }
@@ -209,7 +213,7 @@ function getAuth(username, password) {
     })
 }
 
-exports.getContent = function getContent(contract) {
+function getContent(contract) {
     content = `
     {'content' : [
         {'Đại diện hợp đồng bên A' : [                             
@@ -252,3 +256,5 @@ exports.getContent = function getContent(contract) {
     content += `]'}]}`
     return content
 }
+
+exports.getContent = {getContent}
