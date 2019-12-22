@@ -157,17 +157,17 @@ class TenantScreen extends React.Component {
         return (
             <div>
                 <TenantHeader />
-                <br /><br /><br />
-                <br /><br /><br />
-                <br /><br /><br />
+                <section className="banner-area bg-warning">
+                    <div style={{ paddingTop: "110px"}} class="text-center align-bottom"><h1 class="text-light"> Tìm Phòng Trọ </h1></div>
+                </section>
                 <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12">
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 text-center">
                         <FilterHome />
-                        <Button type="primary" icon="search" onClick={this.onSearch}>
-                        Search
+                        <Button type="danger w-50" size={'large'} style={{margin:"15px"}} onClick={this.onSearch}>   
+                            Tìm Kiếm
                         </Button>
                     </div>
-                    <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12">
+                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12">
                         <div className="container">
                             <div className="row">
                                 {elements}  
@@ -175,6 +175,7 @@ class TenantScreen extends React.Component {
                         </div>
                     </div>
                 </div>
+                <br/>
                 <FooterHome/>
             </div>
         )
