@@ -96,8 +96,6 @@ exports.createPost = async function(req, res, next) {
         date : Date.now(),
     })
 
-    
-    
     post.save(function (err) {
         if (err) {return next(err);}
         contract.save(function(err){
@@ -110,9 +108,7 @@ exports.createPost = async function(req, res, next) {
 
 async function getFileBase64(img) {
     imgName = String(Date.now())
-
     pos = img.search('base64,')
-
     imgPath = 'public/uploads/house/' + img.slice(11, pos+7) + imgName
     img = img.slice(pos+7)
     
