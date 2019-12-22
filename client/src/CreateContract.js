@@ -211,11 +211,15 @@ class CreateContract extends React.Component {
 
 
 
-    handleSubmit = e => {
+    handleSubmit = async e => {
         e.preventDefault();
         // console.log(this.state)
         var self = this;
-
+        var img = []
+        for (var i=0; i <this.state.fileList.length;i++){
+            img.push(await getBase64(this.state.fileList[i].originFileObj))
+            console.log(img);
+        }
 
         var payload = {
             contractDetail : {
@@ -239,7 +243,7 @@ class CreateContract extends React.Component {
                 "price": this.state.textPrice,
                 "address": this.state.textDistrict,
                 "district": this.state.address,
-                "img": this.state.fileList,
+                "img": img,
                 "phone": this.state.phone,
                 "content": this.state.textDesc
             }
