@@ -111,14 +111,10 @@ exports.createPost = async function(req, res, next) {
 async function getFileBase64(img) {
     imgName = String(Date.now())
 
-    pos = img.thumbUrl.search('base64,')
-    console.log("Loi");
-    
-    console.log(img.thumbUrl);
-    console.log("hih");
+    pos = img.search('base64,')
 
-    imgPath = 'public/uploads/house/' + img.thumbUrl.slice(11, pos+7) + imgName
-    img = img.thumbUrl.slice(pos+7)
+    imgPath = 'public/uploads/house/' + img.slice(11, pos+7) + imgName
+    img = img.slice(pos+7)
     
     await fs.writeFile(imgPath, img, 'base64', function(err) {
         console.log(err);
