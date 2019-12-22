@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
-// import {Link} from 'react-dom';
+import {Link} from 'react-dom';
+import axios from 'axios'
 
 
 export default class TenantHeader extends Component {
     
-    
+    constructor(props) {
+        super(props);
+        this.handleLogout = this.handleLogout.bind(this);
+    }
 
-    
+    handleLogout(){
+        var self = this;
+        var token = localStorage.token
+        localStorage.removeItem('token')
+        var apiBaseUrl = "http://localhost:9000/users/";
+        axios.get(apiBaseUrl+'logoutallUser', { 'headers': { 'Authorization': token } })
+        .then((response)=> {
+           console.log("hihi")
+        })
+    }
 
     render() {
         return (
@@ -31,7 +44,7 @@ export default class TenantHeader extends Component {
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/tenant/:id">Tìm nhà</a></li>
                             {/* <li className = "nav-item"><Link to = "/userProfile/createForm">Dang tin</Link></li> */}
-                            <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link" href="/"  onClick={this.handleLogout} >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>

@@ -77,7 +77,7 @@ router.get('/auth', auth, function(req,res){
     const role = req.user.role; 
     res.status(200).send(role);})
 router.post('/logoutUser', auth, User.logoutUser)
-router.post('/logoutallUser', auth, User.logoutallUser)
+router.get('/logoutallUser', auth, User.logoutallUser)
 router.get('/profileUser', auth, User.profileUser)
 
 module.exports = router;
