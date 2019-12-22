@@ -116,7 +116,7 @@ export default class HostHeader extends Component {
                                 </ul>
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/home" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link" href="/" >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>

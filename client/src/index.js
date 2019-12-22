@@ -33,9 +33,9 @@ ReactDOM.render(
   (<Provider store = {store}>
     <HashRouter>
      <div>
-     <Route exact path="/testabc" component={Testabc} />
-       <Route exact path="/home" component={Home}/>
-       <Route exact path="/home/:id" component={Home} />
+     {/* <Route exact path="/testabc" component={Testabc} /> */}
+       <Route exact path="/" component={Home}/>
+       {/* <Route exact path="/home/:id" component={Home} /> */}
        <Route exact path="/login" component={Login} />
        <Route exact path="/host/dangtin" component={CreateForm} />
        <Route exact path = "/host/taohopdong" component = {CreateContract}/>

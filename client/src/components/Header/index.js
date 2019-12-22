@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HostHeader from './HostHeader';
 import TenantHeader from './TenantHeader';
 import axios from 'axios'
-import TopBar from '../Banner';
+import TopBar from '../TopBar';
 
 
 export default class Header extends Component{
@@ -27,6 +27,7 @@ export default class Header extends Component{
     }
     render(){
         const {role} = this.state;
+        console.log(this.state.role)
         if(role == "Host"){
             return(
                 <HostHeader/>
