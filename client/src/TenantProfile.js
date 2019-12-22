@@ -10,7 +10,6 @@ class TenantProfile extends React.Component{
         return(
             <div>
                 <TenantHeader/>
-                !!This is Tenant Screen
                 <br/><br/><br/><br/>
                 <Profile/>
             </div>
