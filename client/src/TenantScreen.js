@@ -35,12 +35,6 @@ class TenantScreen extends React.Component {
         this.getaddress = this.getaddress.bind(this)
     }
     onSearch(){
-        console.log(this.state.address)
-        console.log(this.state.checkedListPrice)
-        console.log(this.state.indeterminatePrice)
-        console.log(this.state.checkedListSquare)
-        console.log(this.state.indeterminateSquare)
-        console.log(this.state.checkAllSquare)
         var firtsPrice = this.state.checkedListPrice[0]
         var minPrice = 0
         if (firtsPrice != undefined){
