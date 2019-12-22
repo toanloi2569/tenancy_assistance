@@ -10,40 +10,54 @@ export default class HostHeader extends Component {
         super(props);
         this.state={
             count: 0,
+            contract: [],
+            // id_contract: '',
+            viewContract: [],
 
             
         }
+        this.viewLetter = this.viewLetter.bind(this)
+
+
 
 
     }
+
+    viewLetter(){
+        this.setState({
+            count: 0
+        })
+    }
     componentDidMount() {
         this.interval = setInterval(() => {
-        //   console.log(this.state.number, this.props.counter)
-        //   if (this.props.counter === 'double') {
-        //     this.setState({number: this.state.number + this.state.number});        
-        //   } else {
-        //     this.setState({number: this.state.number + 1});
-        //   }
+         
         var self = this;
         var apiBaseUrl = "http://localhost:9000/users/";
-    //     axios.post(apiBaseUrl+'/checkContractAfterFill', { 'headers': { 'Authorization': localStorage.token } })
-    //     .then((response)=> {
-    //     if(response.status === 200 ){
-    //         console.log(response.data)
+        axios.get(apiBaseUrl+'getContracts', { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+        if(response.status === 200 ){
+            console.log(response.data)
+            this.setState({
+                count:  response.data.no_read,
+                contract: response.data.contracts,
+                // id_contract: response.data.contracts._id
+
+            })
+
     
-    //     }
-    //     else if(response.status === 204){
-    //         console.log("");
+        }
+        else if(response.status === 204){
+            console.log("");
             
-    //     }
-    //     else{
-    //         console.log("");
-    //         alert("");
-    //     }
-    //     })
+        }
+        else{
+            console.log("");
+            alert("");
+        }
+        })
 
         
-        }, 1000);
+        }, 5000);
       }
       
       componentWillUnmount() {
@@ -51,6 +65,10 @@ export default class HostHeader extends Component {
       }
       
     render() {
+        // let element = this.state.contracts.map((cotract,index)=>{
+        //     // link_to = 
+        // })
+        
         return (
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light fixed-top">
@@ -65,7 +83,7 @@ export default class HostHeader extends Component {
                             <li className="nav-item submenu dropdown">
                                 <a className="nav-link" onChange = {this.viewLetter}>
                                     Thông Báo
-                                    <Badge count={1} dot/>
+                                    <Badge count={this.state.count} dot/>
                                 </a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}

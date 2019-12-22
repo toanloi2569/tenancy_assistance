@@ -306,12 +306,8 @@ class InfoHome extends React.Component {
                 mota: response.data.feature,
                 dientich: response.data.square,
                 price: response.data.price
-
-
             })
-
-            // console.log(this.state)
-
+                // console.log(this.state)
         }
         else if(response.status === 204){
             console.log("");
@@ -345,16 +341,19 @@ class InfoHome extends React.Component {
             'time': this.state.thoihan,
             'feature': this.state.mota,
             'square': this.state.dientich,
-            'price': this.state.price,
-            
-            
+            'price': this.state.price,    
         }
+        
+        
+
+        var baseURL2 = "http://locahost:9000/users/fillContract"
         var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract;
 
-        axios.post(baseURL3, payload)
+        axios.post(baseURL2, payload,{ 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
             alert("Gửi thành công!!!")
+            
 
 
         }

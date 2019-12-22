@@ -8,35 +8,38 @@ var Comment = require('../controller/commentController')
 var Contract = require('../controller/contractController')
 
 /* GET users listing. */
-router.get('/', Post.getMainPage)
+router.get('/',auth, Post.getMainPage)
 
 /* Sinh hợp đồng */
-router.post('/fillContract', Contract.fillContract)
+router.post('/fillContract', auth, Contract.fillContract)
 
 /* Lấy tất cả các contract trong db */
-router.get('/getContracts', Contract.getContracts)
+router.get('/getContracts', auth, Contract.getContracts)
 
 /* Lấy thông tin chi tiết của 1 contract */
-router.get('/checkContractAfterFill', Contract.checkContractAfterFill)
+router.get('/checkContractAfterFill', auth, Contract.checkContractAfterFill)
 
 /* Ký hợp đồng */
-router.post('/sign/contract_id/:contract_id', Contract.sign)
+router.post('/sign/contract_id/:contract_id', auth, Contract.sign)
 
 /* Lấy thông tin hợp đồng gốc của chủ nhà khi chưa ai điền thôn tin */
-router.get('/fillContract/post_id/:post_id', Contract.getContractInfo)
+router.get('/fillContract/post_id/:post_id',auth, Contract.getContractInfo)
 
 /* Gửi dữ liệu lên vchain */
 router.post('/storeContractToBlockChain/contract_id/:contract_id/username/:username/password/:password', 
-                Contract.storeContractToBlockChain)
+                auth, Contract.storeContractToBlockChain)
 
 /* Lấy thông tin hợp đồng từ block chain */
-router.get('/getContractFromBlockChain/idv_contract/:idv_contract', Contract.getContractFromBlockChain)
+router.get('/getContractFromBlockChain/idv_contract/:idv_contract',
+                auth, Contract.getContractFromBlockChain)
 
 /* Lấy thông tin để xác thực hợp đồng */
-router.get('/getValidContract/idv_contract/:idv_contract', Contract.getValidContract)
+router.get('/getValidContract/idv_contract/:idv_contract', 
+                auth, Contract.getValidContract)
 
 /* Lấy sign đã decode để valid contract */
-router.get('/validContract/signature/:signature/publicKey/:publicKey', Contract.validContract)
+router.get('/validContract/signature/:signature/publicKey/:publicKey',
+                auth, Contract.validContract)
 
 
 /* Tìm kiếm post theo các tiêu chí : Giá cả, diện tích, quận, phường */
@@ -44,28 +47,28 @@ router.post('/searchPost', Post.searchPost)
 
 /* Tạo 1 post mới */
 /* checked */
-router.post('/createPost', Post.createPost)
+router.post('/createPost', auth, Post.createPost)
 
 /* Xem thông tin chi tiết 1 bài đăng qua id */
 router.get('/detailPost/posts/:post_id',auth, Post.seeDetailPost)
 
 /* Xóa 1 post */
-router.post('/deletePost/posts/:post_id', Post.deletePost)
+router.post('/deletePost/posts/:post_id', auth, Post.deletePost)
 
 /* Chính sửa post */
-router.post('updatePost/posts/:post_id', Post.updatePost)
+router.post('updatePost/posts/:post_id', auth, Post.updatePost)
 
 /* Tạo bình luận mới */
-router.post('createComment', Comment.createComment)
+router.post('createComment', auth, Comment.createComment)
 
 /* Xóa bình luận */
-router.post('deleteComment/comments/comment_id', Comment.deleteComment)
+router.post('deleteComment/comments/comment_id', auth, Comment.deleteComment)
 
 /* Tìm kiếm bình luận qua id */
-router.get('searchComment/comments/:comment_id', Comment.searchComment)
+router.get('searchComment/comments/:comment_id', auth, Comment.searchComment)
 
 /* Chính sửa bình luận */
-router.post('updateComment/comments/:comment_id', Comment.updateComment)
+router.post('updateComment/comments/:comment_id', auth, Comment.updateComment)
 
 // router.post('/comment', User.comment)
 

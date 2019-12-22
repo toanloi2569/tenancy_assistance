@@ -248,7 +248,7 @@ class CreateContract extends React.Component {
         }
         console.log(payload)
         var apiBaseUrl = "http://localhost:9000";
-        axios.post(apiBaseUrl + '/users/createPost', payload)
+        axios.post(apiBaseUrl + '/users/createPost', payload,{ 'headers': { 'Authorization': localStorage.token } })
         .then(function (response) {
             console.log(response);
             alert("Dang tin thanh cong")

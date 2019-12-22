@@ -52,8 +52,8 @@ exports.createPost = async function(req, res, next) {
     var contract = new Contract({
         _id : contract_id,
 
-        // landlord_id : req.user._id,
-        landlord_id : '5dfd6f33d6a08c3a711da14e', 
+        landlord_id : req.user._id,
+        // landlord_id : '5dfd6f33d6a08c3a711da14e', 
 
         /* Landlord Info*/
         landlordName: contractDetail.landlordName,
@@ -79,8 +79,8 @@ exports.createPost = async function(req, res, next) {
     })
     
     var post = new Post ({
-        // landlord_id : req.user._id,ongoose
-        landlord_id : '5dfd6f33d6a08c3a711da14e',
+        landlord_id : req.user._id,
+        // landlord_id : '5dfd6f33d6a08c3a711da14e',
         contract_id : contract_id,
 
         square : Number(postDetail.square),

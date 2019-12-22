@@ -52,6 +52,7 @@ exports.getContracts = function(req, res, next) {
                 count ++
             }
         }
+        
         res.send({"contracts" : contracts, "no_read" : count})
     })
 }
@@ -150,7 +151,7 @@ exports.getContractFromBlockChain = async function(req, res) {
         })
 }
 
-exports.getValidContract = function(req, res) {
+exports.getValidContract = async function(req, res) {
     vContract   = await axios.get(settings.vChainPortContract + "/ContractInfo/get?id=" + req.params.idv_contract)
 
     landlord    = await User.findById(vContract.id_chu_nha)
