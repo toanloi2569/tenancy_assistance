@@ -12,7 +12,7 @@ export default class TenantHeader extends Component {
         return (
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-                    <a className="navbar-brand logo_h" href="index.html"><img src="image/Logo.png" alt="" /></a>
+                    <a className="navbar-brand logo_h" href="/"><img src="image/logo-3.png" alt="" style={{width:"140px",height:"80px"}}/></a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>

@@ -16,11 +16,12 @@ class Home extends React.Component {
         <header className="header-area" id="top-bar">
           <TopBar />
         </header>
+        <br/><br/>
         <section className="banner_area">
           <Banner/>
         </section>
-        <ListArea></ListArea>
-        <ListHomeArea></ListHomeArea>
+        <ListArea/>
+        <ListHomeArea/>
         <AboutUs />
         <FooterHome/>
       </div>
