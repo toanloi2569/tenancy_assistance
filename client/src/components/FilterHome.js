@@ -167,7 +167,9 @@ class FilterHome extends React.Component {
         this.setState({
             address: address,
         });
-        this.props.getaddress(address)
+        var ct = vn[address[0]].name
+        var dt = vn[address[0]].cities[address[1]] 
+        this.props.getaddress([ct,dt])
     }
 
     render() {

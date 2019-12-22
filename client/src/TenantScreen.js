@@ -41,13 +41,73 @@ class TenantScreen extends React.Component {
         console.log(this.state.checkedListSquare)
         console.log(this.state.indeterminateSquare)
         console.log(this.state.checkAllSquare)
+        var firtsPrice = this.state.checkedListPrice[0]
+        var minPrice = 0
+        if (firtsPrice != undefined){
+        if (firtsPrice == "<5tr"){
+            minPrice = 0
+        }else{ 
+            if (firtsPrice == ">10tr"){
+                 minPrice = 10000000
+            }else{
+                minPrice = 5000000
+            }}
+        }
+        var lastPrice = this.state.checkedListPrice[-1]
+        var maxPrice = 1000000000
+        if (lastPrice!=undefined){
+            if (lastPrice == "<5tr"){
+                maxPrice = 5000000
+            }else{ 
+                if (lastPrice == ">10tr"){
+                        maxPrice = 1000000000
+                }else{
+                    maxPrice = 10000000
+                }}
+        }
+        var firtsSquare = this.state.checkedListSquare[0]
+        var minSquare = 0
+        if (firtsSquare!=undefined){
+            if (firtsSquare == "<10m2"){
+                minSquare = 0
+            }else{ 
+                if (firtsSquare == ">50m2"){
+                    minSquare = 50
+                }else{
+                    minSquare = 10
+            }}
+        }
+        var lastSquare = this.state.checkedListSquare[-1]
+        var maxSquare = 1000000000
+        if(lastSquare!==undefined){
+            if (lastSquare == "<10m2"){
+                maxSquare = 10
+            }else{ 
+                if (lastSquare == ">50m2"){
+                        maxSquare = 1000000000
+                }else{
+                    maxSquare = 50
+            }}
+        }
+        var address = null
+        if(this.state.address[0]!== undefined){
+            var address = this.state.address[0]+', '+this.state.address[1]
+        }
 
+        var payload = {
+            'minPrice' : minPrice,
+            'maxPrice' : maxPrice,
+            'minSquare' : minSquare,
+            'maxSquare' : maxSquare,
+            'district' : address
+        }
+        console.log(payload)
         this.setState({
             list: []
         })
         var self = this;
         var apiBaseUrl = "http://localhost:9000/users/";
-        axios.post(apiBaseUrl+'searchPost', { 'headers': { 'Authorization': localStorage.token } })
+        axios.post(apiBaseUrl+'searchPost', payload, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
             console.log(response.data)
