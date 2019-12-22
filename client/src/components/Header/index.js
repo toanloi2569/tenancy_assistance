@@ -25,6 +25,15 @@ export default class Header extends Component{
             })
         },100)
     }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("nextProps", nextProps, "\nprevState", prevState)
+    if(nextProps.count !== prevState.count)
+      return {count: nextProps.count};
+    else
+      return null;
+  }
+
     render(){
         const {role} = this.state;
         if(role == "Host"){
