@@ -60,7 +60,10 @@ exports.getContracts = function(req, res, next) {
 exports.checkContractAfterFill = function(req, res, next) {
     Contract.findById(req.params.contract_id, function(err, contract) {
         if (err) return err
-
+        contract.status = true
+        contract.save(function(err) {
+            return err
+        })
         res.send(contract)
     })
 }
