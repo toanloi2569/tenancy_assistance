@@ -1,6 +1,7 @@
 import React from 'react';
 import FooterHome from './components/Footer/FooterHome';
 import Header from './components/Header';
+import axios from 'axios'
 
 function PersonalInfo() {
     return (
@@ -30,9 +31,23 @@ export default class ViewConTract extends React.Component {
     constructor() {
         super();
         this.state = {
+            role: 'Guest',
             showCheck1 : false,
             showCheck2 : false
         }
+    }
+
+    componentDidMount(){
+        var apiBaseUrl = "http://localhost:9000/users/";
+        setTimeout(()=>{ 
+            axios.get(apiBaseUrl+'auth', { 'headers': { 'Authorization': localStorage.token } })
+            .then((response)=> {
+                if(response.status === 200 ){ 
+                    this.setState({ role: response.data })
+                }
+                console.log(this.state)
+            })
+        },0)
     }
 
     handleClickBtn1 = () => {
