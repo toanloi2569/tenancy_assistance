@@ -86,17 +86,20 @@ exports.sign = async function(req, res, next) {
     contract_id = req.params.contract_id
 
     var privateKey
+    var publicKey
     await User.findById(user_id, function(err, data) {
         if (err) return next(err)
         privateKey = data.privateKey
+        publicKey = data.publicKey
     })
 
     contract = await Contract.findById(contract_id).exec() 
     
     content = getContent(contract)
     contentHashed = await KeyController.hashText(content)
-    contentHashed = Buffer.from(contentHashed, 'utf8')
+    contentHashed = Buffer.from(contentHashed, 'hex')
     signature = await KeyController.privateEncrypt(privateKey, contentHashed)
+    signature = signature.toString('hex')
 
     if (req.user.role == 'Tenant') {
         contract.tenantSign = signature
@@ -106,16 +109,16 @@ exports.sign = async function(req, res, next) {
 
     contract.save(function(err) {
         if (err) return next(err)
-        console.log(contract);
-            
     })
-    console.log(contract);
     res.send(contract)
 }
 
 exports.storeContractToBlockChain = async function storeContract(req, res) {
+    console.log(req.params);
+    
     var authorization = await getAuth(req.params.username, req.params.password)
-
+    console.log(authorization);
+    
     contract = await Contract.findById(req.params.contract_id).exec()
     landlord = await User.findById(contract.landlord_id).exec()
     tenant = await User.findById(contract.tenant_id).exec()
@@ -132,29 +135,26 @@ exports.storeContractToBlockChain = async function storeContract(req, res) {
     form_data.append("ngay_ket_thuc", 124)
     form_data.append("idv_chu_nha", landlord.idv)
     form_data.append("idv_nguoi_thue_nha", tenant.idv)
-    form_data.append("id_chu_nha", landlord._id)
-    form_data.append("id_nguoi_thue_nha", tenant._id)
-
-    console.log(getContent(contract));
-    console.log(Contract.tenantSign);
+    form_data.append("id_chu_nha", String(landlord._id))
+    form_data.append("id_nguoi_thue_nha", String(tenant._id))
     
-    
-    // await store(authorization, form_data).then(response => {
-    //     contract_info = {
-    //         timeStart : contract.timeStart,
-    //         timeEnd : contract.timeEnd,
-    //         time : time,
-    //         landlord : landlord.name,
-    //         tenant : tenant.name,
-    //         idv_contract : response.data.id,
-    //     }
-    //     landlord.contracts_info.push(contract_info)
-    //     tenant.contracts_info.push(contract_info)
+    await store(authorization, form_data).then(response => {
+        contract_info = {
+            timeStart : contract.timeStart,
+            timeEnd : contract.timeEnd,
+            time : time,
+            landlord : landlord.name,
+            tenant : tenant.name,
+            idv_contract : response.data.id,
+        }
+        landlord.contracts_info.push(contract_info)
+        tenant.contracts_info.push(contract_info)
 
-    //     landlord.save().exec()
-    //     tenant.save().exec()
-    //     res.send(response.data)
-    // })
+        landlord.save().exec()
+        tenant.save().exec()
+        
+        res.send(response.data)
+    })
 }
 
 exports.getContractFromBlockChain = async function(req, res) {
@@ -191,9 +191,10 @@ exports.getValidContract = async function(req, res) {
 exports.validContract = function(req, res) {
     signature = req.params.signature,
     publicKey = req.params.publicKey
-    signature = Buffer.from(signature, 'utf8')
+    signature = Buffer.from(signature, 'hex')
     
     contentDecoded = KeyController.publicDecrypt(publicKey, signature)
+    contentDecoded = contentDecoded.toString('hex')
     res.send(contentDecoded)
 }
 
@@ -211,10 +212,10 @@ function store(authorization, form_data) {
 
 function getAuth(username, password) {
     return axios.post(settings.vChainPortContract + '/authentication', {
-        "password" : username,
-        "username" : password,
+        "password" : password,
+        "username" : username,
     }).then(res => {
-        return res.data.authorization
+        console.log(res.data);
     })
     .catch(err => {
         return err

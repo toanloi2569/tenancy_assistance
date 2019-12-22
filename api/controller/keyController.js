@@ -25,7 +25,7 @@ exports.generateKey = function generateKey(id) {
 
 exports.hashText = function(text) {
   return new Promise(resolve => {
-    var hash = crypto.createHash('md5').update(text).digest('hex');
+    var hash = crypto.createHash('sha384').update(text, "utf8").digest('hex')
     resolve(hash)
   })
 }
