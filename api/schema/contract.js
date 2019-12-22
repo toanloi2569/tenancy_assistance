@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var Contract = new Schema({
     landlord_id: { type: Schema.Types.ObjectId, required: true },
     tenant_id: { type: Schema.Types.ObjectId },
+    status : { type: Boolean, default:false },
 
     /* Landlord Info*/
     landlordName: { type: String, require: true },

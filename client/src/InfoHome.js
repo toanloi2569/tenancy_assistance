@@ -32,6 +32,7 @@ class InfoHome extends React.Component {
             dientich: '',
             price: '',
             id_post: '',
+            id_contract: '',
             // Dung cho bai post
             // tenbaidang: '',
             diachinha: '',
@@ -83,7 +84,7 @@ class InfoHome extends React.Component {
         axios.get(apiBaseUrl1, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
             if (response.status === 200){
-                console.log(response.data)
+                // console.log(response.data)
                 this.setState({
                     // bai dang
                     giatiennha: response.data.post.price,
@@ -93,7 +94,7 @@ class InfoHome extends React.Component {
                     motanha: response.data.post.content,
                     dientichnha: response.data.post.square,
                 }) 
-                console.log(this.state)
+                // console.log(this.state)
 
             }
         })
@@ -118,7 +119,8 @@ class InfoHome extends React.Component {
                     thoihan: response.data.time,
                     mota: response.data.feature,
                     dientich: response.data.square,
-                    price: response.data.price
+                    price: response.data.price,
+                    id_contract:response.data._id
 
 
 
@@ -145,7 +147,7 @@ class InfoHome extends React.Component {
         axios.get(apiBaseUrl, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
-            console.log(response)
+            // console.log(response)
 
             const formItemLayout = {
                 labelCol: {
@@ -304,12 +306,8 @@ class InfoHome extends React.Component {
                 mota: response.data.feature,
                 dientich: response.data.square,
                 price: response.data.price
-
-
             })
-
-            // console.log(this.state)
-
+                // console.log(this.state)
         }
         else if(response.status === 204){
             console.log("");
@@ -328,11 +326,42 @@ class InfoHome extends React.Component {
     
     handleOk = e => {
         e.preventDefault();
-        console.log(this.state)
+        console.log(this.state.id_contract)
         var payload = {
-            
+            'timeStart': this.state.ngaytao,
+            'landlordName': this.state.fullnameHost,
+            'tenantName': this.state.fullnameTenant,
+            'landlordID': this.state.cmtHost,
+            'tenantID': this.state.cmtTenant,
+            'address': this.state.address,
+            'landlordAddress': this.state.addressHost,
+            'tenantAddress': this.state.addressTenant,
+            'landlordPhone': this.state.phoneHost,
+            'tenantPhone': this.state.phoneTenant,
+            'time': this.state.thoihan,
+            'feature': this.state.mota,
+            'square': this.state.dientich,
+            'price': this.state.price,    
         }
         
+        
+
+        var baseURL2 = "http://locahost:9000/users/fillContract"
+        var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract;
+
+        axios.post(baseURL2, payload,{ 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+        if(response.status === 200 ){
+            alert("Gửi thành công!!!")
+            
+
+
+        }
+        else{
+            console.log(response.status)
+        }
+    })
+        // console.log(payload)
     this.setState({ loading: true });
     setTimeout(() => {
         this.setState({ loading: false, visible: false });
@@ -344,7 +373,6 @@ class InfoHome extends React.Component {
     };
 
     render() {
-        console.log(this.state.image)
         
         return (
             <div>
@@ -564,7 +592,7 @@ class InfoHome extends React.Component {
                                                 <li><a><i class="lnr lnr-location"></i>{this.state.diachinha}</a></li>
                                                 {/* <li><a><i class="lnr lnr-map-marker"></i>Quan Hai Ba Trung</a></li> */}
                                                 <li><a><i class="lnr lnr-diamond"></i>{this.state.giatiennha} VND</a></li>
-                                                <li><a><i class="lnr lnr-crop"></i>20 m2</a></li>
+                                                <li><a><i class="lnr lnr-crop"></i>{this.state.dientichnha} m2</a></li>
                                                 <li><a><i class="lnr lnr-phone-handset"></i>{this.state.sodienthoai}</a></li>
                                                 <li><a><i class="lnr lnr-user"></i>{this.state.fullnameHost}</a></li>
                                             </ul>
