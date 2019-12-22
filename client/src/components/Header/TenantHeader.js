@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 
 export default class TenantHeader extends Component {
     
+    
+
+    
 
     render() {
         return (
@@ -26,7 +29,7 @@ export default class TenantHeader extends Component {
                                     
                                 </ul>
                             </li>
-                            <li className="nav-item"><a className="nav-link" href="#/tenant">Tìm nhà</a></li>
+                            <li className="nav-item"><a className="nav-link" href="#/tenant/:id">Tìm nhà</a></li>
                             {/* <li className = "nav-item"><Link to = "/userProfile/createForm">Dang tin</Link></li> */}
                             <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
                         </ul>

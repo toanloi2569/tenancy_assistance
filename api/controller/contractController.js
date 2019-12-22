@@ -36,10 +36,12 @@ exports.fillContract = function (req, res, next) {
 
         rule: req.body.rule,
     })
-
+    console.log("hihi")
     contract.save(function(err){
         if (err) {return next(err)}
     })
+    console.log("toang")
+    res.status(200).send("thanh cong")
 }
 
 exports.getContracts = function(req, res, next) {

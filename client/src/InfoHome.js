@@ -1,5 +1,6 @@
 import React from 'react';
-import TopBar from './components/TopBar';
+// import TopBar from './components/TopBar';
+import TenanantHeader from './components/Header/TenantHeader'
 import Banner from './components/Banner';
 import FooterHome from './components/Footer/FooterHome';
 import { Carousel } from 'antd';
@@ -7,6 +8,8 @@ import { Modal, Button } from 'antd';
 import axios from 'axios';
 import { Form, Input, Icon } from 'antd';
 import { DatePicker } from 'antd';
+import TenantScreen from './TenantScreen';
+import TenantHeader from './components/Header/TenantHeader';
 
 
 class InfoHome extends React.Component {
@@ -15,6 +18,8 @@ class InfoHome extends React.Component {
         this.state =({
             loading: false,
             visible: false,
+            visible2: false,
+            loading2: false,
             // Dung cho hop dong
             showcontract: [],
             ngaytao: '',
@@ -130,6 +135,13 @@ class InfoHome extends React.Component {
             }
         })
 
+
+
+    }
+    showModal2 = ()=>{
+        this.setState({
+            visible2: true
+        })
 
 
     }
@@ -324,7 +336,7 @@ class InfoHome extends React.Component {
 
       };
     
-    handleOk = e => {
+    handleOk = (e) => {
         e.preventDefault();
         console.log(this.state.id_contract)
         var payload = {
@@ -346,13 +358,17 @@ class InfoHome extends React.Component {
         
         
 
-        var baseURL2 = "http://locahost:9000/users/fillContract"
+        var baseURL2 = "http://localhost:9000/users/fillContract"
         var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract;
 
         axios.post(baseURL2, payload,{ 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
+            console.log(response)
         if(response.status === 200 ){
-            alert("Gửi thành công!!!")
+            // alert("Gửi thành công!!!")
+
+
+
             
 
 
@@ -377,7 +393,8 @@ class InfoHome extends React.Component {
         return (
             <div>
                 <header className="header-area" id="top-bar">
-                    <TopBar />
+                    {/* <TopBar /> */}
+                <TenantHeader/>
                 </header>
                     <section className="banner-area">
                         <div style={{ padding: "30px" }}></div>
@@ -415,7 +432,7 @@ class InfoHome extends React.Component {
                                                     <Modal
                                                     visible={this.state.visible}
                                                     title="Title"
-                                                    onOk={this.handleOk}
+                                                    onOk={this.showModal2}
                                                     onCancel={this.handleCancel}
                                                     footer={[
                                                         <Button key="back" onClick={this.handleCancel}>
@@ -428,6 +445,23 @@ class InfoHome extends React.Component {
                                                     >
                                                    {this.state.showcontract}
                                                     </Modal>
+                                                    <Modal
+                                                    visible= {this.setState.visible2}
+                                                    title="Title"
+                                                    // onOk={this.handleOk}
+                                                    onCancel={this.handleCancel}
+                                                    footer={[
+                                                        // <Button key="back" onClick={this.handleCancel}>
+                                                        // Return
+                                                        // </Button>,
+                                                        <Button key="submit" type="primary" loading={this.state.loading} >
+                                                        Submit
+                                                        </Button>,
+                                                    ]}
+                                                    >
+                                                   {/* {this.state.showcontract} */}
+                                                    </Modal>
+
                                                 </div>
                                             </div>
                                             <div class="d-flex bd-highlight">
