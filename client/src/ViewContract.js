@@ -33,12 +33,35 @@ export default class ViewConTract extends React.Component {
         this.state = {
             role: 'Guest',
             showCheck1 : false,
-            showCheck2 : false
+            showCheck2 : false,
+            ngaytao: '',
+            fullnameHost: '',
+            fullnameTenant: '',
+            cmtHost: '',
+            cmtTenant: '',
+            address: '',
+            addressHost: '',
+            addressTenant: '',
+            phoneHost: '',
+            phoneTenant:'',
+            thoihan: '',
+            mota: '',
+            dientich: '',
+            price: '',
+            id_post: '',
+            id_contract: '',
+            landlord_id : '',
+            chukyHost: '',
+            chukyTenant: ''
         }
     }
 
     componentDidMount(){
         var apiBaseUrl = "http://localhost:9000/users/";
+        const {match:{params}} = this.props;
+        this.setState({
+            id_contract: params.id
+        })
         setTimeout(()=>{ 
             axios.get(apiBaseUrl+'auth', { 'headers': { 'Authorization': localStorage.token } })
             .then((response)=> {
@@ -48,6 +71,43 @@ export default class ViewConTract extends React.Component {
                 console.log(this.state)
             })
         },0)
+
+        var apiBaseUrl2 = "http://localhost:9000/users/";
+        setTimeout(()=>{ 
+            axios.get(apiBaseUrl2+'checkContractAfterFill/'+params.id, { 'headers': { 'Authorization': localStorage.token } })
+            .then((response)=> {
+                if(response.status === 200 ){ 
+        
+                    this.setState({
+                        ngaytao: response.data.timeStart,
+                        fullnameHost: response.data.landlordName,
+                        fullnameTenant: response.data.tenantName,
+                        cmtHost: response.data.landlordID,
+                        cmtTenant: response.data.tenantID,
+                        address: response.data.address,
+                        addressHost:response.data.landlordAddress,
+                        addressTenant: response.data.tenantAddress,
+                        phoneHost: response.data.landlordPhone,
+                        phoneTenant: response.data.tenantPhone,
+                        thoihan: response.data.time,
+                        mota: response.data.feature,
+                        dientich: response.data.square,
+                        price: response.data.price,
+                        id_contract:response.data._id,
+                        landlord_id: response.data.landlord_id,
+                        chukyHost: response.data.chukyHost,
+                        chukyTenant: response.data.chukyTenant
+
+                        
+
+                     })
+                }
+                // console.log(this.state)
+            })
+        },0)
+
+
+
     }
 
     handleClickBtn1 = () => {
@@ -75,13 +135,37 @@ export default class ViewConTract extends React.Component {
                     <div style={{ paddingTop: "100px" }} class="text-center align-bottom"><h1> Hop Dong Thue Nha </h1></div>
                 </section>
                 <h5 style={{ padding: "15px", paddingLeft: "30px" }}>
-                    Ngay tao : 20/12/2019
+                    Ngay tao : {this.state.ngaytao}
                 </h5>
                 <div class="row" style={{ padding: "30px", paddingTop: "0px" }}>
                     <div class="col-12 text-center">
                         <div class="card-deck">
-                            <PersonalInfo />
-                            <PersonalInfo />
+                        <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
+                            <h3 class="border bg-warning">Ben A</h3>
+                            <h4>{this.state.fullnameHost}</h4>
+                            <h5><a><i class="lnr lnr-license"></i> So CMT : {this.state.cmtHost}</a></h5>
+                            <h5><a><i class="lnr lnr-map-marker"></i> {this.state.addressHost}</a></h5>
+                            <h5><a><i class="lnr lnr-phone-handset"></i> {this.state.phoneHost}</a></h5>
+                            <p class="border bg-light"><a>
+                                -----BEGIN PUBLIC KEY----- <br />
+                                {this.state.chukyHost}
+                                -----END PUBLIC KEY-----<br />
+                            </a></p>
+                            <div class="br"></div>
+                        </aside>
+                        <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
+                            <h3 class="border bg-warning">Ben B</h3>
+                            <h4>{this.state.fullnameTenant}</h4>
+                            <h5><a><i class="lnr lnr-license"></i> So CMT : {this.state.cmtTenant}</a></h5>
+                            <h5><a><i class="lnr lnr-map-marker"></i> {this.state.addressTenant}</a></h5>
+                            <h5><a><i class="lnr lnr-phone-handset"></i> {this.state.phoneTenant}</a></h5>
+                            <p class="border bg-light"><a>
+                                -----BEGIN PUBLIC KEY----- <br />
+                                {this.state.chukyTenant}
+                                -----END PUBLIC KEY-----<br />
+                            </a></p>
+                            <div class="br"></div>
+                        </aside>
                         </div>
                     </div>
                 </div>

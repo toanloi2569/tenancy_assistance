@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-export default class TopBar extends Component {
+export default class Banner extends Component {
     render() {
         return (
             <div className="booking_table d_flex align-items-center">

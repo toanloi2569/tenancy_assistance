@@ -562,12 +562,12 @@ class InfoHome extends React.Component {
                                             <div class="col-10">
                                                 <dir class="br"></dir>
                                                 <aside>
-                                                    <h3> Thong tin Phong tro</h3>
+                                                    <h3> Thông tin phòng trọ</h3>
                                                     <h6 style={{ paddingLeft: "10px" }}>
-                                                        Gia Phong : {this.state.giatiennha} VND<br />
-                                                        Dien Tich : {this.state.dientichnha} m2<br />
-                                                        Dia Chi : {this.state.diachinha}<br />
-                                                        Mo Ta Chi Tiet :<br />
+                                                        Giá Phòng : {this.state.giatiennha} VND<br />
+                                                        Diện tích : {this.state.dientichnha} m2<br />
+                                                        Địa chỉ : {this.state.diachinha}<br />
+                                                        Mô tả chi tiết :<br />
                                                         <h7>
                                                             &emsp;- {this.state.motanha}<br />
                                                             

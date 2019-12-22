@@ -38,9 +38,13 @@ exports.registerUser = function(req, res, next){
 
 exports.profileUser = async function(req, res) {
     user = await User.findById(req.user._id).exec().catch(err => {return err})
+    console.log(user);
+    
     axios.get(settings.vChainPort + '/UserInfo/get?id='+user.idv)
-            .then(data => {
-                res.send(data)
+            .then(vUser => {
+                console.log(vUser.data);
+                
+                res.send({"user" : user, "vUser" : vUser.data})
             }).catch(err => {
                 return err
             })
@@ -74,10 +78,10 @@ function createUserMongo(req, res, idv, privateKey, publicKey) {
 
 async function getFileBase64(img) {
     imgName = String(Date.now())
-    pos = img.thumbUrl.search('base64,')
+    pos = img.search('base64,')
 
-    imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName    
-    img = img.thumbUrl.slice(pos+7)
+    imgPath = 'public/uploads/user/' + img.slice(11, pos+7) + imgName    
+    img = img.slice(pos+7)
     
     await fs.writeFile(imgPath, img, 'base64', function(err) {
         console.log(err);

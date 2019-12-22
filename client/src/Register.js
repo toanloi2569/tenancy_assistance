@@ -211,10 +211,15 @@ class Register extends Component {
     }
 
   }
-  handleClick(event) {
+  handleClick = async function(event) {
     var apiBaseUrl = settings.apiBaseUrl;
     // console.log("values in register handler",role);
     var self = this;
+    var img = []
+    for (var i=0; i <this.state.fileList.length;i++){
+        img.push(await getBase64(this.state.fileList[i].originFileObj))
+        console.log(img);
+    }
     //To be done:check for empty values before hitting submit
     // if (this.state.username.length > 0 && this.state.email.length > 0 
     //   && this.state.password.length > 0 && this.state.phone.length > 0
@@ -224,7 +229,7 @@ class Register extends Component {
         "name": this.state.name,
         "password": this.state.password,
         "role": this.state.registerRole,
-        "img": this.state.fileList,
+        "img": img,
         "id_number": this.state.socmt,
         "email": this.state.email,
         "phone": this.state.phone

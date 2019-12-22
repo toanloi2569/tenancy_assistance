@@ -33,8 +33,7 @@ export default class HostHeader extends Component {
     }
     componentDidMount() {
         this.interval = setInterval(() => {
-         
-        var self = this;
+        
         var apiBaseUrl = "http://localhost:9000/users/";
         axios.get(apiBaseUrl+'getContracts', { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
@@ -82,6 +81,7 @@ export default class HostHeader extends Component {
             )
 
         })
+        
         // console.log(elements)
         // console.log(this.state.contracts)
     
@@ -110,12 +110,12 @@ export default class HostHeader extends Component {
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Quản lý</a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
-                                    <li className="nav-item"><a className="nav-link" href="#/host/taohopdong">Tạo hợp đồng </a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/host/taohopdong"> Đăng tin thuê nhà</a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/host/profile">Xem thông tin cá nhân </a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/host/quanlybaidang">Danh sách nhà cho thuê </a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/host/quanlyhopdong/:id"> Quản lý hợp đồng </a></li>
                                 </ul>
                             </li>
-                            <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li>
+                            {/* <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li> */}
                             <li className="nav-item"><a className="nav-link" href="/" >Log Out</a></li>
                         </ul>
                     </div>

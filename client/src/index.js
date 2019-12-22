@@ -20,24 +20,20 @@ import ListHouseRent from  './ListHouseRent';
 import InfoHome from './InfoHome';
 import {createStore} from 'redux';
 import allListHome from './reducers/index';
-import Testabc from './Testabc'
-import {Provider} from 'react-redux';
 import ViewConTract from './ViewContract';
 import HostSignContract from './HostSignContract';
-const store = createStore(allListHome);
 
 
 
 
 ReactDOM.render(
-  (<Provider store = {store}>
+  (
     <HashRouter>
      <div>
-     {/* <Route exact path="/testabc" component={Testabc} /> */}
        <Route exact path="/" component={Home}/>
-       {/* <Route exact path="/home/:id" component={Home} /> */}
+       <Route exact path="/home/:id" component={Home} />
        <Route exact path="/login" component={Login} />
-       <Route exact path="/host/dangtin" component={CreateForm} />
+       {/* <Route exact path="/host/dangtin" component={CreateForm} /> */}
        <Route exact path = "/host/taohopdong" component = {CreateContract}/>
        <Route exact path="/register" component={Register} />
        <Route exact path ="/host/:id" component = {HostScreen}/>
@@ -47,11 +43,10 @@ ReactDOM.render(
        <Route exact path = "/host/profile" component = {HostProfile}/>
        <Route exact path = "/host/quanlybaidang/:id" component = {ListHouseRent}/>
        <Route exact path = "/infohome/:id" component = {InfoHome}/>
-       {/* <Route exact path = "/hopdong/" component = {ViewConTract}/> */}
+       <Route exact path = "/xemchitiet/:id" component = {ViewConTract}/>
        <Route exact path = "/hopdong/:id" component = {HostSignContract}/>
      </div>
   </HashRouter >
-  </Provider>
   
 ), document.getElementById( 'root' ) )
 

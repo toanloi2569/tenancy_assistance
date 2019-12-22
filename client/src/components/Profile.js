@@ -27,9 +27,11 @@ class Profile extends React.Component {
         this.handleLoad = this.handleLoad.bind(this)
     }
     componentDidMount() {
-        window.addEventListener('load', this.handleLoad);
-        
-
+        var apiBaseUrl = "http://localhost:9000/users/";
+        axios.get(apiBaseUrl+'profileUser', { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+            console.log(response)
+        })
     }
     componentDidUpdate(){
         
