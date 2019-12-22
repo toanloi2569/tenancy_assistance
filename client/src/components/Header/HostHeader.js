@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import {Link} from 'react-dom';
 import { Badge, Icon } from 'antd';
+import axios from 'axios'
 
 
 
@@ -23,6 +24,24 @@ export default class HostHeader extends Component {
         //   } else {
         //     this.setState({number: this.state.number + 1});
         //   }
+        var self = this;
+        var apiBaseUrl = "http://localhost:9000/users/";
+    //     axios.post(apiBaseUrl+'/checkContractAfterFill', { 'headers': { 'Authorization': localStorage.token } })
+    //     .then((response)=> {
+    //     if(response.status === 200 ){
+    //         console.log(response.data)
+    
+    //     }
+    //     else if(response.status === 204){
+    //         console.log("");
+            
+    //     }
+    //     else{
+    //         console.log("");
+    //         alert("");
+    //     }
+    //     })
+
         
         }, 1000);
       }
@@ -50,7 +69,7 @@ export default class HostHeader extends Component {
                                 </a>
                                 <ul className="dropdown-menu">
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
-                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" onClick = {}>Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/hopdong" >Dung88 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
                                     {/* <li className="nav-item"><a className="nav-link" href="#/hopdong">Cuong2112 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/hopdong">Loi123 muon thue nha Khu vuc Bach Kinh Xay cua ban</a></li> */}
                                 </ul>
