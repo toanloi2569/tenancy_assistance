@@ -103,7 +103,40 @@ export default class HostSingContract extends React.Component {
     
         }
     showModal = () => {
-        alert("ky thanh cong")
+        // alert("ky thanh cong")
+        var payload = {
+            'timeStart': this.state.ngaytao,
+            'landlordName': this.state.fullnameHost,
+            'tenantName': this.state.fullnameTenant,
+            'landlordID': this.state.cmtHost,
+            'tenantID': this.state.cmtTenant,
+            'address': this.state.address,
+            'landlordAddress': this.state.addressHost,
+            'tenantAddress': this.state.addressTenant,
+            'landlordPhone': this.state.phoneHost,
+            'tenantPhone': this.state.phoneTenant,
+            'time': this.state.thoihan,
+            'feature': this.state.mota,
+            'square': this.state.dientich,
+            'price': this.state.price,    
+            'landlord_id':this.state.landlord_id, 
+        }
+        
+        var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract;
+        axios.post(baseURL3, payload,{ 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+            
+        if(response.status === 200 ){
+            this.setState({
+                visible1: true,
+            });
+            alert("Ký thành công!!!")
+
+        }
+        else{
+            // console.log(response.status)
+        }
+    })
         this.setState({
           visible: true,
         });

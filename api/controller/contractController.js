@@ -5,7 +5,6 @@ var User = require('../schema/user')
 var Post = require('../schema/post')
 
 var KeyController = require('../controller/keyController')
-var ContractController = require('../controller/contractController')
 
 var settings = require('../config/setting')
 var axios = require('axios')
@@ -86,17 +85,20 @@ exports.sign = async function(req, res, next) {
     contract_id = req.params.contract_id
 
     var privateKey
+    var publicKey
     await User.findById(user_id, function(err, data) {
         if (err) return next(err)
         privateKey = data.privateKey
+        publicKey = data.publicKey
     })
 
     contract = await Contract.findById(contract_id).exec() 
     
     content = getContent(contract)
     contentHashed = await KeyController.hashText(content)
-    contentHashed = Buffer.from(contentHashed, 'utf8')
+    contentHashed = Buffer.from(contentHashed, 'hex')
     signature = await KeyController.privateEncrypt(privateKey, contentHashed)
+    signature = signature.toString('hex')
 
     if (req.user.role == 'Tenant') {
         contract.tenantSign = signature
@@ -106,60 +108,59 @@ exports.sign = async function(req, res, next) {
 
     contract.save(function(err) {
         if (err) return next(err)
-        console.log(contract);
-            
     })
-    console.log(contract);
     res.send(contract)
 }
 
 exports.storeContractToBlockChain = async function storeContract(req, res) {
-    var authorization = await getAuth(req.params.username, req.params.password)
-
+    console.log(req.params);
+    
+    var authorization 
+    await getAuth(req.params.username, req.params.password).then(response => {
+        authorization = response.data.authorization
+    })
+    
     contract = await Contract.findById(req.params.contract_id).exec()
     landlord = await User.findById(contract.landlord_id).exec()
     tenant = await User.findById(contract.tenant_id).exec()
 
-    var form_data = new FormData()
-    form_data.append("so_cmt_chu_nha", landlord.ID)
-    form_data.append("so_cmt_nguoi_thue_nha", tenant.ID)
-    form_data.append("public_key_chu_nha", landlord.publicKey)
-    form_data.append("public_key_nguoi_thue_nha", tenant.publicKey)
-    form_data.append("noi_dung_hop_dong", getContent(contract))
-    // form_data.append("ngay_bat_dau", contract.timeStart)
-    form_data.append("ngay_bat_dau", 123)
-    // form_data.append("ngay_ket_thuc", contract.timeEnd)
-    form_data.append("ngay_ket_thuc", 124)
-    form_data.append("idv_chu_nha", landlord.idv)
-    form_data.append("idv_nguoi_thue_nha", tenant.idv)
-    form_data.append("id_chu_nha", landlord._id)
-    form_data.append("id_nguoi_thue_nha", tenant._id)
-
-    console.log(getContent(contract));
-    console.log(Contract.tenantSign);
+    data = {
+        "so_cmt_chu_nha" :  landlord.ID,
+        "so_cmt_nguoi_thue_nha": tenant.ID,
+        "public_key_chu_nha" : landlord.publicKey,
+        "public_key_nguoi_thue_nha" : tenant.publicKey,
+        "noi_dung_hop_dong" : getContent(contract),
+        "ngay_bat_dau": contract.timeStart,
+        "ngay_ket_thuc" : contract.timeEnd,
+        "idv_chu_nha" : landlord.idv,
+        "idv_nguoi_thue_nha" : tenant.idv,
+        "id_chu_nha" : String(landlord._id),
+        "id_nguoi_thue_nha" : String(tenant._id),
+    }
     
-    
-    // await store(authorization, form_data).then(response => {
-    //     contract_info = {
-    //         timeStart : contract.timeStart,
-    //         timeEnd : contract.timeEnd,
-    //         time : time,
-    //         landlord : landlord.name,
-    //         tenant : tenant.name,
-    //         idv_contract : response.data.id,
-    //     }
-    //     landlord.contracts_info.push(contract_info)
-    //     tenant.contracts_info.push(contract_info)
+    await store(authorization, data).then(async response => {
+        contract_info = {
+            timeStart : contract.timeStart,
+            timeEnd : contract.timeEnd,
+            time : contract.time,
+            landlord : landlord.name,
+            tenant : tenant.name,
+            idv_contract : response.data.id,
+        }
+        landlord.contracts_info.push(contract_info)
+        tenant.contracts_info.push(contract_info)
 
-    //     landlord.save().exec()
-    //     tenant.save().exec()
-    //     res.send(response.data)
-    // })
+        landlord.save()
+        tenant.save()
+        
+        res.send(response.data)
+    })
 }
 
 exports.getContractFromBlockChain = async function(req, res) {
     axios.get(settings.vChainPortContract + "/ContractInfo/get?id=" + req.params.idv_contract)
         .then(data => {
+            data.noi_dung_hop_dong = JSON.stringify(data.noi_dung_hop_dong)
             res.send(data)
         })
         .catch(err => {
@@ -191,9 +192,10 @@ exports.getValidContract = async function(req, res) {
 exports.validContract = function(req, res) {
     signature = req.params.signature,
     publicKey = req.params.publicKey
-    signature = Buffer.from(signature, 'utf8')
+    signature = Buffer.from(signature, 'hex')
     
     contentDecoded = KeyController.publicDecrypt(publicKey, signature)
+    contentDecoded = contentDecoded.toString('hex')
     res.send(contentDecoded)
 }
 
@@ -211,57 +213,29 @@ function store(authorization, form_data) {
 
 function getAuth(username, password) {
     return axios.post(settings.vChainPortContract + '/authentication', {
-        "password" : username,
-        "username" : password,
-    }).then(res => {
-        return res.data.authorization
-    })
-    .catch(err => {
+        "password" : password,
+        "username" : username,
+    }).catch(err => {
         return err
     })
 }
 
 function getContent(contract) {
-    content = `
-    {'content' : [
-        {'Đại diện hợp đồng bên A' : [                             
-            {'Họ tên chủ trọ' : '${contract.landlordName}'},         
-            {'Số điện thoại' : '${contract.landlordPhone}'},          
-            {'Số chứng minh thư' : '${contract.landlordID}'},          
-            {'Địa chỉ thường trú' : '${contract.landlordAddress}'},
-        ]},
-
-        {'Đại diện hợp đồng bên B' : [                             
-            {'Họ tên người thuê trọ' : '${contract.tenantName}'},      
-            {'Số điện thoại' : '${contract.tenantPhone}'},             
-            {'Số chứng minh thư' : '${contract.tenantID}'},            
-            {'Địa chỉ thường trú' : '${contract.tenanAdress}'},
-        ]},
-
-        {'Nội dung hợp đồng' : [                                   
-            {'Nơi cho thuê trọ' : '${contract.address}'},              
-            {'Đặc điểm' : '${contract.feature}'},                   
-            {'Diện tích cho thuê' : '${contract.square}'},
-        ]},
-
-        {'Cam kết' : [                                          
-            { 'Bên A' : 'Bên A đồng ý cho bên B thuê căn nhà này với mục đích và hiện trạng nêu như trên' }
-            { 'Bên B' : 'Bên B đồng ý thuê nhà bên A bới toàn bộ hiện trạng và mục đích sử dụng như trên' }
-        ]},    
-
-        {'Thời hạn hợp đồng' : [                                 
-            {'Ngày bắt đầu' : '${contract.timeStart}'                
-            {'Thời gian' : '${contract.time} tháng'
-        ]},                  
-
-        {'Giá tiền cho thuê' : '${contract.price}'},
-
-        {'Các điều khoản trong hợp đồng': '[
-    `
-    for (i = 0; i < contract.length; i++) {
-        content += `'Điều khoản ${i}' : '${contract.rule[i]}'`
-    }
-    content += `]'}]}`
+    content = `{`+             
+        `landlordName : '${contract.landlordName}',`+      
+        `landlordPhone : '${contract.landlordPhone}',`+          
+        `landlordID : '${contract.landlordID}',`+         
+        `landlordAddress : '${contract.landlordAddress}',`+                          
+        `tenantName : '${contract.tenantName}',`+      
+        `tenantPhone : '${contract.tenantPhone}',`+             
+        `tenantID : '${contract.tenantID}',`+            
+        `tenantAddress : '${contract.tenanAdress}',`+                              
+        `address : '${contract.address}',`+             
+        `feature : '${contract.feature}',`+                   
+        `square : '${contract.square}',`+                          
+        `timeStart : '${contract.timeStart}',`+            
+        `time : '${contract.time}'}`
+    
     return content
 }
 

@@ -13,14 +13,15 @@ import { Button } from 'antd';
 
 
 
-const defaultCheckPrice = ['<5tr'];
-const defaultCheckSquare = ['10m2'];
+const defaultCheckPrice = [];
+const defaultCheckSquare = [];
 
 class TenantScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
             list: [],
+            address: '',
             checkedListPrice: defaultCheckPrice,
             indeterminatePrice: true,
             checkAllPrice: false,
@@ -31,8 +32,10 @@ class TenantScreen extends React.Component {
         this.onSearch = this.onSearch.bind(this)
         this.handler1 = this.handler1.bind(this)
         this.handler2 = this.handler2.bind(this)
+        this.getaddress = this.getaddress.bind(this)
     }
     onSearch(){
+        console.log(this.state.address)
         console.log(this.state.checkedListPrice)
         console.log(this.state.indeterminatePrice)
         console.log(this.state.checkedListSquare)
@@ -83,6 +86,12 @@ class TenantScreen extends React.Component {
             checkAllSquare: childstate.checkAllSquare,
         })
 
+    }
+
+    getaddress = function(address){
+        this.setState({
+            address: address,
+        })
     }
 
     componentDidMount() {
@@ -144,6 +153,7 @@ class TenantScreen extends React.Component {
                         <FilterHome 
                             handler1 = {this.handler1}
                             handler2 = {this.handler2} 
+                            getaddress = {this.getaddress}
                         />
                         <Button type="danger w-50" size={'large'} style={{margin:"15px"}} onClick={this.onSearch}>   
                             Tìm Kiếm
