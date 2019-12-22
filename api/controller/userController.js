@@ -77,6 +77,8 @@ async function getFileBase64(img) {
     pos = img.thumbUrl.search('base64,')
 
     imgPath = 'public/uploads/user/' + img.thumbUrl.slice(11, pos+7) + imgName
+    console.log(img.thumbUrl);
+    
     img = img.thumbUrl.slice(pos+7)
     
     await fs.writeFile(imgPath, img, 'base64', function(err) {
