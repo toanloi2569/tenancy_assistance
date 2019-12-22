@@ -31,7 +31,7 @@ export default class TenantHeader extends Component {
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/tenant/:id">Tìm nhà</a></li>
                             {/* <li className = "nav-item"><Link to = "/userProfile/createForm">Dang tin</Link></li> */}
-                            <li className="nav-item"><a className="nav-link"  href ="/" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link"  href ="#/home/" >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>

@@ -127,12 +127,12 @@ class Login extends Component {
          localStorage.setItem("token", response.data.token)
          if (response.data.role === 'Tenant' && self.state.menuValue === 1 ){
           var id = ":"+ response.data.id
-          self.props.history.push("/tenant/"+id)
+          self.props.history.push("/home/"+id)
          }
          else if(response.data.role === 'Host' && self.state.menuValue === 2)
          {
           var id = ":"+ response.data.id
-          self.props.history.push("/host/"+id)
+          self.props.history.push("/home/"+id)
          }
          else{
            alert("Bạn chưa có tài khoản hoặc bạn chọn sai tư cách đăng nhập")
