@@ -8,9 +8,11 @@ var KeyController = require('../controller/keyController')
 var ContractController = require('../controller/contractController')
 
 var settings = require('../config/setting')
+var axios = require('axios')
 
 exports.fillContract = function (req, res, next) {
     contract = new Contract({
+    
         landlord_id : req.body.landlord_id,
         tenant_id : req.user._id,
 
@@ -111,7 +113,7 @@ exports.sign = async function(req, res, next) {
     res.send(contract)
 }
 
-exports.storeContractToBlockChain = async function storeContract() {
+exports.storeContractToBlockChain = async function storeContract(req, res) {
     var authorization = await getAuth(req.params.username, req.params.password)
 
     contract = await Contract.findById(req.params.contract_id).exec()
@@ -123,30 +125,36 @@ exports.storeContractToBlockChain = async function storeContract() {
     form_data.append("so_cmt_nguoi_thue_nha", tenant.ID)
     form_data.append("public_key_chu_nha", landlord.publicKey)
     form_data.append("public_key_nguoi_thue_nha", tenant.publicKey)
-    form_data.append("noi_dung_hop_dong", ContractController.getContent(contract))
-    form_data.append("ngay_bat_dau", contract.timeStart)
-    form_data.append("ngay_ket_thuc", contract.timeEnd)
+    form_data.append("noi_dung_hop_dong", getContent(contract))
+    // form_data.append("ngay_bat_dau", contract.timeStart)
+    form_data.append("ngay_bat_dau", 123)
+    // form_data.append("ngay_ket_thuc", contract.timeEnd)
+    form_data.append("ngay_ket_thuc", 124)
     form_data.append("idv_chu_nha", landlord.idv)
     form_data.append("idv_nguoi_thue_nha", tenant.idv)
     form_data.append("id_chu_nha", landlord._id)
     form_data.append("id_nguoi_thue_nha", tenant._id)
 
-    await store(authorization, form_data).then(response => {
-        contract_info = {
-            timeStart : contract.timeStart,
-            timeEnd : contract.timeEnd,
-            time : time,
-            landlord : landlord.name,
-            tenant : tenant.name,
-            idv_contract : response.data.id,
-        }
-        landlord.contracts_info.push(contract_info)
-        tenant.contracts_info.push(contract_info)
+    console.log(getContent(contract));
+    console.log(Contract.tenantSign);
+    
+    
+    // await store(authorization, form_data).then(response => {
+    //     contract_info = {
+    //         timeStart : contract.timeStart,
+    //         timeEnd : contract.timeEnd,
+    //         time : time,
+    //         landlord : landlord.name,
+    //         tenant : tenant.name,
+    //         idv_contract : response.data.id,
+    //     }
+    //     landlord.contracts_info.push(contract_info)
+    //     tenant.contracts_info.push(contract_info)
 
-        landlord.save().exec()
-        tenant.save().exec()
-        res.send(response.data)
-    })
+    //     landlord.save().exec()
+    //     tenant.save().exec()
+    //     res.send(response.data)
+    // })
 }
 
 exports.getContractFromBlockChain = async function(req, res) {

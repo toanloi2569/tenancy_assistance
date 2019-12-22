@@ -16,9 +16,9 @@ var Contract = new Schema({
     /* Tenant Info */
     tenantName: { type: String },
     tenantPhone: { type: String },
-    tenanEmail: { type: String },
-    tenanID: { type: String },
-    tenanAdress: { type: String },
+    tenantEmail: { type: String },
+    tenantID: { type: String },
+    tenantAddress: { type: String },
 
     /* Contract */
     address: { type: String, require: true },
