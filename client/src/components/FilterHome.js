@@ -33,6 +33,7 @@ class FilterHome extends React.Component {
             indeterminatePrice: !!checkedListPrice.length && checkedListPrice.length < priceOptions.length,
             checkAllPrice: checkedListPrice.length === priceOptions.length,
         });
+        this.props.handler1(this.state);
     };
     onChangeSquare = checkedListSquare => {
         this.setState({
@@ -40,6 +41,7 @@ class FilterHome extends React.Component {
             indeterminateSquare: !!checkedListSquare.length && checkedListSquare.length < squareOptions.length,
             checkAllSquare: checkedListSquare.length === squareOptions.length,
         });
+        this.props.handler2(this.state);
     };
 
     onCheckAllChangePrice = e => {
@@ -48,6 +50,7 @@ class FilterHome extends React.Component {
             indeterminatePrice: false,
             checkAllPrice: e.target.checked,
         });
+        this.props.handler1(this.state);
     
     };
     onCheckAllChangeSquare = e => {
@@ -56,7 +59,7 @@ class FilterHome extends React.Component {
             indeterminateSquare: false,
             checkAllSquare: e.target.checked,
         });
-    
+        this.props.handler2(this.state);
     };
 
     render() {
