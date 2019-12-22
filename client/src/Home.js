@@ -7,20 +7,20 @@ import './index.css';
 import ListArea from './components/ListArea'
 import ListHomeArea from './components/ListHomeArea'
 import AboutUs from './components/AboutUs'
+import Header from './components/Header';
 
 class Home extends React.Component {
 
   render() {
     return (
       <div>
-        <header className="header-area" id="top-bar">
-          <TopBar />
-        </header>
+        <Header/>
+        <br/><br/>
         <section className="banner_area">
           <Banner/>
         </section>
-        <ListArea></ListArea>
-        <ListHomeArea></ListHomeArea>
+        <ListArea/>
+        <ListHomeArea/>
         <AboutUs />
         <FooterHome/>
       </div>

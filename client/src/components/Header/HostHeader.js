@@ -89,7 +89,7 @@ export default class HostHeader extends Component {
         return (
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-                    <a className="navbar-brand logo_h" href="index.html"><img src="image/Logo.png" alt="" /></a>
+                    <a className="navbar-brand logo_h" href="#/home/"><img src="image/logo-3.png" alt="" style={{width:"140px",height:"80px"}}/></a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
@@ -112,12 +112,11 @@ export default class HostHeader extends Component {
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
                                     <li className="nav-item"><a className="nav-link" href="#/host/taohopdong">Tạo hợp đồng </a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/host/profile">Xem thông tin cá nhân </a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/host/danhsachnhachothue">Danh sách nhà cho thuê </a></li>
+                                    <li className="nav-item"><a className="nav-link" href="#/host/quanlybaidang">Danh sách nhà cho thuê </a></li>
                                 </ul>
                             </li>
                             <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li>
-                            <li className="nav-item"><a className="nav-link" href="#/host">Trang chủ</a></li>
-                            <li className="nav-item"><a className="nav-link" href="/" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link" href="/home" >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>

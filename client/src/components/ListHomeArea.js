@@ -45,6 +45,14 @@ export default class ListHome extends Component {
                     price: "5.000.000",
                     address: "69 Đường Lê Duẫn",
                     status: true
+                },
+                {
+                    id: 6,
+                    name: "Nhà cấp 4 đầy đủ tiện nghi",
+                    img: "https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg",
+                    price: "5.000.000",
+                    address: "69 Đường Lê Duẫn",
+                    status: true
                 }
             ]
 
@@ -73,7 +81,7 @@ export default class ListHome extends Component {
                     <div class="section_title text-center">
                         <h2 class="title_color">Bài đăng mới nhất</h2>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-center">
                         {elements}
                     </div>
                 </div>
