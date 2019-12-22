@@ -110,7 +110,12 @@ exports.createPost = async function(req, res, next) {
 
 async function getFileBase64(img) {
     imgName = String(Date.now())
+
     pos = img.thumbUrl.search('base64,')
+    console.log("Loi");
+    
+    console.log(img.thumbUrl);
+    console.log("hih");
 
     imgPath = 'public/uploads/house/' + img.thumbUrl.slice(11, pos+7) + imgName
     img = img.thumbUrl.slice(pos+7)
