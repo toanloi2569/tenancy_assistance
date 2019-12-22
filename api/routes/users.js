@@ -17,7 +17,7 @@ router.post('/fillContract', auth, Contract.fillContract)
 router.get('/getContracts', auth, Contract.getContracts)
 
 /* Lấy thông tin chi tiết của 1 contract */
-router.get('/checkContractAfterFill', auth, Contract.checkContractAfterFill)
+router.get('/checkContractAfterFill/:contract_id', auth, Contract.checkContractAfterFill)
 
 /* Ký hợp đồng */
 router.post('/sign/contract_id/:contract_id', auth, Contract.sign)
@@ -73,6 +73,9 @@ router.post('updateComment/comments/:comment_id', auth, Comment.updateComment)
 // router.post('/comment', User.comment)
 
 // test dang nhap dang xuat
+router.get('/auth', auth, function(req,res){
+    const role = req.user.role; 
+    res.status(200).send(role);})
 router.post('/logoutUser', auth, User.logoutUser)
 router.post('/logoutallUser', auth, User.logoutallUser)
 router.get('/profileUser', auth, User.profileUser)

@@ -1,20 +1,20 @@
 var crypto= require('crypto');
+var settings = require('../config/setting')
 
 exports.generateKey = function generateKey(id) {
   rand = Math.random().toString()
-  passphrase = id+rand
   return new Promise (resolve => {
     crypto.generateKeyPair('rsa', {
         modulusLength: 4096,
         publicKeyEncoding: {
           type: 'spki',
-          format: 'pem'
+          format: 'pem',
         },
         privateKeyEncoding: {
           type: 'pkcs8',
           format: 'pem',
           cipher: 'aes-256-cbc',
-          passphrase: passphrase
+          passphrase : settings.passphrase
         }
       }, (err, publicKey, privateKey) => {
         console.log("hihi");
@@ -32,14 +32,24 @@ exports.hashText = function(text) {
 
 exports.privateEncrypt = function(privateKey, buffer) {
   return new Promise(resolve => {
-    var encrypted = crypto.privateEncrypt(privateKey, buffer);
+    var encrypted = crypto.privateEncrypt(
+      {
+        key : privateKey,
+        passphrase : settings.passphrase
+      }, 
+      buffer);
     resolve (encrypted)
   })
 }
 
 exports.publicDecrypt = function(publicKey, buffer) {
   return new Promise(resolve => {
-    var decrypted = crypto.publicDecrypt(publicKey, buffer)
+    var decrypted = crypto.publicDecrypt(
+      {
+        key : publicKey,
+        // passphrase : settings.passphrase
+      },
+      buffer)
     resolve (decrypted)
   })
 }

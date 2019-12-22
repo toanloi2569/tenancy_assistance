@@ -78,13 +78,7 @@ class Register extends Component {
 
       previewVisible: false,
       previewImage: '',
-      fileList: [
-        {
-          uid: '-5',
-          name: 'image.png',
-          status: 'error',
-        }
-      ],
+      fileList: []
 
 
 

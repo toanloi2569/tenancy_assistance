@@ -1,5 +1,6 @@
 import React from 'react';
-import TopBar from './components/TopBar';
+// import TopBar from './components/TopBar';
+import TenanantHeader from './components/Header/TenantHeader'
 import Banner from './components/Banner';
 import FooterHome from './components/Footer/FooterHome';
 import { Carousel } from 'antd';
@@ -7,6 +8,8 @@ import { Modal, Button } from 'antd';
 import axios from 'axios';
 import { Form, Input, Icon } from 'antd';
 import { DatePicker } from 'antd';
+import TenantScreen from './TenantScreen';
+import TenantHeader from './components/Header/TenantHeader';
 
 
 class InfoHome extends React.Component {
@@ -15,6 +18,8 @@ class InfoHome extends React.Component {
         this.state =({
             loading: false,
             visible: false,
+            visible1: false,
+            loading1: false,
             // Dung cho hop dong
             showcontract: [],
             ngaytao: '',
@@ -33,6 +38,7 @@ class InfoHome extends React.Component {
             price: '',
             id_post: '',
             id_contract: '',
+            landlord_id : '',
             // Dung cho bai post
             // tenbaidang: '',
             diachinha: '',
@@ -41,6 +47,7 @@ class InfoHome extends React.Component {
             dientichnha:'',
             giatiennha: '',
             motanha:'',
+            id_contract_new: ''
 
 
 
@@ -98,12 +105,15 @@ class InfoHome extends React.Component {
 
             }
         })
+        
+
+
 
         var apiBaseUrl2 = "http://localhost:9000/users/fillContract/post_id/"+this.state.id_post;
         axios.get(apiBaseUrl2, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
             if (response.status === 200){
-                console.log(response.data)
+                // console.log(response.data)
                 this.setState({
                     // hop dong
                     ngaytao: response.data.timeStart,
@@ -120,7 +130,9 @@ class InfoHome extends React.Component {
                     mota: response.data.feature,
                     dientich: response.data.square,
                     price: response.data.price,
-                    id_contract:response.data._id
+                    id_contract:response.data._id,
+                    landlord_id: response.data.landlord_id,
+    
 
 
 
@@ -137,6 +149,42 @@ class InfoHome extends React.Component {
 
 
     showModal = () => {
+        // var payload  = {
+        //     'timeStart': this.state.ngaytao,
+        //     'landlordName': this.state.fullnameHost,
+        //     'tenantName': this.state.fullnameTenant,
+        //     'landlordID': this.state.cmtHost,
+        //     'tenantID': this.state.cmtTenant,
+        //     'address': this.state.address,
+        //     'landlordAddress': this.state.addressHost,
+        //     'tenantAddress': this.state.addressTenant,
+        //     'landlordPhone': this.state.phoneHost,
+        //     'tenantPhone': this.state.phoneTenant,
+        //     'time': this.state.thoihan,
+        //     'feature': this.state.mota,
+        //     'square': this.state.dientich,
+        //     'price': this.state.price,    
+        //     'landlord_id':this.state.landlord_id,
+
+        // }
+        
+
+        // var apiBaseUrl4 = "http://localhost:9000/users/fillContract";
+        // axios.post(apiBaseUrl4,payload, { 'headers': { 'Authorization': localStorage.token } })
+        // .then((response)=> {
+        //     if (response.status === 200){
+                
+                // this.setState({
+                //     // hop dong
+                //     id_contract_new: response.data.contract._id,
+ 
+
+                // }) 
+        //         console.log(response.data.contract)
+                
+
+        //     }
+        // })
 
         this.setState({
           visible: true,
@@ -147,7 +195,8 @@ class InfoHome extends React.Component {
         axios.get(apiBaseUrl, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
-            // console.log(response)
+          
+
 
             const formItemLayout = {
                 labelCol: {
@@ -307,15 +356,14 @@ class InfoHome extends React.Component {
                 dientich: response.data.square,
                 price: response.data.price
             })
-                // console.log(this.state)
+                
         }
         else if(response.status === 204){
-            console.log("");
+            
             
         }
         else{
-            console.log("");
-            alert("");
+         
         }
         })
         
@@ -323,10 +371,8 @@ class InfoHome extends React.Component {
 
 
       };
-    
-    handleOk = e => {
+      handleOk1 = (e)=>{
         e.preventDefault();
-        console.log(this.state.id_contract)
         var payload = {
             'timeStart': this.state.ngaytao,
             'landlordName': this.state.fullnameHost,
@@ -342,18 +388,65 @@ class InfoHome extends React.Component {
             'feature': this.state.mota,
             'square': this.state.dientich,
             'price': this.state.price,    
+            'landlord_id':this.state.landlord_id, 
+        }
+        
+       
+
+        var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract_new;
+        axios.post(baseURL3, payload,{ 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=> {
+            
+        if(response.status === 200 ){
+            this.setState({
+                visible1: true,
+            });
+            alert("Ký thành công!!!")
+
+        }
+        else{
+            // console.log(response.status)
+        }
+    })
+        
+
+      }
+    
+    handleOk = (e) => {
+        e.preventDefault();
+        
+        var payload = {
+            'timeStart': this.state.ngaytao,
+            'landlordName': this.state.fullnameHost,
+            'tenantName': this.state.fullnameTenant,
+            'landlordID': this.state.cmtHost,
+            'tenantID': this.state.cmtTenant,
+            'address': this.state.address,
+            'landlordAddress': this.state.addressHost,
+            'tenantAddress': this.state.addressTenant,
+            'landlordPhone': this.state.phoneHost,
+            'tenantPhone': this.state.phoneTenant,
+            'time': this.state.thoihan,
+            'feature': this.state.mota,
+            'square': this.state.dientich,
+            'price': this.state.price,    
+            'landlord_id':this.state.landlord_id
         }
         
         
 
-        var baseURL2 = "http://locahost:9000/users/fillContract"
-        var baseURL3 = "http://localhost:9000/users/sign/contract_id/"+this.state.id_contract;
+        var baseURL2 = "http://localhost:9000/users/fillContract"
+        
 
         axios.post(baseURL2, payload,{ 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
+           
         if(response.status === 200 ){
-            alert("Gửi thành công!!!")
-            
+  
+            this.setState({
+                visible1: true,
+                id_contract_new: response.data.contract._id
+            });       
 
 
         }
@@ -369,15 +462,19 @@ class InfoHome extends React.Component {
     };
 
     handleCancel = () => {
-    this.setState({ visible: false });
-    };
-
+        this.setState({ visible: false });
+        };
+    handleCancel1 = () => {
+        this.setState({ visible1: false });
+        };
+    
     render() {
         
         return (
             <div>
                 <header className="header-area" id="top-bar">
-                    <TopBar />
+                    {/* <TopBar /> */}
+                <TenantHeader/>
                 </header>
                     <section className="banner-area">
                         <div style={{ padding: "30px" }}></div>
@@ -428,6 +525,23 @@ class InfoHome extends React.Component {
                                                     >
                                                    {this.state.showcontract}
                                                     </Modal>
+                                                    <Modal
+                                                    visible= {this.state.visible1}
+                                                    title="Title"
+                                                    // onChange={this.handleOk1}
+                                                    onCancel={this.handleCancel1}
+                                                    footer={[
+                                                        <Button key="back" onClick={this.handleCancel1}>
+                                                        Return
+                                                        </Button>,
+                                                        <Button key="submit" type="primary" loading1={this.state.loading1} onClick = {this.handleOk1} >
+                                                        Submit
+                                                        </Button>,
+                                                    ]}
+                                                    >
+                                                        {/* <span>dasjdsaljdbsljdls</span> */}
+                                                    </Modal>
+
                                                 </div>
                                             </div>
                                             <div class="d-flex bd-highlight">

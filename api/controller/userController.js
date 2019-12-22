@@ -38,9 +38,13 @@ exports.registerUser = function(req, res, next){
 
 exports.profileUser = async function(req, res) {
     user = await User.findById(req.user._id).exec().catch(err => {return err})
+    console.log(user);
+    
     axios.get(settings.vChainPort + '/UserInfo/get?id='+user.idv)
-            .then(data => {
-                res.send(data)
+            .then(vUser => {
+                console.log(vUser.data);
+                
+                res.send({"user" : user, "vUser" : vUser.data})
             }).catch(err => {
                 return err
             })
