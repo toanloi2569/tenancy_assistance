@@ -99,7 +99,6 @@ exports.sign = async function(req, res, next) {
     signature = await KeyController.privateEncrypt(privateKey, contentHashed)
     signature = signature.toString('hex')
     
-    console.log(req.user.role);
     
     if (req.user.role == 'Tenant') {
         contract.tenantSign = signature
@@ -164,7 +163,7 @@ exports.getContractFromBlockChain = async function(req, res) {
         .then(async response => {
             data = response.data[0]
             content = getContent(data.noi_dung_hop_dong)
-            contentHashed = await KeyController.hashText(content)
+            contentHashed = await KeyController.hashText(content, 'hex')
             data.noi_dung_hop_dong = JSON.parse(data.noi_dung_hop_dong.toString())
             
             res.send({"data" : data, "hashed" : contentHashed})
