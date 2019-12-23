@@ -51,58 +51,71 @@ export default class ViewConTract extends React.Component {
             id_post: '',
             id_contract: '',
             landlord_id : '',
-            chukyHost: '',
-            chukyTenant: ''
+            publickeyHost: '',
+            tenantSign: '',
+            data: [],
+            ngay_ket_thuc: '',
+            hash : '',
+            landlordSign: '',
+            tenantSign : '',
+            contentLandlordSign: '',
+            contentTenantSign: ''
         }
     }
 
     componentDidMount(){
-        var apiBaseUrl = "http://localhost:9000/users/";
         const {match:{params}} = this.props;
         this.setState({
             id_contract: params.id
         })
-        setTimeout(()=>{ 
-            axios.get(apiBaseUrl+'auth', { 'headers': { 'Authorization': localStorage.token } })
-            .then((response)=> {
-                if(response.status === 200 ){ 
-                    this.setState({ role: response.data })
-                }
-                console.log(this.state)
-            })
-        },0)
+
+        // var apiBaseUrl = "http://localhost:9000/users/";
+        // setTimeout(()=>{ 
+        //     axios.get(apiBaseUrl+'auth', { 'headers': { 'Authorization': localStorage.token } })
+        //     .then((response)=> {
+        //         if(response.status === 200 ){ 
+        //             this.setState({ role: response.data.data })
+        //         }
+        //         // console.log(this.state)
+        //     })
+        // },0)
 
         var apiBaseUrl2 = "http://localhost:9000/users/";
         setTimeout(()=>{ 
-            axios.get(apiBaseUrl2+'checkContractAfterFill/'+params.id, { 'headers': { 'Authorization': localStorage.token } })
+            axios.get(apiBaseUrl2+'/getContractFromBlockChain/idv_contract/'+params.id, { 'headers': { 'Authorization': localStorage.token } })
             .then((response)=> {
+                // console.log(response)
+                // console.log(response.data.data.id)
+                console.log("asdasaasd")
                 if(response.status === 200 ){ 
+                    console.log(response.data.data)
+                    console.log("sadsadasda")
         
                     this.setState({
-                        ngaytao: response.data.timeStart,
-                        fullnameHost: response.data.landlordName,
-                        fullnameTenant: response.data.tenantName,
-                        cmtHost: response.data.landlordID,
-                        cmtTenant: response.data.tenantID,
-                        address: response.data.address,
-                        addressHost:response.data.landlordAddress,
-                        addressTenant: response.data.tenantAddress,
-                        phoneHost: response.data.landlordPhone,
-                        phoneTenant: response.data.tenantPhone,
-                        thoihan: response.data.time,
-                        mota: response.data.feature,
-                        dientich: response.data.square,
-                        price: response.data.price,
-                        id_contract:response.data._id,
-                        landlord_id: response.data.landlord_id,
-                        chukyHost: response.data.chukyHost,
-                        chukyTenant: response.data.chukyTenant
-
+                        ngaytao: response.data.data.ngay_bat_dau,
+                        fullnameHost: response.data.data.noi_dung_hop_dong.landlordName,
+                        fullnameTenant: response.data.data.noi_dung_hop_dong.tenantName,
+                        cmtHost: response.data.data.noi_dung_hop_dong.landlordID,
+                        cmtTenant: response.data.data.noi_dung_hop_dong.tenantID,
+                        address: response.data.data.noi_dung_hop_dong.address,
+                        addressHost:response.data.data.noi_dung_hop_dong.landlordAddress,
+                        addressTenant: response.data.data.noi_dung_hop_dong.tenantAddress,
+                        phoneHost: response.data.data.noi_dung_hop_dong.landlordPhone,
+                        phoneTenant: response.data.data.noi_dung_hop_dong.tenantPhone,
+                        thoihan: response.data.data.noi_dung_hop_dong.time,
+                        ngayketthuc: response.data.data.ngay_ket_thuc,
+                        dientich: response.data.data.noi_dung_hop_dong.square,
+                        price: response.data.data.price,
+                        mota: response.data.data.noi_dung_hop_dong.feature,
                         
-
+                        publickeyHost: response.data.data.public_key_chu_nha,
+                        publickeyTenant: response.data.data.public_key_nguoi_thue_nha,
+                        hash: response.data.hashed,
+                        landlordSign: response.data.data.noi_dung_hop_dong.landlordSign,
+                        tenantSign: response.data.data.noi_dung_hop_dong.tenantSign
                      })
                 }
-                // console.log(this.state)
+                
             })
         },0)
 
@@ -114,14 +127,60 @@ export default class ViewConTract extends React.Component {
         this.setState({
             showCheck1 : true
         })
-        alert("Chu ky hop le !!!!")
+        var payload = {
+            "publickey":this.state.publickeyHost,
+            "sign": this.state.landlordSign
+            
+
+        }
+        var baseURL = "http://localhost:9000/users"
+        axios.post(baseURL+"/validContract", payload, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=>{
+            if (response.status == 200)
+            {
+                
+            if (response.data == this.state.hash){
+                alert("Hop dong ben A khong bi thay doi trong qua trinh thuc hien !!!")
+            }
+            else{
+                alert("Khong xac thuc duoc hop dong!!")
+            }
+
+            this.setState({
+                contentLandlordSign :  response.data
+            })
+            console.log(this.state.contentLandlordSign)
+            console.log("dasdasdasdsadsa")
+        }
+
+        })
+       
     }
 
     handleClickBtn2 = () => {
         this.setState({
             showCheck2: true
         })
-        alert("Chu ky hop le !!!!")
+        var payload = {
+            "publickey":this.state.publickeyTenant,
+            "sign": this.state.tenantSign
+            
+        }
+        var baseURL = "http://localhost:9000/users"
+        axios.post(baseURL+"/validContract", payload, { 'headers': { 'Authorization': localStorage.token } })
+        .then((response)=>{
+            if( response.status === 200)
+            {
+            if (response.data.contentDecoded == this.state.hash){
+                alert("Hop dong ben B khong bi thay doi trong qua trinh thuc hien !!!")
+            }
+
+            this.setState({
+                contentTenantSign:  response.data.contentDecoded
+            })}
+
+        })
+
     }
 
     render() {
@@ -147,9 +206,9 @@ export default class ViewConTract extends React.Component {
                             <h5><a><i class="lnr lnr-map-marker"></i> {this.state.addressHost}</a></h5>
                             <h5><a><i class="lnr lnr-phone-handset"></i> {this.state.phoneHost}</a></h5>
                             <p class="border bg-light"><a>
-                                -----BEGIN PUBLIC KEY----- <br />
-                                {this.state.chukyHost}
-                                -----END PUBLIC KEY-----<br />
+                                 <br />
+                                {this.state.publickeyHost}
+                                <br />
                             </a></p>
                             <div class="br"></div>
                         </aside>
@@ -160,9 +219,9 @@ export default class ViewConTract extends React.Component {
                             <h5><a><i class="lnr lnr-map-marker"></i> {this.state.addressTenant}</a></h5>
                             <h5><a><i class="lnr lnr-phone-handset"></i> {this.state.phoneTenant}</a></h5>
                             <p class="border bg-light"><a>
-                                -----BEGIN PUBLIC KEY----- <br />
-                                {this.state.chukyTenant}
-                                -----END PUBLIC KEY-----<br />
+                                 <br />
+                                {this.state.publickeyTenant}
+                               <br />
                             </a></p>
                             <div class="br"></div>
                         </aside>
@@ -189,10 +248,10 @@ export default class ViewConTract extends React.Component {
                                 </h3>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center">
-                                <h4> Ngay bat dau :11/11/2011</h4>
+                                <h4> Ngay bat dau :{this.state.ngaytao}</h4>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center">
-                                <h4> Ngay ket thuc : 08/08/2018</h4>
+                                <h4> Thoi gian : {this.state.thoihan} (thang)</h4>
                             </div>
                         </div>
                         <h3 class="text-left" style={{ padding: "10px" }}>
@@ -205,7 +264,7 @@ export default class ViewConTract extends React.Component {
                                 </h4>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center">
-                                <h4> 2000000 VND/thang</h4>
+                                <h4> {this.state.price}VND/thang</h4>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center">
                             </div>
@@ -262,10 +321,7 @@ export default class ViewConTract extends React.Component {
                         </h3>
                         <div class="border" style={{ padding: "15px" }}>
                             <p>
-                                MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdwSw75msocxvpxPD0UNjJRrp+
-                                GYngh+x18CtBWHlgUFlCFGjxqfyn2cdiZGQPubyprqGzVIBYNHU2XJcBJWHQOCBG
-                                CN12br4N7AckDw8LvxmcqSdYinJytzkzVWq0Y6l0hrLHr4jCzWQ90nLaCF5xE+Up
-                                PIs+DvA+XXyLRzXDUQIDAQAB
+                               {this.state.hash}
                             </p>
                         </div>
                         <br />
@@ -275,10 +331,7 @@ export default class ViewConTract extends React.Component {
                     <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
                         <h3 class="border bg-warning"> Chu ky Ben A</h3>
                         <p class="border bg-light"><a>
-                            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdwSw75msocxvpxPD0UNjJRrp+<br />
-                            GYngh+x18CtBWHlgUFlCFGjxqfyn2cdiZGQPubyprqGzVIBYNHU2XJcBJWHQOCBG<br />
-                            CN12br4N7AckDw8LvxmcqSdYinJytzkzVWq0Y6l0hrLHr4jCzWQ90nLaCF5xE+Up<br />
-                            PIs+DvA+XXyLRzXDUQIDAQAB<br />
+                            {this.state.landlordSign}<br />
                         </a></p>
                         <button id="btn1" type="button" class="btn btn-primary" onClick={this.handleClickBtn1}>Kiem tra chu ky</button>
                         <div class="br"></div>
@@ -286,10 +339,7 @@ export default class ViewConTract extends React.Component {
                     <aside class=" card single_sidebar_widget author_widget" style={{ padding: "10px" }}>
                         <h3 class="border bg-warning"> Chu ky Ben B</h3>
                         <p class="border bg-light"><a>
-                            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdwSw75msocxvpxPD0UNjJRrp+<br />
-                            GYngh+x18CtBWHlgUFlCFGjxqfyn2cdiZGQPubyprqGzVIBYNHU2XJcBJWHQOCBG<br />
-                            CN12br4N7AckDw8LvxmcqSdYinJytzkzVWq0Y6l0hrLHr4jCzWQ90nLaCF5xE+Up<br />
-                            PIs+DvA+XXyLRzXDUQIDAQAB<br />
+                            {this.state.tenantSign}<br />
                         </a></p>
                         <button id="btn2" type="button" class="btn btn-primary" onClick={this.handleClickBtn2}>Kiem tra chu ky</button>
                         <div class="br"></div>
@@ -299,20 +349,14 @@ export default class ViewConTract extends React.Component {
                     {showCheck1 && <aside class="col-6 single_sidebar_widget author_widget" style={{ padding: "10px" }}>
                         <h3 class="border bg-red"> Content Decode </h3>
                         <p class="border bg-light"><a>
-                            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdwSw75msocxvpxPD0UNjJRrp+<br />
-                            GYngh+x18CtBWHlgUFlCFGjxqfyn2cdiZGQPubyprqGzVIBYNHU2XJcBJWHQOCBG<br />
-                            CN12br4N7AckDw8LvxmcqSdYinJytzkzVWq0Y6l0hrLHr4jCzWQ90nLaCF5xE+Up<br />
-                            PIs+DvA+XXyLRzXDUQIDAQAB<br />
+                            {this.state.contentLandlordSign}<br />
                         </a></p>
                         <div class="br"></div>
                     </aside>}
                     {showCheck2 && <aside class="col-6 ml-auto single_sidebar_widget author_widget" style={{ padding: "10px" }}>
                         <h3 class="border bg-red"> Content Decode </h3>
                         <p class="border bg-light"><a>
-                            MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdwSw75msocxvpxPD0UNjJRrp+<br />
-                            GYngh+x18CtBWHlgUFlCFGjxqfyn2cdiZGQPubyprqGzVIBYNHU2XJcBJWHQOCBG<br />
-                            CN12br4N7AckDw8LvxmcqSdYinJytzkzVWq0Y6l0hrLHr4jCzWQ90nLaCF5xE+Up<br />
-                            PIs+DvA+XXyLRzXDUQIDAQAB<br />
+                            {this.state.contentTenantSign}<br />
                         </a></p>
                         <div class="br"></div>
                     </aside>}

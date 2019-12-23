@@ -43,7 +43,7 @@ ReactDOM.render(
        <Route exact path = "/host/profile" component = {HostProfile}/>
        <Route exact path = "/host/quanlybaidang/:id" component = {ListHouseRent}/>
        <Route exact path = "/infohome/:id" component = {InfoHome}/>
-       <Route exact path = "/xemchitiet/:id" component = {ViewConTract}/>
+       <Route exact path = "/host/profile/:id" component = {ViewConTract}/>
        <Route exact path = "/hopdong/:id" component = {HostSignContract}/>
      </div>
   </HashRouter >

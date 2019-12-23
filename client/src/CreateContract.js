@@ -282,7 +282,7 @@ class CreateContract extends React.Component {
         const uploadButton = (
             <div>
                 <Icon type="plus" />
-                <div className="ant-upload-text">Upload CMT mặt trước và mặt sau</div>
+                <div className="ant-upload-text">Upload ảnh cho thuê nhà</div>
             </div>
         );
         // Tạo hợp đồng 

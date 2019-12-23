@@ -38,7 +38,7 @@ router.get('/getValidContract/idv_contract/:idv_contract',
                 auth, Contract.getValidContract)
 
 /* Lấy sign đã decode để valid contract */
-router.get('/validContract/signature/:signature/publicKey/:publicKey',
+router.post('/validContract',
                 auth, Contract.validContract)
 
 

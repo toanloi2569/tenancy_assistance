@@ -112,6 +112,8 @@ async function getFileBase64(img) {
     imgName = String(Date.now())
     pos = img.search('base64,')
 
+    pos = img.search('base64,')
+
     imgPath = 'public/uploads/house/' + img.slice(11, pos+7) + imgName
     img = img.slice(pos+7)
     

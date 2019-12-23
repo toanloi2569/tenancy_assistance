@@ -511,7 +511,7 @@ class InfoHome extends React.Component {
                                                     </Button>
                                                     <Modal
                                                     visible={this.state.visible}
-                                                    title="Title"
+                                                    title="Hoàn thiện hợp đồng"
                                                     onOk={this.handleOk}
                                                     onCancel={this.handleCancel}
                                                     footer={[
@@ -527,7 +527,7 @@ class InfoHome extends React.Component {
                                                     </Modal>
                                                     <Modal
                                                     visible= {this.state.visible1}
-                                                    title="Title"
+                                                    title="Ký hợp đồng"
                                                     // onChange={this.handleOk1}
                                                     onCancel={this.handleCancel1}
                                                     footer={[
