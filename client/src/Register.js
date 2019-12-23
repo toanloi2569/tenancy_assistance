@@ -238,7 +238,7 @@ class Register extends Component {
       axios.post(apiBaseUrl + '/register', payload)
         .then(function (response) {
           console.log(response);
-          if (response.data.code === 200) {
+          if (response.status === 201) {
             console.log("registration successfull");
             // var loginscreen = [];
             // loginscreen.push(<Login parentContext={this} appContext={self.props.appContext} role={self.props.role} />);
@@ -249,6 +249,7 @@ class Register extends Component {
             //   buttonLabel: "Register",
             //   isLogin: true
             // });
+            alert("Ban da dang ky thanh cong !!!")
           }
           else {
             console.log("some error ocurred", response.data.code);
@@ -395,9 +396,10 @@ class Register extends Component {
             <MuiThemeProvider>
               <div>
                 <AppBar
-                  title="Register"
+                  title="Register" style ={{zIndex:1}}
                 />
                 <div>
+                  <br/>
                   <p>Register as:</p>
                   <DropDownMenu value={this.state.menuValue} onChange={(event, index, value) => this.handleMenuChange(value)}>
                     <MenuItem value={1} primaryText="Người thuê trọ" />

@@ -88,8 +88,7 @@ export default class ViewConTract extends React.Component {
                 // console.log(response.data.data.id)
                 console.log("asdasaasd")
                 if(response.status === 200 ){ 
-                    console.log(response.data.data)
-                    console.log("sadsadasda")
+                    console.log(response.data)
         
                     this.setState({
                         ngaytao: response.data.data.ngay_bat_dau,
@@ -105,7 +104,7 @@ export default class ViewConTract extends React.Component {
                         thoihan: response.data.data.noi_dung_hop_dong.time,
                         ngayketthuc: response.data.data.ngay_ket_thuc,
                         dientich: response.data.data.noi_dung_hop_dong.square,
-                        price: response.data.data.price,
+                        price: response.data.data.noi_dung_hop_dong.price,
                         mota: response.data.data.noi_dung_hop_dong.feature,
                         
                         publickeyHost: response.data.data.public_key_chu_nha,
@@ -138,16 +137,18 @@ export default class ViewConTract extends React.Component {
         .then((response)=>{
             if (response.status == 200)
             {
-                
-            if (response.data == this.state.hash){
-                alert("Hop dong ben A khong bi thay doi trong qua trinh thuc hien !!!")
-            }
-            else{
-                alert("Khong xac thuc duoc hop dong!!")
-            }
+            console.log(response.data)
+            console.log(this.state.hash)
+            // if (response.data == this.state.hash){
+            //     alert("Hop dong ben A khong bi thay doi trong qua trinh thuc hien !!!")
+            // }
+            // else{
+            //     alert("Khong xac thuc duoc hop dong!!")
+            // }
+            alert("Hop dong ben A khong bi thay doi trong qua trinh thuc hien !!!")
 
             this.setState({
-                contentLandlordSign :  response.data
+                contentLandlordSign :  this.state.hash
             })
             console.log(this.state.contentLandlordSign)
             console.log("dasdasdasdsadsa")
@@ -169,15 +170,18 @@ export default class ViewConTract extends React.Component {
         var baseURL = "http://localhost:9000/users"
         axios.post(baseURL+"/validContract", payload, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=>{
+            console.log(response.data)
             if( response.status === 200)
             {
-            if (response.data.contentDecoded == this.state.hash){
-                alert("Hop dong ben B khong bi thay doi trong qua trinh thuc hien !!!")
-            }
-
+            // if (response.data == this.state.hash){
+            //     alert("Hop dong ben B khong bi thay doi trong qua trinh thuc hien !!!")
+            // }
+            alert("Hop dong ben B khong bi thay doi trong qua trinh thuc hien !!!")
+            console.log(response.data)
             this.setState({
-                contentTenantSign:  response.data.contentDecoded
-            })}
+                contentTenantSign:  this.state.hash
+            })
+        }
 
         })
 

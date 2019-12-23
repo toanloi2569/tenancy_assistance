@@ -68,7 +68,7 @@ class HostProfile extends React.Component {
                 <li>
 
                 <Link to ={link_to}   className="nav-link" style={{lineHeight:"25px"}}>
-                        <span>Hợp đồng: {contract.tenant} đã thuê từ ngày {contract.timeStart}</span> 
+                <span>Hợp đồng : {contract.idv_contract}</span>  
                 </Link>
                 </li>
 
@@ -105,7 +105,7 @@ class HostProfile extends React.Component {
                 <section className="banner-area">
                     <div style={{ paddingTop: "100px" }} class="text-center align-bottom"><h1> Nhung hop dong da duoc tao </h1></div>
                 </section>
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 border bg-light" style={{ padding: "10px" }}>
+                <div class="" style={{ padding: "10px" }}>
                         <div class="card">
                             {elements}
                         </div>

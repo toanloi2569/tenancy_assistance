@@ -23,7 +23,7 @@ export default class Header extends Component{
                 }
                 console.log(this.state)
             })
-        },100)
+        },10)
     }
 
   static getDerivedStateFromProps(nextProps, prevState) {

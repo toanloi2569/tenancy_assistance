@@ -19,10 +19,22 @@ export default class HostHeader extends Component {
             
         }
         this.viewLetter = this.viewLetter.bind(this)
+        this.handleLogout = this.handleLogout.bind(this);
 
 
 
 
+    }
+
+    handleLogout(){
+        var self = this;
+        var token = localStorage.token
+        localStorage.removeItem('token')
+        var apiBaseUrl = "http://localhost:9000/users/";
+        axios.get(apiBaseUrl+'logoutallUser', { 'headers': { 'Authorization': token } })
+        .then((response)=> {
+           console.log("hihi")
+        })
     }
     
     
@@ -112,11 +124,11 @@ export default class HostHeader extends Component {
                                     {/* <li className="nav-item"><a className="nav-link" href="blog.html">Quản lý bài đăng</a></li> */}
                                     <li className="nav-item"><a className="nav-link" href="#/host/taohopdong"> Đăng tin thuê nhà</a></li>
                                     <li className="nav-item"><a className="nav-link" href="#/host/profile">Xem thông tin cá nhân </a></li>
-                                    <li className="nav-item"><a className="nav-link" href="#/host/quanlyhopdong/:id"> Quản lý hợp đồng </a></li>
+                                    {/* <li className="nav-item"><a className="nav-link" href="#/host/quanlyhopdong/:id"> Quản lý hợp đồng </a></li> */}
                                 </ul>
                             </li>
                             {/* <li className="nav-item"><a className="nav-link" href="#/host/dangtin">Đăng Tin</a></li> */}
-                            <li className="nav-item"><a className="nav-link" href="/" >Log Out</a></li>
+                            <li className="nav-item"><a className="nav-link" href="/" onClick= {this.handleLogout} >Log Out</a></li>
                         </ul>
                     </div>
                 </nav>

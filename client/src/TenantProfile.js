@@ -1,19 +1,22 @@
 import React from 'react';
-import TenantHeader from './components/Header/TenantHeader';
+import HostHeader from './components/Header/HostHeader';
 import Profile from './components/Profile';
 import FooterHome from './components/Footer/FooterHome';
 import axios from "axios";
+import {Link} from "react-router-dom";
+import TenantHeader from './components/Header/TenantHeader';
 
 class TenantProfile extends React.Component {
-
     constructor() {
         super();
         this.state = {
-            showEditInfo : false,
+            showEditInfo: false,
             user: {},
-            vUser: []
+            vUser: [],
+            contracts:[],
         }
     }
+
 
     componentDidMount() {
         var apiBaseUrl = "http://localhost:9000/users/";
@@ -23,23 +26,59 @@ class TenantProfile extends React.Component {
                 console.log(response)
                 this.setState({
                     user: response.data.user,
-                    vUser: response.data.vUser[0]
+                    vUser: response.data.vUser[0],
+                    contracts: response.data.user.contracts_info
                 })
+                // console.log(this.state.vUser.id)
+                // console.log(this.state.contracts)
             })
-        },100)
+
+            
+        },0)
+        
+
+        
     }
+
 
     handleClick = () => {
+        // var apiBaseUrl_Vchain = "http://localhost:9000/users/getContractFromBlockChain/idv_contract/"+this.state.vUser.id;
+    
+        // axios.get(apiBaseUrl_Vchain,{ 'headers': { 'Authorization': localStorage.token } })
+        // .then((response)=>{
+        //     console.log(response)
+        //     this.setState({
+        //         // contracts: response.data.contracts
+                
+        //     })
+        // })
+
         this.setState({
-            showEditInfo : true,
+            showEditInfo: true
         })
     }
-    
-    render() {
 
+    render() {
         const { showEditInfo } = this.state;
         const src1 = "https://v-chain.vn/ipfs/gateway/"+this.state.vUser.anh_cmt_mat_truoc_cid
         const src2 = "https://v-chain.vn/ipfs/gateway/"+this.state.vUser.anh_cmt_mat_sau_cid
+        let elements = this.state.contracts.map((contract, index)=>{
+            let link_to = "/host/profile/"+ contract.idv_contract
+            return(
+
+                // <span>jsldasndlass</span>
+                <li>
+
+                <Link to ={link_to}   className="nav-link" style={{lineHeight:"25px"}}>
+                        <span>Hợp đồng : {contract.idv_contract}</span> 
+                </Link>
+                </li>
+
+            
+            )
+            
+        })
+        console.log({elements})
         return (
             <div>
                 <TenantHeader />
@@ -48,10 +87,11 @@ class TenantProfile extends React.Component {
                 </section>
                 <div class="row justify-content-around align-items-center bg-warning" style={{ padding: "20px" }}>
                     <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-                        <h5><a><i class="lnr lnr-user"></i> Ho va Ten : {this.state.user.name} </a></h5>
-                        <h5><a><i class="lnr lnr-license"></i> So CMT : {this.state.user.ID} </a></h5>
-                        <h5><a><i class="lnr lnr-phone-handset"></i> So DT: {this.state.user.phone} </a></h5>
-                        <h5><a><i class="lnr lnr-envelope"></i> Mail : {this.state.user.email} </a></h5>
+                        <h5><a><i class="lnr lnr-user"></i> Ho va Ten :   {this.state.user.name}</a></h5>
+                        <h5><a><i class="lnr lnr-license"></i> So CMT : {this.state.user.ID}</a></h5>
+                        <h5><a><i class="lnr lnr-phone-handset"></i> So DT: {this.state.user.phone}</a></h5>
+                        <h5><a><i class="lnr lnr-envelope"></i> Mail : {this.state.user.email}</a></h5>
+                        {/* <button id="btn2" type="button" class="btn btn-primary" onClick={this.handleClick}>Nhung hop dong da tao</button> */}
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8 border bg-light" style={{ padding: "10px" }}>
                         <div class="card">
@@ -64,8 +104,17 @@ class TenantProfile extends React.Component {
                         </div>
                     </div>
                 </div>
-                {showEditInfo && <Profile />}
-                <FooterHome/>
+                <section className="banner-area">
+                    <div style={{ paddingTop: "100px" }} class="text-center align-bottom"><h1> Nhung hop dong da duoc tao </h1></div>
+                </section>
+                <div class="" style={{ padding: "10px" }}>
+                        <div class="card">
+                            {elements}
+                        </div>
+                    </div>
+                
+ 
+                <FooterHome />
             </div>
         )
     }

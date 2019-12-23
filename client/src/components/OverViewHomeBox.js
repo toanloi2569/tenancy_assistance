@@ -32,7 +32,7 @@ export default class OverViewHomeBox extends Component {
                                                 src= {this.props.img}
                                                 class="img-fluid w-100" />
                                 <div className="col-md-12">
-                                    <h6 className="course-title">Duyt me</h6></div>
+                                    <h6 className="course-title">{this.props.address}</h6></div>
                                 <div className="instructor-clist">
                                     <div className="col-md-12">
                                         <i className="fa fa-chalkboard-teacher"></i>&nbsp;
