@@ -10,68 +10,98 @@ import FooterHome from './components/Footer/FooterHome';
 // import 'react-router-dom';
 import { Button } from 'antd';
 
+
+
+
+const defaultCheckPrice = [];
+const defaultCheckSquare = [];
+
 class TenantScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
-            list: [
-                {
-                    _id: 1,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "3.500.000",
-                    address: "128 Lương Đắng Bằng ",
-                    
-                },
-                {
-                    _id: 2,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "2.500.000",
-                    address: "68 Hoàng Mai, Hà Nội",
-                    
-                },
-                {
-                    _id: 3,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "5.000.000",
-                    address: "69 Đường Lê Duẫn",
-      
-                },
-                {
-                    _id: 4,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "5.000.000",
-                    address: "69 Đường Lê Duẫn",
-     
-                },
-                {
-                    _id: 5,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "5.000.000",
-                    address: "69 Đường Lê Duẫn",
-
-                },
-                {
-                    _id: 6,
-                    image: ["https://baobinhduong.org.vn/wp-content/uploads/2019/09/top-4-kieu-nha-tro-dang-tro-thanh-trend-doi-voi-nguoi-thue-1.jpg"],
-                    price: "3.500.000",
-                    address: "128 Lương Đắng Bằng ",
-    
-                },
-
-
-            ]
+            list: [],
+            address: '',
+            checkedListPrice: defaultCheckPrice,
+            indeterminatePrice: true,
+            checkAllPrice: false,
+            checkedListSquare : defaultCheckSquare,
+            indeterminateSquare: true,
+            checkAllSquare: false,
         });
         this.onSearch = this.onSearch.bind(this)
-
+        this.handler1 = this.handler1.bind(this)
+        this.handler2 = this.handler2.bind(this)
+        this.getaddress = this.getaddress.bind(this)
     }
     onSearch(){
-        // console.log(this.state.list)
+        var firtsPrice = this.state.checkedListPrice[0]
+        var minPrice = 0
+        if (firtsPrice != undefined){
+        if (firtsPrice == "<5tr"){
+            minPrice = 0
+        }else{ 
+            if (firtsPrice == ">10tr"){
+                 minPrice = 10000000
+            }else{
+                minPrice = 5000000
+            }}
+        }
+        var lastPrice = this.state.checkedListPrice[-1]
+        var maxPrice = 1000000000
+        if (lastPrice!=undefined){
+            if (lastPrice == "<5tr"){
+                maxPrice = 5000000
+            }else{ 
+                if (lastPrice == ">10tr"){
+                        maxPrice = 1000000000
+                }else{
+                    maxPrice = 10000000
+                }}
+        }
+        var firtsSquare = this.state.checkedListSquare[0]
+        var minSquare = 0
+        if (firtsSquare!=undefined){
+            if (firtsSquare == "<10m2"){
+                minSquare = 0
+            }else{ 
+                if (firtsSquare == ">50m2"){
+                    minSquare = 50
+                }else{
+                    minSquare = 10
+            }}
+        }
+        var lastSquare = this.state.checkedListSquare[-1]
+        var maxSquare = 1000000000
+        if(lastSquare!==undefined){
+            if (lastSquare == "<10m2"){
+                maxSquare = 10
+            }else{ 
+                if (lastSquare == ">50m2"){
+                        maxSquare = 1000000000
+                }else{
+                    maxSquare = 50
+            }}
+        }
+        var address = null
+        if(this.state.address[0]!== undefined){
+            var address = this.state.address[0]+', '+this.state.address[1]
+        }
+
+        var payload = {
+            'minPrice' : minPrice,
+            'maxPrice' : maxPrice,
+            'minSquare' : minSquare,
+            'maxSquare' : maxSquare,
+            'district' : address
+        }
+        console.log(payload)
         this.setState({
             list: []
         })
         var self = this;
         var apiBaseUrl = "http://localhost:9000/users/";
-        axios.post(apiBaseUrl+'searchPost', { 'headers': { 'Authorization': localStorage.token } })
+        axios.post(apiBaseUrl+'searchPost', payload, { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
         if(response.status === 200 ){
             console.log(response.data)
@@ -95,27 +125,41 @@ class TenantScreen extends React.Component {
 
     }
 
+    handler1 = function(childstate){
+        this.setState({
+            checkedListPrice: childstate.checkedListPrice,
+            indeterminatePrice: childstate.indeterminatePrice,
+            checkAllPrice: childstate.checkAllPrice,
+        })
+    }
+
+    handler2 = function(childstate){
+        this.setState({
+            checkedListSquare : childstate.checkedListSquare,
+            indeterminateSquare: childstate.indeterminateSquare,
+            checkAllSquare: childstate.checkAllSquare,
+        })
+
+    }
+
+    getaddress = function(address){
+        this.setState({
+            address: address,
+        })
+    }
+
     componentDidMount() {
         // window.addEventListener('load', this.handleLoad);
         const {match:{params}} = this.props;
         console.log(params.id); 
-        var self = this;
         var apiBaseUrl = "http://localhost:9000/users/";
-        axios.post(apiBaseUrl+'searchPost', { 'headers': { 'Authorization': localStorage.token } })
+        setTimeout(() => {axios.post(apiBaseUrl+'searchPost', { 'headers': { 'Authorization': localStorage.token } })
         .then((response)=> {
-        // console.log(response);
-        
-
         if(response.status === 200 ){
             // console.log()
-            // self.setState({
-            //     username: response.data.name,
-            //     address : response.data.address,
-            //     email : response.data.email,
-            //     phone: response.data.phone,
-            //     img: response.data.img
-            // })
-        
+            this.setState({
+                list: response.data
+            })
 
         }
         else if(response.status === 204){
@@ -130,7 +174,7 @@ class TenantScreen extends React.Component {
         .catch(function (error) {
         console.log(error);
         localStorage.removeItem("token")
-        });       
+        });},0)       
 
     }
 
@@ -140,7 +184,6 @@ class TenantScreen extends React.Component {
         console.log(this.state.list)
         let elements = this.state.list.map((home, index) => {
             let link_to = "/infoHome/"+home._id
-            // if (home.status) {
                 return (
                     <OverViewHomeBox
                         key={home._id}
@@ -148,12 +191,11 @@ class TenantScreen extends React.Component {
                         price={home.price}
                         address = {home.address}
                         img={home.image[0]} />
-                        
                 )
 
-            // }
 
         })
+        console.log(elements)
         return (
             <div>
                 <TenantHeader />
@@ -162,7 +204,11 @@ class TenantScreen extends React.Component {
                 </section>
                 <div class="row">
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 text-center">
-                        <FilterHome />
+                        <FilterHome 
+                            handler1 = {this.handler1}
+                            handler2 = {this.handler2} 
+                            getaddress = {this.getaddress}
+                        />
                         <Button type="danger w-50" size={'large'} style={{margin:"15px"}} onClick={this.onSearch}>   
                             Tìm Kiếm
                         </Button>
